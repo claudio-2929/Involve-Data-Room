@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 import { sitemapData } from '../../data/sitemap';
 import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../ThemeProvider';
 
 function NavItem({ item, depth = 0 }: { item: any; depth?: number }) {
     const [isOpen, setIsOpen] = useState(true);
@@ -79,6 +80,7 @@ function NavItem({ item, depth = 0 }: { item: any; depth?: number }) {
 
 export default function SidebarNav() {
     const { user } = useAuth();
+    const { theme } = useTheme();
 
     // Filter sitemap based on user access level
     const authorizedSitemap = sitemapData.filter(node => {
@@ -94,8 +96,11 @@ export default function SidebarNav() {
             {/* Header */}
             <div className="h-[52px] flex items-center px-4 border-b border-involve-border flex-shrink-0">
                 <div className="flex items-center mt-1">
-                    <img src="/assets/logo-1.png" alt="Involve Space" className="h-5 dark:hidden" />
-                    <img src="/assets/logo-2.png" alt="Involve Space" className="h-5 hidden dark:block" />
+                    {theme === 'dark' ? (
+                        <img src="/assets/logo-2.png" alt="Involve Space" className="h-5" />
+                    ) : (
+                        <img src="/assets/logo-1.png" alt="Involve Space" className="h-5" />
+                    )}
                 </div>
                 <span className="ml-2 font-mono text-[8px] text-involve-blue border border-involve-blue/30 bg-involve-blue/8 px-1.5 py-[2px] tracking-[0.1em] uppercase whitespace-nowrap self-center mt-0.5">
                     Data Room
