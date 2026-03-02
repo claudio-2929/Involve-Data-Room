@@ -12,6 +12,7 @@ import MarketOverviewPage from './pages/MarketOverviewPage';
 import GeoAIPositioningPage from './pages/GeoAIPositioningPage';
 import GTMStrategyPage from './pages/GTMStrategyPage';
 import DefenceDualUsePage from './pages/DefenceDualUsePage';
+import IPAndMoatPage from './pages/IPAndMoatPage';
 import LoginPage from './pages/LoginPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -91,6 +92,24 @@ function App() {
             <Route path="/dataroom/05_Financials/06_Unit_Economics_by_Platform" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><UnitEconomicsPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/08_Organization/01_Executive_Management" element={
+              <ProtectedRoute requiredAccess="full">
+                <GlobalLayout>
+                  {/* <ExecutiveManagementPage /> */}
+                  <div className="p-10 text-white font-mono">Executive Management (Placeholder)</div>
+                </GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/07_IP_and_Moat" element={
+              <ProtectedRoute requiredAccess="full">
+                <GlobalLayout><IPAndMoatPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/07_IP_and_Moat/*" element={
+              <ProtectedRoute requiredAccess="full">
+                <GlobalLayout><IPAndMoatPage /></GlobalLayout>
               </ProtectedRoute>
             } />
             <Route path="/dataroom/09_Corporate_and_Legal/07_Material_Contracts" element={

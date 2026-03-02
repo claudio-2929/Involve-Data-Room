@@ -90,16 +90,9 @@ export const sitemapData = [
         ]
     },
     {
-        title: "07. IP & Moat",
-        path: "/dataroom/07_IP_and_Moat",
-        requiredAccess: "full",
-        children: [
-            { title: "IP Portfolio", path: "/dataroom/07_IP_and_Moat/01_IP_Portfolio_Summary" },
-            { title: "Patents & Trademarks", path: "/dataroom/07_IP_and_Moat/02_Patents_and_Trademarks" },
-            { title: "Proprietary AI", path: "/dataroom/07_IP_and_Moat/03_Proprietary_AI_and_Algorithms" },
-            { title: "Data Advantange", path: "/dataroom/07_IP_and_Moat/04_Data_Ownership_and_Compounding_Advantage" },
-            { title: "Defensibility Strategy", path: "/dataroom/07_IP_and_Moat/05_Long_Term_Defensibility_Strategy" },
-        ]
+        title: '07. IP & Moat',
+        path: '/dataroom/07_IP_and_Moat',
+        requiredAccess: 'full'
     },
     {
         title: "08. Team & Organization",
