@@ -92,7 +92,10 @@ export const sitemapData = [
     {
         title: '07. IP & Moat',
         path: '/dataroom/07_IP_and_Moat',
-        requiredAccess: 'full'
+        requiredAccess: 'full',
+        children: [
+            { title: 'IP & Defensibility Strategy', path: '/dataroom/07_IP_and_Moat' }
+        ]
     },
     {
         title: "08. Team & Organization",
