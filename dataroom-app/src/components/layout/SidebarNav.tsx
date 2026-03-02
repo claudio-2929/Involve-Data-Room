@@ -92,9 +92,12 @@ export default function SidebarNav() {
     return (
         <aside className="w-[264px] border-r border-involve-border bg-involve-bg hidden lg:flex flex-col h-screen overflow-hidden flex-shrink-0 relative z-20 print:hidden">
             {/* Header */}
-            <div className="h-[52px] flex items-center px-5 border-b border-involve-border flex-shrink-0">
-                <h1 className="font-mono text-[15px] font-semibold tracking-[0.18em] text-involve-text uppercase">INVOLVE</h1>
-                <span className="ml-3 font-mono text-[9px] text-involve-blue border border-involve-blue/30 bg-involve-blue/8 px-2 py-0.5 tracking-[0.15em] uppercase">
+            <div className="h-[52px] flex items-center px-4 border-b border-involve-border flex-shrink-0">
+                <div className="flex items-center mt-1">
+                    <img src="/assets/logo-1.png" alt="Involve Space" className="h-5 dark:hidden" />
+                    <img src="/assets/logo-2.png" alt="Involve Space" className="h-5 hidden dark:block" />
+                </div>
+                <span className="ml-2 font-mono text-[8px] text-involve-blue border border-involve-blue/30 bg-involve-blue/8 px-1.5 py-[2px] tracking-[0.1em] uppercase whitespace-nowrap self-center mt-0.5">
                     Data Room
                 </span>
             </div>

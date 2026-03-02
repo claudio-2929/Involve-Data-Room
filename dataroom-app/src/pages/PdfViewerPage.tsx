@@ -8,9 +8,10 @@ interface PdfViewerPageProps {
     subtitle?: string;
     pdfUrl: string;
     fileName: string;
+    children?: React.ReactNode;
 }
 
-export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fileName }: PdfViewerPageProps) {
+export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fileName, children }: PdfViewerPageProps) {
     const [isDownloading, setIsDownloading] = useState(false);
 
     const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,6 +79,8 @@ export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fi
                         <p className="text-sm">Loading document...</p>
                     </div>
                 </div>
+
+                {children}
             </div>
         </div>
     );

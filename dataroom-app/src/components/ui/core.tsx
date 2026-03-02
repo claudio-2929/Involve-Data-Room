@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function cn(...inputs: (string | undefined | null | false)[]) {
     return twMerge(clsx(inputs));
@@ -21,6 +23,7 @@ export function DocHeader({
     subtitle?: string;
     meta?: { label: string; value: string }[];
 }) {
+    const navigate = useNavigate();
     return (
         <div className="mb-12 pb-10 border-b border-involve-border relative overflow-hidden">
             <div
@@ -33,6 +36,13 @@ export function DocHeader({
                 }}
             />
             <div className="relative z-10">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-1.5 text-[11px] font-mono tracking-widest uppercase text-involve-dim hover:text-involve-text transition-colors mb-8 group"
+                >
+                    <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                    Back
+                </button>
                 {breadcrumb && (
                     <div className="flex items-center gap-1.5 font-mono text-[10px] text-involve-dim tracking-[0.12em] uppercase mb-6">
                         {breadcrumb}

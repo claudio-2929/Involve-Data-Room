@@ -1,4 +1,5 @@
 import PdfViewerPage from './PdfViewerPage';
+import PageNavigation from '../components/ui/PageNavigation';
 
 export default function InvestorDeckPage() {
     return (
@@ -8,6 +9,14 @@ export default function InvestorDeckPage() {
             subtitle="The primary pitch deck for the current Series A funding round, detailing the market opportunity, product vision, technological moat, and financial projections."
             pdfUrl="/dataroom-contents/00_Executive_Overview/02_Investor_Deck.pdf"
             fileName="Involve_Space_Investor_Deck_Latest.pdf"
-        />
+        >
+            <PageNavigation
+                next={{
+                    title: "Executive One Pager",
+                    desc: "A concise, high-level summary of the Involve Space value proposition.",
+                    path: "/dataroom/00_Executive_Overview/03_One_Pager"
+                }}
+            />
+        </PdfViewerPage>
     );
 }
