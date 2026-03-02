@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Overview &amp; TAM/SAM/SOM | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg:         #08090c;
+  --bg-1:       #0d0f14;
+  --bg-2:       #12151c;
+  --bg-3:       #171b24;
+  --bg-card:    #0f1218;
+  --border:     rgba(255,255,255,0.07);
+  --border-med: rgba(255,255,255,0.12);
+  --border-hi:  rgba(255,255,255,0.20);
+  --text-1:     #eef1f6;
+  --text-2:     rgba(238,241,246,0.55);
+  --text-3:     rgba(238,241,246,0.28);
+  --blue:       #3d9bff;
+  --blue-dim:   rgba(61,155,255,0.14);
+  --blue-glow:  rgba(61,155,255,0.06);
+  --cyan:       #00c8e0;
+  --cyan-dim:   rgba(0,200,224,0.12);
+  --green:      #34d07a;
+  --green-dim:  rgba(52,208,122,0.12);
+  --amber:      #f0a020;
+  --amber-dim:  rgba(240,160,32,0.12);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --red:        #ff6060;
+  --red-dim:    rgba(255,96,96,0.12);
+  --f-body: 'Inter', -apple-system, sans-serif;
+  --f-mono: 'DM Mono', monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{background:var(--bg);color:var(--text-1);font-family:var(--f-body);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased;padding:0 0 6rem}
+
+/* ── HEADER ── */
+.doc-header{position:relative;padding:3.5rem 3.5rem 3rem;border-bottom:1px solid var(--border-med);overflow:hidden}
+.doc-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black 0%,transparent 100%);pointer-events:none}
+.doc-header-inner{position:relative;z-index:1;max-width:920px}
+.doc-breadcrumb{display:flex;align-items:center;gap:.5rem;font-family:var(--f-mono);font-size:.62rem;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.6rem}
+.doc-breadcrumb span{color:var(--blue)}
+.doc-title{font-size:2.4rem;font-weight:300;letter-spacing:-.04em;line-height:1.1;margin-bottom:.6rem}
+.doc-title strong{font-weight:600}
+.doc-subtitle{font-size:.85rem;color:var(--text-2);font-weight:300;max-width:660px;line-height:1.7;margin-bottom:2rem}
+.doc-meta-row{display:flex;gap:2.5rem;flex-wrap:wrap}
+.doc-meta-item{display:flex;flex-direction:column;gap:.2rem}
+.doc-meta-label{font-family:var(--f-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3)}
+.doc-meta-value{font-size:.8rem;font-weight:500;color:var(--text-2)}
+
+/* ── BODY ── */
+.body{max-width:920px;margin:0 auto;padding:0 3.5rem}
+.sec{padding:3.5rem 0;border-bottom:1px solid var(--border)}
+.sec:last-child{border-bottom:none}
+.sec-eyebrow{display:flex;align-items:center;gap:.7rem;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem}
+.sec-eyebrow::before{content:'';display:block;width:14px;height:1px;background:var(--blue);flex-shrink:0}
+.sec-title{font-size:1.6rem;font-weight:300;letter-spacing:-.03em;color:var(--text-1);margin-bottom:.35rem;line-height:1.2}
+.sec-desc{font-size:.78rem;color:var(--text-3);margin-bottom:2.2rem;font-style:italic}
+.prose{font-size:.875rem;font-weight:300;line-height:1.8;color:var(--text-2);max-width:840px}
+.prose strong{font-weight:500;color:var(--text-1)}
+.prose+.prose{margin-top:.9rem}
+
+/* ── BADGE ── */
+.badge{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--f-mono);font-size:.58rem;font-weight:500;letter-spacing:.1em;padding:.2rem .6rem;border-radius:2px;white-space:nowrap}
+.badge::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:currentColor}
+.badge-green{background:var(--green-dim);color:var(--green)}
+.badge-blue{background:var(--blue-dim);color:var(--blue)}
+.badge-amber{background:var(--amber-dim);color:var(--amber)}
+.badge-cyan{background:var(--cyan-dim);color:var(--cyan)}
+.badge-purple{background:var(--purple-dim);color:var(--purple)}
+
+/* ── STATS BAR ── */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.stat-cell{background:var(--bg-card);padding:1.4rem 1.6rem;transition:background .15s}
+.stat-cell:hover{background:var(--bg-2)}
+.stat-val{font-size:1.9rem;font-weight:600;letter-spacing:-.04em;color:var(--text-1);line-height:1;margin-bottom:.3rem}
+.stat-val span{color:var(--blue)}
+.stat-label{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);line-height:1.5}
+.stat-sub{font-size:.7rem;color:var(--text-3);margin-top:.2rem;font-style:italic}
+
+/* ── MARKET TABLE ── */
+.tbl-wrap{margin:2rem 0;overflow-x:auto;border:1px solid var(--border-med)}
+table{width:100%;border-collapse:collapse;font-size:.77rem}
+thead tr{background:var(--bg-2);border-bottom:1px solid var(--border-med)}
+thead th{padding:.75rem 1rem;text-align:left;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);font-weight:500;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--blue-glow)}
+td{padding:.7rem 1rem;vertical-align:top;color:var(--text-2);font-weight:300;line-height:1.5}
+td:first-child{font-weight:500;color:var(--text-1)}
+td.hi{color:var(--green);font-weight:500}
+td.key-row{color:var(--blue);font-weight:500}
+
+/* ── CALLOUT / REF ── */
+.callout{margin:1.8rem 0;padding:1rem 1.3rem;background:var(--blue-glow);border-left:2px solid rgba(61,155,255,.3);font-size:.8rem;color:var(--text-2);font-style:italic;line-height:1.65}
+.callout strong{font-weight:500;color:var(--text-1);font-style:normal}
+.ref-note{margin:1.4rem 0;padding:.8rem 1.1rem;background:var(--bg-2);border:1px solid var(--border);border-left:2px solid var(--blue);font-family:var(--f-mono);font-size:.66rem;color:rgba(61,155,255,.65);letter-spacing:.01em;line-height:1.6}
+
+/* ── SPLIT-2 ── */
+.split-2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.split-cell{background:var(--bg-card);padding:1.6rem}
+.split-cell-label{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3);margin-bottom:.6rem}
+.split-cell-title{font-size:.88rem;font-weight:600;color:var(--text-1);margin-bottom:.6rem}
+.split-cell-body{font-size:.79rem;font-weight:300;color:var(--text-2);line-height:1.65}
+.split-cell-body strong{font-weight:500;color:var(--text-1)}
+
+/* ── DIAG ── */
+.diag{margin:2rem 0;background:var(--bg-1);border:1px solid var(--border-med);padding:2rem 2rem 1.5rem;overflow-x:auto}
+.diag-caption{font-family:var(--f-mono);font-size:.6rem;color:var(--text-3);text-align:center;margin-top:1.2rem;letter-spacing:.05em;line-height:1.6}
+
+/* ── MACRO DRIVER CARDS ── */
+.driver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.driver-card{background:var(--bg-card);padding:1.5rem;transition:background .15s}
+.driver-card:hover{background:var(--bg-2)}
+.driver-num{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;color:var(--blue);margin-bottom:.5rem;display:block}
+.driver-title{font-size:.88rem;font-weight:600;color:var(--text-1);margin-bottom:.55rem;letter-spacing:-.01em}
+.driver-body{font-size:.78rem;font-weight:300;color:var(--text-2);line-height:1.65}
+.driver-body strong{font-weight:500;color:var(--text-1)}
+.driver-stat{margin-top:.9rem;padding-top:.7rem;border-top:1px solid var(--border)}
+.driver-stat-val{font-size:1.1rem;font-weight:600;color:var(--blue);letter-spacing:-.03em}
+.driver-stat-label{font-family:var(--f-mono);font-size:.6rem;color:var(--text-3);margin-top:.15rem}
+
+/* ── FUNNEL VISUAL ── */
+.funnel-row{display:grid;grid-template-columns:120px 1fr 180px;gap:0;align-items:center;border-bottom:1px solid var(--border);background:var(--bg-card);transition:background .12s}
+.funnel-row:first-child{border-top:1px solid var(--border-med)}
+.funnel-row:hover{background:var(--bg-2)}
+.funnel-label{padding:.9rem 1rem;font-family:var(--f-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;display:flex;flex-direction:column;gap:.25rem;border-right:1px solid var(--border)}
+.funnel-bar-wrap{padding:.5rem 1rem;border-right:1px solid var(--border)}
+.funnel-bar{height:28px;border-radius:2px;display:flex;align-items:center;padding:0 10px;font-family:var(--f-mono);font-size:.7rem;font-weight:500;white-space:nowrap;transition:opacity .2s}
+.funnel-numbers{padding:.9rem 1rem;display:flex;flex-direction:column;gap:.25rem}
+.funnel-main{font-size:.95rem;font-weight:600;letter-spacing:-.03em;color:var(--text-1)}
+.funnel-sub{font-family:var(--f-mono);font-size:.62rem;color:var(--text-3)}
+
+/* ── SOM SCENARIO CARDS ── */
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.scenario-card{background:var(--bg-card);padding:1.6rem;display:flex;flex-direction:column;gap:.6rem}
+.scenario-label{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3)}
+.scenario-title{font-size:.9rem;font-weight:600;color:var(--text-1)}
+.scenario-val{font-size:1.5rem;font-weight:600;letter-spacing:-.04em;line-height:1}
+.scenario-year-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:.4rem}
+.scenario-yr{background:var(--bg-2);padding:.4rem .5rem;border-radius:2px}
+.scenario-yr-label{font-family:var(--f-mono);font-size:.55rem;color:var(--text-3)}
+.scenario-yr-val{font-size:.82rem;font-weight:600;margin-top:.1rem}
+.scenario-assumptions{font-size:.73rem;font-weight:300;color:var(--text-2);line-height:1.6;margin-top:.4rem;border-top:1px solid var(--border);padding-top:.6rem}
+
+/* ── COMPETITOR LANDSCAPE ── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.comp-cell{background:var(--bg-card);padding:1.5rem}
+.comp-category{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.comp-item{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.7rem}
+.comp-item:last-child{margin-bottom:0}
+.comp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.35rem}
+.comp-name{font-size:.82rem;font-weight:500;color:var(--text-1);margin-bottom:.15rem}
+.comp-desc{font-size:.75rem;font-weight:300;color:var(--text-2);line-height:1.55}
+
+/* ── INFRA ASSET CARDS ── */
+.asset-row{display:grid;grid-template-columns:180px 1fr 1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border);background:transparent}
+.asset-row+.asset-row{border-top:none}
+
+/* ── POSITIONING PILLARS ── */
+.pillar-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border-med);margin:2rem 0}
+.pillar-row{display:grid;grid-template-columns:200px 1fr 140px;background:var(--bg-card);border:none;transition:background .12s}
+.pillar-row:hover{background:var(--bg-2)}
+.pillar-row.hdr{background:var(--bg-2);border-bottom:1px solid var(--border-med)}
+.p-cell{padding:.75rem 1rem;font-size:.78rem;color:var(--text-2);font-weight:300;border-right:1px solid var(--border);line-height:1.5}
+.p-cell:last-child{border-right:none}
+.pillar-row.hdr .p-cell{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);font-weight:500}
+.p-cell.name{font-weight:500;color:var(--text-1)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec{animation:fadeUp .5s ease both}
+.sec:nth-child(2){animation-delay:.05s}
+.sec:nth-child(3){animation-delay:.1s}
+.sec:nth-child(4){animation-delay:.15s}
+.sec:nth-child(5){animation-delay:.2s}
+.sec:nth-child(6){animation-delay:.25s}
+.sec:nth-child(7){animation-delay:.3s}
+.sec:nth-child(8){animation-delay:.35s}
+
+@media(max-width:700px){
+  .doc-header,.body{padding-left:1.5rem;padding-right:1.5rem}
+  .stats-bar,.driver-grid,.scenario-grid,.comp-grid,.split-2{grid-template-columns:1fr 1fr}
+  .funnel-row{grid-template-columns:80px 1fr 120px}
+  .pillar-row{grid-template-columns:1fr}
+}
+@media print{body{background:#08090c}.sec{page-break-inside:avoid;animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+
+    <div class="doc-breadcrumb">
+      03. Market &amp; Opportunity
+      <span style="opacity:.3">›</span>
+      <span>Market Overview &amp; TAM/SAM/SOM</span>
+    </div>
+
+    <h1 class="doc-title">
+      Market Overview &amp;<br><strong>TAM / SAM / SOM Analysis</strong>
+    </h1>
+
+    <p class="doc-subtitle">
+      Quantified market opportunity for Involve Space's integrated Earth intelligence platform. Covers the macro demand thesis, top-down and bottom-up TAM sizing, SAM definition by geography and vertical, fleet-bounded SOM scenarios, and competitive positioning.
+    </p>
+
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-08</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Market definition</span>
+        <span class="doc-meta-value">GeoAI / Geospatial Intelligence</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Primary sources</span>
+        <span class="doc-meta-value">Gartner · MnM · GVR · EUSPA · SIPRI · IEA</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Revision</span>
+        <span class="doc-meta-value">A — Feb 2026</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     BODY
+══════════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── §1  EXECUTIVE MARKET THESIS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Executive Thesis</div>
+  <h2 class="sec-title">Earth intelligence is structurally expanding</h2>
+  <p class="sec-desc">Three macro forces reinforcing each other — AI cost reduction, geopolitical demand pull, and infrastructure monitoring pressure</p>
+
+  <p class="prose">
+    The Earth intelligence market is not in a cyclical expansion — it is undergoing a structural shift in how geospatial signals are consumed. Three independent forces are accelerating simultaneously and reinforcing each other: <strong>AI is collapsing the cost and latency of converting raw geospatial data into decisions</strong>, geopolitics is raising the value of persistent sensing and sovereign supply chains, and the physical infrastructure transition is multiplying the monitoring workload on assets that were not built for today's operational environment.
+  </p>
+  <p class="prose">
+    Gartner forecasts that <strong>80% of enterprise software will be multimodal by 2030</strong> (up from &lt;10% in 2024) — a direct enabler for operationalising imagery, SAR, and spatial signals at scale. In parallel, Gartner defines "Earth intelligence" as AI applied to EO data and forecasts direct vendor revenues rising to over <strong>$4.2bn by 2030</strong>, with enterprises becoming the majority buyer.
+  </p>
+
+  <!-- Key stats -->
+  <div class="stats-bar" style="margin-top:2.5rem">
+    <div class="stat-cell">
+      <div class="stat-val">$37<span>bn</span></div>
+      <div class="stat-label">GeoAI market TAM 2025</div>
+      <div class="stat-sub">→ $62.9bn by 2030 (11.1% CAGR)</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">$2.7<span>T</span></div>
+      <div class="stat-label">World military expenditure 2024</div>
+      <div class="stat-sub">Steepest YoY rise since 1988 — SIPRI</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">80<span>M km</span></div>
+      <div class="stat-label">Power grid lines globally</div>
+      <div class="stat-sub">Must be built/refurbished by 2040 — IEA</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">55<span>%</span></div>
+      <div class="stat-label">NATO share of global military spend</div>
+      <div class="stat-sub">= $1.5T — highest-priority buyer base</div>
+    </div>
+  </div>
+
+  <!-- Three macro drivers -->
+  <div class="driver-grid" style="margin-top:1rem">
+
+    <div class="driver-card">
+      <span class="driver-num">DRIVER 01 — AI COST COLLAPSE</span>
+      <div class="driver-title">AI making geospatial actionable at enterprise scale</div>
+      <div class="driver-body">
+        Geospatial data is moving from "specialist GIS output" to a standard input modality in mainstream decision workflows. Gartner's multimodal enterprise forecast signals that the integration layer is being built now — and platforms that already have the data pipeline and domain models in place are positioned to capture disproportionate early share.
+      </div>
+      <div class="driver-stat">
+        <div class="driver-stat-val">80%</div>
+        <div class="driver-stat-label">Enterprise software multimodal by 2030 — Gartner</div>
+      </div>
+    </div>
+
+    <div class="driver-card" style="border-top:2px solid rgba(240,160,32,.4)">
+      <span class="driver-num" style="color:var(--amber)">DRIVER 02 — GEOPOLITICS</span>
+      <div class="driver-title">Persistent ISR and sovereign sensing becoming policy priority</div>
+      <div class="driver-body">
+        High-intensity conflict has validated commercial sensing and analytics — pulling demand forward for hybrid architectures combining sovereign and commercial capacity. EU Space Strategy explicitly frames observation as strategic autonomy infrastructure. USSF commercial strategy mandates hybrid integration of commercial sensing. Willingness-to-pay for persistence, redundancy, and data sovereignty is rising structurally.
+      </div>
+      <div class="driver-stat">
+        <div class="driver-stat-val" style="color:var(--amber)">$2.718T</div>
+        <div class="driver-stat-label">World military spend 2024 — steepest rise since 1988</div>
+      </div>
+    </div>
+
+    <div class="driver-card" style="border-top:2px solid rgba(52,208,122,.4)">
+      <span class="driver-num" style="color:var(--green)">DRIVER 03 — INFRASTRUCTURE SCALE</span>
+      <div class="driver-title">Critical infrastructure monitoring demand structurally expanding</div>
+      <div class="driver-body">
+        National energy, transport, and pipeline infrastructure is growing faster than labour-intensive inspection can scale. IEA: $140bn invested in power transmission in 2023 (+10% YoY). DOE explicitly endorses satellite imagery + AI/ML analytics for enhanced vegetation management. The monitoring layer that makes these assets manageable is increasingly a digital and remote-sensing system.
+      </div>
+      <div class="driver-stat">
+        <div class="driver-stat-val" style="color:var(--green)">$140bn</div>
+        <div class="driver-stat-label">Global power grid investment 2023 — IEA</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <strong>Investment thesis implication:</strong> Against this backdrop, Involve Space's integrated architecture (stratospheric platforms + autonomous control + GeoAI platform) maps to an emerging procurement logic — governments and critical-infrastructure operators increasingly prefer "persistent coverage + analytics + tasking/control" as a single managed capability, especially when sovereignty, data ownership, and dual-use constraints apply.
+  </div>
+
+</div>
+
+<!-- ─── §2  TAM — TOP DOWN ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Total Addressable Market — Layer A</div>
+  <h2 class="sec-title">Global geospatial intelligence market baselines</h2>
+  <p class="sec-desc">Multiple market definitions presented transparently — conservative core GI baseline chosen for investor diligence</p>
+
+  <p class="prose">
+    The market is reported with materially different scopes depending on whether consumer location-based services, mapping, and broad GIS software are included. The correct approach for investor diligence is to present multiple baselines, then choose a conservative "core GI" baseline aligned with Involve Space's revenue model — enterprise and government infrastructure, national security, and regulated sectors rather than consumer LBS.
+  </p>
+
+  <div class="tbl-wrap" style="margin-top:2rem">
+    <table>
+      <thead>
+        <tr>
+          <th>Market Segment</th>
+          <th>Scope</th>
+          <th>Size (latest year)</th>
+          <th>CAGR</th>
+          <th>2030 Forecast</th>
+          <th>Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(61,155,255,.04);border-left:2px solid var(--blue)">
+          <td class="key-row">Geospatial Intelligence (GeoAI) ← <em style="font-size:.7rem;font-weight:300;color:var(--blue)">Selected baseline</em></td>
+          <td>GeoAI platforms, analytics and services — gov + enterprise</td>
+          <td class="hi">$37.13bn (2025)</td>
+          <td class="hi">11.1%</td>
+          <td class="hi">$62.88bn</td>
+          <td>MarketsandMarkets</td>
+        </tr>
+        <tr>
+          <td>Geospatial Analytics (broad)</td>
+          <td>Includes location analytics, GIS, mapping — may include consumer LBS</td>
+          <td>$114.32bn (2024)</td>
+          <td>11.3%</td>
+          <td>$226.53bn</td>
+          <td>Grand View Research</td>
+        </tr>
+        <tr>
+          <td>Earth Observation (data/services)</td>
+          <td>EO data and remote sensing technologies</td>
+          <td>$5.10bn (2024)</td>
+          <td>6.2%</td>
+          <td>$7.24bn</td>
+          <td>Grand View Research</td>
+        </tr>
+        <tr>
+          <td>Satellite Data Services</td>
+          <td>Satellite-derived data products across verticals</td>
+          <td>$12.12bn (2024)</td>
+          <td>16.3%</td>
+          <td>$29.59bn</td>
+          <td>Grand View Research</td>
+        </tr>
+        <tr>
+          <td>"Earth intelligence" vendor revenue</td>
+          <td>EO data + analysis services + EO-specific applications (AI-on-EO — Gartner narrow)</td>
+          <td>~$3.8bn (2025)</td>
+          <td>n/a</td>
+          <td>&gt;$4.2bn</td>
+          <td>Gartner</td>
+        </tr>
+        <tr>
+          <td>EO demand-side revenues (EU model)</td>
+          <td>EO data and services purchase — demand-side, forecast to 2033</td>
+          <td>€3.4bn (2023)</td>
+          <td>~5.8%</td>
+          <td>~€5.1bn (2030)</td>
+          <td>EUSPA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="prose" style="margin-top:1.5rem">
+    <strong>Selected baseline interpretation:</strong> For an Earth Intelligence infrastructure company selling managed sensing + analytics to enterprises and governments, the most decision-useful top-down TAM is the <strong>Geospatial Intelligence (GeoAI) market at $37.1bn (2025), growing to $62.9bn (2030)</strong> at 11.1% CAGR. This definition is directionally closer to enterprise/government demand than the broader "geospatial analytics" baseline ($114bn) which embeds consumer-oriented location services and mapping economics.
+  </p>
+  <p class="prose">
+    Independent EO-specific datasets converge around a single-digit billions EO data-and-services market in 2023–2024: EUSPA reports €3.4bn (2023) and projects near €6bn by 2033; Grand View sizes EO at $5.1bn (2024); Reuters/Novaspace reports ~$5bn growing to &gt;$8bn by 2033, with North America at 44% and Europe at 22% of EO revenue in 2023. These serve as external reasonableness checks on the GeoAI baseline without double-counting.
+  </p>
+
+  <!-- Market growth visual -->
+  <div class="diag" style="margin-top:2rem">
+    <svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <defs>
+        <linearGradient id="gr-blue" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(61,155,255,.35)"/>
+          <stop offset="100%" style="stop-color:rgba(61,155,255,.0)"/>
+        </linearGradient>
+        <linearGradient id="gr-green" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(52,208,122,.25)"/>
+          <stop offset="100%" style="stop-color:rgba(52,208,122,.0)"/>
+        </linearGradient>
+        <linearGradient id="gr-amber" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(240,160,32,.2)"/>
+          <stop offset="100%" style="stop-color:rgba(240,160,32,.0)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Grid lines -->
+      <line x1="80" y1="20" x2="80" y2="220" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+      <line x1="80" y1="220" x2="800" y2="220" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <!-- Y-axis labels -->
+      <text x="72" y="225" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.25)" text-anchor="end">$0</text>
+      <text x="72" y="175" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.25)" text-anchor="end">$20bn</text>
+      <text x="72" y="125" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.25)" text-anchor="end">$40bn</text>
+      <text x="72" y="75"  font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.25)" text-anchor="end">$60bn</text>
+      <text x="72" y="28"  font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.25)" text-anchor="end">$80bn</text>
+      <!-- Horizontal grid -->
+      <line x1="80" y1="170" x2="800" y2="170" stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="80" y1="120" x2="800" y2="120" stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+      <line x1="80" y1="70"  x2="800" y2="70"  stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="4 4"/>
+
+      <!-- X axis labels -->
+      <text x="80"  y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2025</text>
+      <text x="220" y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2026</text>
+      <text x="360" y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2027</text>
+      <text x="500" y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2028</text>
+      <text x="640" y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2029</text>
+      <text x="780" y="236" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2030</text>
+
+      <!-- GeoAI TAM curve (37.1 → 62.9bn) — scale: 1bn = 2.5px, zero at 220 -->
+      <!-- 2025: 37.1 → y = 220 - 37.1*2.5 = 220 - 92.75 = 127.25 -->
+      <!-- 2030: 62.9 → y = 220 - 62.9*2.5 = 220 - 157.25 = 62.75 -->
+      <polygon points="80,127 220,114 360,102 500,90 640,76 780,63 780,220 80,220" fill="url(#gr-blue)" opacity=".8"/>
+      <polyline points="80,127 220,114 360,102 500,90 640,76 780,63" fill="none" stroke="#3d9bff" stroke-width="2"/>
+      <!-- Labels -->
+      <circle cx="80"  cy="127" r="4" fill="#3d9bff"/>
+      <circle cx="780" cy="63"  r="4" fill="#3d9bff"/>
+      <text x="88"  y="122" font-family="DM Mono,monospace" font-size="9" fill="#3d9bff">$37.1bn</text>
+      <text x="788" y="58"  font-family="DM Mono,monospace" font-size="9" fill="#3d9bff">$62.9bn</text>
+      <text x="420" y="85" font-family="DM Mono,monospace" font-size="9" fill="rgba(61,155,255,.7)">GeoAI Market · 11.1% CAGR</text>
+
+      <!-- EO data market curve (5.1 → 7.24bn) — narrower -->
+      <!-- 2024: 5.1 → y = 220 - 5.1*2.5 = 207.25; 2030: 7.24 → y = 220-18.1=201.9 -->
+      <polygon points="80,207 220,204 360,202 500,199 640,196 780,202 780,220 80,220" fill="url(#gr-green)" opacity=".5"/>
+      <polyline points="80,207 220,204 360,202 500,199 640,196 780,202" fill="none" stroke="#34d07a" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="440" y="194" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(52,208,122,.6)">EO Data Market · 6.2% CAGR · $5.1bn→$7.2bn</text>
+
+      <!-- SAM range band (6.7 → 19.8bn) -->
+      <!-- 6.7: y=220-16.75=203; 19.8: y=220-49.5=170; 11.7: y=220-29.25=191; -->
+      <polygon points="80,203 780,169 780,220 80,211" fill="rgba(167,139,250,.07)" stroke="none"/>
+      <polyline points="80,203 780,169" fill="none" stroke="rgba(167,139,250,.4)" stroke-width="1.2" stroke-dasharray="3 3"/>
+      <polyline points="80,211 780,179" fill="none" stroke="rgba(167,139,250,.3)" stroke-width="1" stroke-dasharray="2 4"/>
+      <text x="540" y="165" font-family="DM Mono,monospace" font-size="8" fill="rgba(167,139,250,.6)">SAM range (upper) $19.8bn</text>
+      <text x="540" y="186" font-family="DM Mono,monospace" font-size="8" fill="rgba(167,139,250,.4)">SAM range (lower) $11.3bn</text>
+
+      <!-- Legend -->
+      <line x1="84" y1="250" x2="104" y2="250" stroke="#3d9bff" stroke-width="2"/>
+      <circle cx="94" cy="250" r="3" fill="#3d9bff"/>
+      <text x="108" y="254" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.4)">GeoAI TAM (selected baseline)</text>
+      <line x1="280" y1="250" x2="300" y2="250" stroke="#34d07a" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="304" y="254" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.4)">EO Data Market</text>
+      <line x1="450" y1="250" x2="470" y2="250" stroke="rgba(167,139,250,.5)" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <text x="474" y="254" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.4)">SAM range (Involve addressable)</text>
+    </svg>
+    <div class="diag-caption">
+      FIG 1 — GeoAI / Geospatial Intelligence market growth 2025–2030 vs EO data services and Involve Space addressable SAM band.<br>
+      Sources: MarketsandMarkets (GeoAI), Grand View Research (EO), Involve Space SAM calculation.
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §3  TAM — LAYER B (ADJACENT) ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Total Addressable Market — Layer B</div>
+  <h2 class="sec-title">Adjacent spend pools — the budget substrate expanding GI</h2>
+  <p class="sec-desc">These markets should not be added to Layer A; they explain why GI budgets are expanding structurally</p>
+
+  <p class="prose">
+    Layer B presents adjacent spend pools in which geospatial intelligence is increasingly embedded. These are used to (i) explain why GI budgets expand structurally, and (ii) identify vertical-focused demand for SAM/SOM modelling. They should not be naively added to Layer A as much of the supplier revenue in Layer A flows from these end-market budgets — the relationship is attachment, not addition.
+  </p>
+
+  <div class="tbl-wrap" style="margin-top:1.8rem">
+    <table>
+      <thead>
+        <tr>
+          <th>Adjacent Market</th>
+          <th>2024–25 Size</th>
+          <th>CAGR</th>
+          <th>2030 Forecast</th>
+          <th>Why it overlaps with GI</th>
+          <th>Overlap assumption</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Decision Intelligence</td>
+          <td>$13.3–15.2bn (2024)</td>
+          <td>15.4–24.7%</td>
+          <td>$36–50bn</td>
+          <td>Location and EO-derived signals become standard input into decision workflows (risk, logistics, ops) as multimodal/AI tooling matures</td>
+          <td><span class="badge badge-blue">5–15%</span></td>
+        </tr>
+        <tr>
+          <td>Risk Analytics</td>
+          <td>$32.25bn (2025)</td>
+          <td>9.7%</td>
+          <td>$51.34bn</td>
+          <td>Climate risk, supply-chain risk, asset risk and operational risk increasingly use geospatial and EO features</td>
+          <td><span class="badge badge-blue">5–10%</span></td>
+        </tr>
+        <tr>
+          <td>Digital Twin</td>
+          <td>$21.14bn (2025)</td>
+          <td>47.9%</td>
+          <td>$149.81bn</td>
+          <td>Infrastructure and territory digital twins require persistent updating, change detection, and alignment across sensors</td>
+          <td><span class="badge badge-amber">3–8%</span></td>
+        </tr>
+        <tr>
+          <td>Asset Integrity Management</td>
+          <td>$23.85bn (2024)</td>
+          <td>Growing through 2030</td>
+          <td>Forecast positive</td>
+          <td>Pipelines, energy assets and industrial infrastructure increasingly use remote sensing for screening and prioritisation</td>
+          <td><span class="badge badge-blue">5–12%</span></td>
+        </tr>
+        <tr>
+          <td>Structural Health Monitoring (sw + svcs)</td>
+          <td>$1.394bn (2024)</td>
+          <td>~19.8%</td>
+          <td>$4.085bn</td>
+          <td>Monitoring shifting from periodic inspections to analytics-driven condition assessment; EO can complement ground sensors for geo-hazards</td>
+          <td><span class="badge badge-blue">10–25%</span></td>
+        </tr>
+        <tr>
+          <td>ISR Market (defence, broad)</td>
+          <td>$52.1bn (2024)</td>
+          <td>4.5%</td>
+          <td>$67.8bn</td>
+          <td>EO and geospatial analytics are core ISR subcomponents; commercial imagery and analytics procurement is rising</td>
+          <td><span class="badge badge-green">5–12%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout" style="margin-top:1.5rem">
+    <strong>Implication:</strong> Layer B markets demonstrate that the budget substrates into which GI is embedding are large and, in many cases, growing faster than the EO-only marketplace. This underpins a structural "attached-rate" thesis: as decision and monitoring systems become AI-native, the fraction that consumes geospatial signals rises. Gartner's forecast that enterprises become the majority spender on Earth intelligence by 2030 supports this direction, even if direct vendor revenues remain comparatively modest in early years.
+  </div>
+
+</div>
+
+<!-- ─── §4  BOTTOM-UP TAM ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Bottom-Up Market Logic</div>
+  <h2 class="sec-title">Infrastructure monitoring wallet — asset-based TAM</h2>
+  <p class="sec-desc">An independent TAM constructed from global asset base × monitoring spend economics — not a duplicate of Layer A</p>
+
+  <p class="prose">
+    This constructs an alternative TAM from the "physics and economics" of monitoring: how many critical assets exist globally and what it costs to monitor them at operational cadence. This is a <strong>wallet-based view</strong> anchored to infrastructure scale — not a supplier revenue estimate. It explains one of the core "why now" demand engines for the category.
+  </p>
+
+  <!-- Asset base visual -->
+  <div class="diag" style="padding:1.8rem 1.5rem 1.2rem">
+    <svg viewBox="0 0 820 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <!-- Asset count bars (relative) -->
+      <text x="10" y="18" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" letter-spacing="1">GLOBAL CRITICAL INFRASTRUCTURE — ASSET BASE</text>
+
+      <!-- Electricity 79M km — widest -->
+      <rect x="10" y="30" width="790" height="20" rx="2" fill="rgba(61,155,255,.12)" stroke="rgba(61,155,255,.35)" stroke-width="1"/>
+      <rect x="10" y="30" width="790" height="20" rx="2" fill="rgba(61,155,255,.1)"/>
+      <text x="18" y="44" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(61,155,255,.85)" font-weight="500">Electricity networks</text>
+      <text x="750" y="44" font-family="DM Mono,monospace" font-size="8" fill="#3d9bff">~79M km</text>
+
+      <!-- Gas 1M km -->
+      <rect x="10" y="56" width="100" height="18" rx="2" fill="rgba(240,160,32,.1)" stroke="rgba(240,160,32,.3)" stroke-width="1"/>
+      <text x="18" y="69" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(240,160,32,.85)" font-weight="500">Gas pipelines</text>
+      <text x="112" y="69" font-family="DM Mono,monospace" font-size="8" fill="rgba(240,160,32,.7)">~1.0M km</text>
+
+      <!-- Oil 504k km -->
+      <rect x="10" y="80" width="64" height="18" rx="2" fill="rgba(240,160,32,.07)" stroke="rgba(240,160,32,.2)" stroke-width="1"/>
+      <text x="18" y="93" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(240,160,32,.7)" font-weight="500">Oil pipelines</text>
+      <text x="76" y="93" font-family="DM Mono,monospace" font-size="8" fill="rgba(240,160,32,.5)">~504k km</text>
+
+      <!-- Rail 1.17M km -->
+      <rect x="10" y="104" width="118" height="18" rx="2" fill="rgba(52,208,122,.07)" stroke="rgba(52,208,122,.2)" stroke-width="1"/>
+      <text x="18" y="117" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(52,208,122,.7)" font-weight="500">Rail networks</text>
+      <text x="130" y="117" font-family="DM Mono,monospace" font-size="8" fill="rgba(52,208,122,.5)">~1.17M km</text>
+
+      <!-- Ports -->
+      <rect x="260" y="80" width="24" height="18" rx="2" fill="rgba(167,139,250,.08)" stroke="rgba(167,139,250,.2)" stroke-width="1"/>
+      <text x="286" y="93" font-family="Inter,sans-serif" font-size="8.5" fill="rgba(167,139,250,.7)" font-weight="500">Ports</text>
+      <text x="344" y="93" font-family="DM Mono,monospace" font-size="8" fill="rgba(167,139,250,.5)">~3,600 worldwide</text>
+    </svg>
+    <div class="diag-caption">FIG 2 — Global critical infrastructure asset base (proportional length representation). Electricity networks dominate at ~79M km total — the primary monitoring opportunity.</div>
+  </div>
+
+  <!-- Bottom-up TAM table -->
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Asset Class</th>
+          <th>Asset Base</th>
+          <th>Monitoring spend / unit (annual)</th>
+          <th>Implied annual TAM</th>
+          <th>Calibration basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Electricity transmission corridors</td>
+          <td>~7,000,000 km</td>
+          <td>$150–$450 / km</td>
+          <td class="hi">$1.05–$3.15bn</td>
+          <td>Satellite + AI for vegetation and corridor risk explicitly referenced as "enhanced" approach in US DOE guidance</td>
+        </tr>
+        <tr>
+          <td>Oil + gas transmission pipelines</td>
+          <td>~1,504,000 km</td>
+          <td>$500–$2,000 / km</td>
+          <td class="hi">$0.75–$3.01bn</td>
+          <td>Below expensive in-line inspection campaign economics; EO/HAPS positioned as screening + anomaly detection for targeted follow-up</td>
+        </tr>
+        <tr>
+          <td>Rail networks</td>
+          <td>~1,170,000 km</td>
+          <td>$400–$1,200 / km</td>
+          <td class="hi">$0.47–$1.40bn</td>
+          <td>EU maintenance benchmark: €39,600/km total; allocating 1–3% to monitoring/analytics is economically plausible</td>
+        </tr>
+        <tr>
+          <td>Ports and terminals</td>
+          <td>~3,600 ports</td>
+          <td>$75k–$250k / port</td>
+          <td class="hi">$0.27–$0.90bn</td>
+          <td>Coastal surveillance, congestion/throughput proxies, security monitoring, climate impact screening</td>
+        </tr>
+        <tr>
+          <td>Defence ISR (EO-relevant)</td>
+          <td>Buyer budgets</td>
+          <td>$1.0–$3.0bn (total addressable slice)</td>
+          <td class="hi">$1.0–$3.0bn</td>
+          <td>Calibrated by scale of NRO commercial imagery contracts and NATO's disproportionate defence spend concentration</td>
+        </tr>
+        <tr style="background:rgba(61,155,255,.04);border-top:1px solid rgba(61,155,255,.2)">
+          <td class="key-row" colspan="3" style="border-right:none"><strong>Bottom-up TAM total (monitoring / analytics slice — conservative)</strong></td>
+          <td class="hi" style="font-size:1rem;padding-top:.9rem;padding-bottom:.9rem"><strong>$3.5 – $11.5bn</strong><div style="font-family:var(--f-mono);font-size:.62rem;color:var(--text-3);font-weight:400;margin-top:.2rem">annual · global</div></td>
+          <td style="font-size:.72rem;font-style:italic;color:var(--text-3)">Monetisable monitoring layer only. Does not include full O&amp;M or distribution grid monitoring across all 80M km of lines.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <strong>Reconciliation with Layer A:</strong> A $3.5–$11.5bn infrastructure + defence monitoring layer sits <em>inside</em> the broader $37–$63bn GeoAI/geospatial intelligence market, which also covers non-infrastructure verticals (retail, advertising, consumer LBS, depending on taxonomy). This means the bottom-up model does not require inflating Layer A — it explains one major "why now" demand engine for the category.
+  </div>
+
+</div>
+
+<!-- ─── §5  SAM ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Serviceable Available Market</div>
+  <h2 class="sec-title">SAM — Europe + NATO + US, infrastructure and defence verticals</h2>
+  <p class="sec-desc">Geography and vertical filters applied to TAM to reach the addressable market for Involve Space's current positioning</p>
+
+  <p class="prose">
+    SAM is defined as <strong>Europe + NATO-aligned markets + United States</strong>, constrained to verticals where (i) sovereignty/dual-use procurement matters and (ii) persistent monitoring creates quantifiable ROI: critical infrastructure monitoring (including energy), defence/national security, and P&C insurance applications for asset and catastrophe risk.
+  </p>
+
+  <!-- SAM filters visual -->
+  <div class="split-2" style="margin-top:2rem">
+    <div class="split-cell">
+      <div class="split-cell-label">Geographic filter — 60–70% regional share</div>
+      <div class="split-cell-title">North America + Europe = 66% of EO revenue</div>
+      <div class="split-cell-body">
+        Two independent data points support a 60–70% "sovereign-aligned demand share" assumption:<br><br>
+        <strong>EO revenue concentration (Novaspace/Reuters):</strong> North America = 44%, Europe = 22% → combined 66% of global EO revenue in 2023.<br><br>
+        <strong>Defence spend (SIPRI):</strong> NATO members represent 55% of global military expenditure in 2024 ($1.506T of $2.718T).<br><br>
+        SAM applies a <strong>0.60–0.70 regional accessibility multiplier</strong> to the relevant vertical slice of TAM.
+      </div>
+    </div>
+    <div class="split-cell" style="background:var(--bg-2)">
+      <div class="split-cell-label">Vertical filter — 30–45% of GeoAI market</div>
+      <div class="split-cell-title">Infrastructure, defence, and regulated sectors only</div>
+      <div class="split-cell-body">
+        Involve Space excludes GI demand driven by consumer and advertising use cases. There is no single universally accepted published split of the GeoAI market by vertical — this memo therefore uses an explicit conservative assumption:<br><br>
+        <strong>Vertical relevance factor (assumption): 30–45%</strong> of the global GeoAI/geospatial intelligence market corresponds to infrastructure/energy, defence/national security, and insurance/financial risk use cases where sovereign or regulated procurement is a meaningful factor.<br><br>
+        This is consistent with the prominence of defence and infrastructure in EO demand taxonomies, and Gartner's framing of Earth intelligence use cases.
+      </div>
+    </div>
+  </div>
+
+  <!-- SAM funnel -->
+  <div style="border:1px solid var(--border-med);overflow:hidden;margin:2rem 0">
+
+    <!-- TAM row -->
+    <div class="funnel-row">
+      <div class="funnel-label">
+        <span style="color:var(--text-3);font-size:.55rem">LAYER</span>
+        <span style="color:var(--text-1);font-size:.75rem;font-weight:600">TAM</span>
+      </div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:100%;background:rgba(61,155,255,.15);border-left:2px solid var(--blue);color:var(--blue)">
+          Global GeoAI / Geospatial Intelligence Market — all geographies, all verticals
+        </div>
+      </div>
+      <div class="funnel-numbers">
+        <div class="funnel-main">$37.1bn → $62.9bn</div>
+        <div class="funnel-sub">2025 → 2030 · 11.1% CAGR</div>
+      </div>
+    </div>
+
+    <!-- Vertical filter -->
+    <div class="funnel-row" style="background:var(--bg-1)">
+      <div class="funnel-label">
+        <span style="color:var(--text-3);font-size:.55rem">FILTER</span>
+        <span style="color:var(--text-2);font-size:.68rem">Vertical</span>
+      </div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:45%;background:rgba(61,155,255,.1);border-left:2px solid rgba(61,155,255,.4);color:rgba(61,155,255,.6);font-size:.56rem">
+          Infra + defence + insurance verticals (30–45% of TAM)
+        </div>
+      </div>
+      <div class="funnel-numbers">
+        <div class="funnel-main" style="font-size:.8rem;color:var(--text-2)">×0.30 to ×0.45</div>
+        <div class="funnel-sub">Infrastructure · Defence · Insurance only</div>
+      </div>
+    </div>
+
+    <!-- Geographic filter -->
+    <div class="funnel-row" style="background:var(--bg-1)">
+      <div class="funnel-label">
+        <span style="color:var(--text-3);font-size:.55rem">FILTER</span>
+        <span style="color:var(--text-2);font-size:.68rem">Geography</span>
+      </div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:28%;background:rgba(61,155,255,.08);border-left:2px solid rgba(61,155,255,.3);color:rgba(61,155,255,.5);font-size:.56rem">
+          Europe + NATO + US (60–70% regional share)
+        </div>
+      </div>
+      <div class="funnel-numbers">
+        <div class="funnel-main" style="font-size:.8rem;color:var(--text-2)">×0.60 to ×0.70</div>
+        <div class="funnel-sub">North America + Europe = 66% EO revenue</div>
+      </div>
+    </div>
+
+    <!-- SAM result -->
+    <div class="funnel-row" style="border-top:2px solid rgba(61,155,255,.3);background:rgba(61,155,255,.04)">
+      <div class="funnel-label">
+        <span style="color:var(--blue);font-size:.55rem">RESULT</span>
+        <span style="color:var(--blue);font-size:.78rem;font-weight:600">SAM</span>
+      </div>
+      <div class="funnel-bar-wrap">
+        <div class="funnel-bar" style="width:20%;background:rgba(61,155,255,.22);border-left:2px solid var(--blue);color:var(--blue)">
+          Involve Space SAM
+        </div>
+      </div>
+      <div class="funnel-numbers">
+        <div class="funnel-main" style="color:var(--blue)">$6.7bn → $19.8bn</div>
+        <div class="funnel-sub">2025 range: $6.7–$11.7bn · 2030: $11.3–$19.8bn</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Global GeoAI TAM</th>
+          <th>Vertical relevance (assumption)</th>
+          <th>Region accessibility</th>
+          <th>SAM (range)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2025</td>
+          <td>$37.13bn</td>
+          <td>30–45%</td>
+          <td>60–70% (Europe + NATO + US)</td>
+          <td class="hi"><strong>$6.7bn – $11.7bn</strong></td>
+        </tr>
+        <tr>
+          <td>2030</td>
+          <td>$62.88bn</td>
+          <td>30–45%</td>
+          <td>60–70%</td>
+          <td class="hi"><strong>$11.3bn – $19.8bn</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="prose" style="margin-top:1rem">
+    This SAM definition is deliberately narrower than the broader "geospatial analytics" market sizing ($114bn in 2024) because that broader market embeds consumer LBS and cross-industry GIS tooling that is not aligned with sovereign / dual-use positioning. The SAM used here is the right decision boundary for a company with Involve Space's current positioning and procurement relationships.
+  </p>
+
+</div>
+
+<!-- ─── §6  SOM ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Serviceable Obtainable Market</div>
+  <h2 class="sec-title">SOM — fleet-bounded revenue scenarios</h2>
+  <p class="sec-desc">SOM is modelled from capacity constraints (fleet scale and deployments) rather than market share assumptions</p>
+
+  <p class="prose">
+    SOM is bounded by (i) platform count, (ii) operational uptime, (iii) sensor mix and re-tasking, and (iv) geographic/regulatory constraints. This approach is appropriate for persistent stratospheric infrastructure: even with strong demand, revenue is limited by fleet capacity — not by market share dynamics. This is a conservative and auditable framing.
+  </p>
+
+  <!-- Operating assumptions -->
+  <div style="background:var(--bg-card);border:1px solid var(--border-med);border-left:2px solid var(--blue);padding:1.4rem 1.6rem;margin:1.8rem 0">
+    <div style="font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-3);margin-bottom:.9rem">Operating assumptions (explicit — not proprietary)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem">
+      <div>
+        <div style="font-family:var(--f-mono);font-size:.62rem;color:var(--text-3);margin-bottom:.3rem">Average contract duration</div>
+        <div style="font-size:.84rem;font-weight:500;color:var(--text-1)">12–36 months</div>
+        <div style="font-size:.7rem;color:var(--text-3);margin-top:.15rem">Subscription + mission/tasking fee structure</div>
+      </div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:.62rem;color:var(--text-3);margin-bottom:.3rem">Platform utilisation</div>
+        <div style="font-size:.84rem;font-weight:500;color:var(--text-1)">70–85% revenue uptime</div>
+        <div style="font-size:.7rem;color:var(--text-3);margin-top:.15rem">After maintenance, regulatory stand-down, repositioning</div>
+      </div>
+      <div>
+        <div style="font-family:var(--f-mono);font-size:.62rem;color:var(--text-3);margin-bottom:.3rem">ACV by customer type</div>
+        <div style="font-size:.78rem;font-weight:400;color:var(--text-1);line-height:1.6">
+          Infrastructure: €1.5–4.0M<br>
+          Defence: €3.0–8.0M<br>
+          Insurance P&C: €1.0–3.0M
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOM scenarios -->
+  <div class="scenario-grid">
+
+    <div class="scenario-card">
+      <div class="scenario-label">Conservative Scenario</div>
+      <div class="scenario-title">Limited sell-through, early friction</div>
+      <div class="scenario-val" style="color:var(--text-2)">€7.2M</div>
+      <div style="font-size:.7rem;color:var(--text-3);font-family:var(--f-mono)">Stable across 2026–28</div>
+      <div class="scenario-year-row">
+        <div class="scenario-yr">
+          <div class="scenario-yr-label">2026</div>
+          <div class="scenario-yr-val" style="color:var(--text-2)">€7.2M</div>
+        </div>
+        <div class="scenario-yr">
+          <div class="scenario-yr-label">2027</div>
+          <div class="scenario-yr-val" style="color:var(--text-2)">€7.2M</div>
+        </div>
+        <div class="scenario-yr">
+          <div class="scenario-yr-label">2028</div>
+          <div class="scenario-yr-val" style="color:var(--text-2)">€7.2M</div>
+        </div>
+      </div>
+      <div class="scenario-assumptions">
+        Fleet: 6 / 6 / 6 platforms. Contracted theatres per platform: 0.6 (limited sell-through). Blended ACV: €2.0M. Reflects early procurement friction, export controls, and slow integration timelines. Fleet fully built but customers not yet converted at scale.
+      </div>
+    </div>
+
+    <div class="scenario-card" style="border-top:2px solid var(--blue)">
+      <div class="scenario-label" style="color:var(--blue)">Base Scenario — Primary forecast</div>
+      <div class="scenario-title">Improving utilisation + early multi-tenancy</div>
+      <div class="scenario-val" style="color:var(--blue)">€36M</div>
+      <div style="font-size:.7rem;color:rgba(61,155,255,.5);font-family:var(--f-mono)">by 2028</div>
+      <div class="scenario-year-row">
+        <div class="scenario-yr" style="border:1px solid rgba(61,155,255,.15)">
+          <div class="scenario-yr-label">2026</div>
+          <div class="scenario-yr-val" style="color:var(--blue)">€14.4M</div>
+        </div>
+        <div class="scenario-yr" style="border:1px solid rgba(61,155,255,.15)">
+          <div class="scenario-yr-label">2027</div>
+          <div class="scenario-yr-val" style="color:var(--blue)">€24.0M</div>
+        </div>
+        <div class="scenario-yr" style="border:1px solid rgba(61,155,255,.2)">
+          <div class="scenario-yr-label">2028</div>
+          <div class="scenario-yr-val" style="color:var(--blue)">€36.0M</div>
+        </div>
+      </div>
+      <div class="scenario-assumptions">
+        Fleet: 6 / 10 / 15 platforms. Contracted theatres per platform: 0.8 (improving utilisation + some multi-tenancy). Blended ACV: €3.0M. CLEAR begins contributing to revenue per platform through analytics layer. Primary scenario for Series A modelling.
+      </div>
+    </div>
+
+    <div class="scenario-card" style="border-top:2px solid var(--green)">
+      <div class="scenario-label" style="color:var(--green)">Aggressive Scenario</div>
+      <div class="scenario-title">Multi-tenant analytics — CLEAR monetisation</div>
+      <div class="scenario-val" style="color:var(--green)">€90M</div>
+      <div style="font-size:.7rem;color:rgba(52,208,122,.5);font-family:var(--f-mono)">by 2028</div>
+      <div class="scenario-year-row">
+        <div class="scenario-yr" style="border:1px solid rgba(52,208,122,.1)">
+          <div class="scenario-yr-label">2026</div>
+          <div class="scenario-yr-val" style="color:var(--green)">€36.0M</div>
+        </div>
+        <div class="scenario-yr" style="border:1px solid rgba(52,208,122,.1)">
+          <div class="scenario-yr-label">2027</div>
+          <div class="scenario-yr-val" style="color:var(--green)">€63.0M</div>
+        </div>
+        <div class="scenario-yr" style="border:1px solid rgba(52,208,122,.15)">
+          <div class="scenario-yr-label">2028</div>
+          <div class="scenario-yr-val" style="color:var(--green)">€90.0M</div>
+        </div>
+      </div>
+      <div class="scenario-assumptions">
+        Fleet: 8 / 14 / 20 platforms. Contracted theatres per platform: 1.0 (repeatable deployments + multi-tenant analytics). Blended ACV: €4.5M. Multi-tenancy and CLEAR software-layer monetisation meaningfully improves revenue per platform without proportional opex growth. Assumes strong early sovereign customer wins.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <strong>How to interpret these numbers:</strong> These trajectories are not predicated on winning a large fraction of SAM — they are bounded by fleet capacity and a conservative number of "contracted theatres." The conservative case assumes early go-to-market friction and treats the fleet as fully utilised but with limited customer conversion. The aggressive case assumes that multi-tenancy and software-layer monetisation (CLEAR) meaningfully improves revenue per platform by 2027–28 without requiring proportional growth in operating headcount. A key gating factor for SOM is regulatory and geopolitical: sovereign-aligned deployments are the commercial priority, and procurement timelines remain a real constraint.
+  </div>
+
+  <!-- SOM progression chart -->
+  <div class="diag">
+    <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="rgba(61,155,255,.6)"/></marker>
+      </defs>
+      <!-- Y axis -->
+      <line x1="60" y1="10" x2="60" y2="165" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <text x="52" y="168" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)" text-anchor="end">€0</text>
+      <text x="52" y="130" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)" text-anchor="end">€20M</text>
+      <text x="52" y="90" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)" text-anchor="end">€45M</text>
+      <text x="52" y="50" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)" text-anchor="end">€70M</text>
+      <text x="52" y="18" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)" text-anchor="end">€90M</text>
+      <!-- Grid -->
+      <line x1="60" y1="165" x2="810" y2="165" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      <line x1="60" y1="130" x2="810" y2="130" stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="3 4"/>
+      <line x1="60" y1="90"  x2="810" y2="90"  stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="3 4"/>
+      <line x1="60" y1="50"  x2="810" y2="50"  stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="3 4"/>
+      <line x1="60" y1="18"  x2="810" y2="18"  stroke="rgba(255,255,255,.04)" stroke-width="1" stroke-dasharray="3 4"/>
+
+      <!-- X labels -->
+      <text x="230" y="180" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2026</text>
+      <text x="500" y="180" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2027</text>
+      <text x="760" y="180" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.3)" text-anchor="middle">2028</text>
+
+      <!-- Conservative — flat at €7.2M → y ≈ 165 - 7.2/90*155 = 165-12.4 = 152.6 -->
+      <polyline points="230,153 500,153 760,153" fill="none" stroke="rgba(238,241,246,.2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="772" y="157" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)">€7.2M</text>
+
+      <!-- Base — 14.4 / 24 / 36 → y = 165 - (val/90)*155 -->
+      <!-- 14.4 → 165-24.8=140.2; 24→165-41.3=123.7; 36→165-62=103 -->
+      <polygon points="230,140 500,124 760,103 760,165 500,165 230,165" fill="rgba(61,155,255,.07)"/>
+      <polyline points="230,140 500,124 760,103" fill="none" stroke="#3d9bff" stroke-width="2"/>
+      <circle cx="230" cy="140" r="4" fill="#3d9bff"/>
+      <circle cx="500" cy="124" r="4" fill="#3d9bff"/>
+      <circle cx="760" cy="103" r="4" fill="#3d9bff"/>
+      <text x="60"  cy="125" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,.7)"></text>
+      <text x="234" y="134" font-family="DM Mono,monospace" font-size="7.5" fill="#3d9bff">€14.4M</text>
+      <text x="504" y="118" font-family="DM Mono,monospace" font-size="7.5" fill="#3d9bff">€24M</text>
+      <text x="764" y="97"  font-family="DM Mono,monospace" font-size="7.5" fill="#3d9bff">€36M</text>
+      <text x="380" y="115" font-family="DM Mono,monospace" font-size="8" fill="rgba(61,155,255,.55)">Base scenario</text>
+
+      <!-- Aggressive — 36/63/90 → 165-62=103; 165-108.7=56.3; 165-155=10 -->
+      <polygon points="230,103 500,56 760,10 760,165 500,165 230,165" fill="rgba(52,208,122,.04)"/>
+      <polyline points="230,103 500,56 760,10" fill="none" stroke="#34d07a" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="234" y="97"  font-family="DM Mono,monospace" font-size="7.5" fill="rgba(52,208,122,.6)">€36M</text>
+      <text x="504" y="50"  font-family="DM Mono,monospace" font-size="7.5" fill="rgba(52,208,122,.6)">€63M</text>
+      <text x="764" y="16"  font-family="DM Mono,monospace" font-size="7.5" fill="rgba(52,208,122,.6)">€90M</text>
+      <text x="380" y="50" font-family="DM Mono,monospace" font-size="8" fill="rgba(52,208,122,.4)">Aggressive scenario</text>
+
+      <!-- Legend -->
+      <line x1="64" y1="192" x2="84" y2="192" stroke="#3d9bff" stroke-width="2"/>
+      <circle cx="74" cy="192" r="3" fill="#3d9bff"/>
+      <text x="88" y="196" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)">Base — 6/10/15 platforms · €3.0M ACV</text>
+      <line x1="340" y1="192" x2="360" y2="192" stroke="#34d07a" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text x="364" y="196" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)">Aggressive — 8/14/20 platforms · €4.5M ACV + CLEAR</text>
+      <line x1="640" y1="192" x2="660" y2="192" stroke="rgba(238,241,246,.2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="664" y="196" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.25)">Conservative — €7.2M flat</text>
+    </svg>
+    <div class="diag-caption">FIG 3 — SOM revenue scenarios 2026–2028. Fleet-bounded capacity modelling: base scenario requires 6–15 platforms at 0.8 contracted theatres each. Primary investor reference is the base case.</div>
+  </div>
+
+</div>
+
+<!-- ─── §7  COMPETITIVE LANDSCAPE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Competitive Landscape</div>
+  <h2 class="sec-title">Where Involve Space sits structurally</h2>
+  <p class="sec-desc">Integrated sensing + autonomous control + GeoAI platform — distinct from pure satellite operators, pure analytics vendors, and defence integrators</p>
+
+  <p class="prose">
+    Involve Space sits in a hybrid category that does not map cleanly onto existing market participants. Pure satellite operators provide data but cannot offer persistence or sovereign data custody. Pure analytics vendors can produce insights but depend on third-party data streams they cannot control or guarantee. Defence primes and integrators orchestrate systems but do not own novel sovereign sensing infrastructure. Involve is the only active European company attempting to own the full stack from stratospheric collection to sovereign intelligence delivery.
+  </p>
+
+  <!-- Competitive matrix SVG -->
+  <div class="diag">
+    <svg viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <!-- Axes -->
+      <line x1="60" y1="280" x2="800" y2="280" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <line x1="60" y1="20"  x2="60"  y2="280" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <!-- Axis labels -->
+      <text x="430" y="298" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,.35)" text-anchor="middle" letter-spacing=".5">PERSISTENCE / TASKING CONTROL →</text>
+      <text x="22" y="155" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,.35)" text-anchor="middle" transform="rotate(-90,22,155)" letter-spacing=".5">INTELLIGENCE LAYER DEPTH →</text>
+
+      <!-- Zone labels -->
+      <text x="160" y="38" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.18)" text-anchor="middle">LOW PERSISTENCE</text>
+      <text x="160" y="48" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.18)" text-anchor="middle">HIGH INTELLIGENCE</text>
+      <text x="680" y="38" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,.35)" text-anchor="middle">HIGH PERSISTENCE</text>
+      <text x="680" y="48" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,.35)" text-anchor="middle">HIGH INTELLIGENCE</text>
+      <text x="160" y="258" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.13)" text-anchor="middle">LOW PERSISTENCE</text>
+      <text x="160" y="268" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.13)" text-anchor="middle">LOW INTELLIGENCE</text>
+      <text x="680" y="258" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.15)" text-anchor="middle">HIGH PERSISTENCE</text>
+      <text x="680" y="268" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.15)" text-anchor="middle">LOW INTELLIGENCE</text>
+
+      <!-- Involve Space — top right target zone -->
+      <circle cx="695" cy="60" r="36" fill="rgba(61,155,255,.1)" stroke="rgba(61,155,255,.5)" stroke-width="1.5" stroke-dasharray="none"/>
+      <text x="695" y="52" font-family="DM Mono,monospace" font-size="9.5" fill="#3d9bff" text-anchor="middle" font-weight="500">INVOLVE</text>
+      <text x="695" y="66" font-family="DM Mono,monospace" font-size="8" fill="#3d9bff" text-anchor="middle">SPACE</text>
+      <text x="695" y="78" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(61,155,255,.6)" text-anchor="middle">Target zone</text>
+
+      <!-- Planet — moderate persistence, moderate intelligence -->
+      <circle cx="420" cy="190" r="22" fill="rgba(238,241,246,.04)" stroke="rgba(238,241,246,.2)" stroke-width="1"/>
+      <text x="420" y="185" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.5)" text-anchor="middle">Planet</text>
+      <text x="420" y="196" font-family="Inter,sans-serif" font-size="7" fill="rgba(238,241,246,.3)" text-anchor="middle">High revisit · limited persist.</text>
+
+      <!-- Maxar — high intelligence, moderate persistence -->
+      <circle cx="350" cy="110" r="22" fill="rgba(238,241,246,.04)" stroke="rgba(238,241,246,.2)" stroke-width="1"/>
+      <text x="350" y="105" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.5)" text-anchor="middle">Maxar</text>
+      <text x="350" y="118" font-family="Inter,sans-serif" font-size="7" fill="rgba(238,241,246,.3)" text-anchor="middle">Hi-res · gov contracts</text>
+
+      <!-- ICEYE — moderate both -->
+      <circle cx="480" cy="155" r="20" fill="rgba(238,241,246,.04)" stroke="rgba(238,241,246,.2)" stroke-width="1"/>
+      <text x="480" y="150" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,.5)" text-anchor="middle">ICEYE</text>
+      <text x="480" y="161" font-family="Inter,sans-serif" font-size="7" fill="rgba(238,241,246,.3)" text-anchor="middle">SAR · ISR focus</text>
+
+      <!-- Orbital Insight / Kayrros — high intelligence, low persistence (no hardware) -->
+      <circle cx="150" cy="85" r="20" fill="rgba(238,241,246,.03)" stroke="rgba(238,241,246,.14)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="150" y="80" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)" text-anchor="middle">Analytics</text>
+      <text x="150" y="91" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)" text-anchor="middle">vendors</text>
+
+      <!-- Palantir / Anduril — high intelligence, depends on third-party data -->
+      <circle cx="200" cy="135" r="22" fill="rgba(238,241,246,.03)" stroke="rgba(238,241,246,.14)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="200" y="130" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)" text-anchor="middle">Defence</text>
+      <text x="200" y="141" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.35)" text-anchor="middle">integrators</text>
+
+      <!-- Weather balloon / HAB academic -->
+      <circle cx="620" cy="235" r="18" fill="rgba(238,241,246,.03)" stroke="rgba(238,241,246,.1)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="620" y="230" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.2)" text-anchor="middle">Legacy</text>
+      <text x="620" y="241" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,.2)" text-anchor="middle">HAPS/HAB</text>
+
+      <!-- Target zone annotation -->
+      <text x="695" y="112" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,.4)" text-anchor="middle">Persistent · sovereign</text>
+      <text x="695" y="124" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,.4)" text-anchor="middle">data-to-intelligence</text>
+
+      <!-- No competitor label -->
+      <rect x="590" y="28" width="160" height="24" rx="2" fill="rgba(61,155,255,.06)" stroke="rgba(61,155,255,.2)" stroke-width="1"/>
+      <text x="670" y="44" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,.5)" text-anchor="middle">No active EU competitor</text>
+    </svg>
+    <div class="diag-caption">
+      FIG 4 — Competitive positioning map. Axes: persistence/tasking control (x) vs intelligence layer depth (y). <br>
+      Involve Space targets the high-persistence / high-intelligence quadrant, which has no active European commercial incumbent.
+    </div>
+  </div>
+
+  <!-- Competitor breakdown -->
+  <div class="comp-grid" style="margin-top:1.5rem">
+    <div class="comp-cell">
+      <div class="comp-category" style="color:var(--blue)">Satellite Operators — Data supply and tasking economics</div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(238,241,246,.3)"></div>
+        <div>
+          <div class="comp-name">Planet</div>
+          <div class="comp-desc">High-revisit optical constellations. High volume, lower resolution. Cannot offer persistent tasking over a specific theatre.</div>
+        </div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(238,241,246,.3)"></div>
+        <div>
+          <div class="comp-name">Maxar</div>
+          <div class="comp-desc">High-resolution imagery and government contracts. NRO commercial imagery partner (EOCL — "valued at billions"). Strong gov channel but orbital revisit constraints.</div>
+        </div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(238,241,246,.3)"></div>
+        <div>
+          <div class="comp-name">ICEYE</div>
+          <div class="comp-desc">SAR constellations with ISR positioning. Growing defence user base but no persistent targeting capability for specific corridors.</div>
+        </div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(238,241,246,.3)"></div>
+        <div>
+          <div class="comp-name">BlackSky</div>
+          <div class="comp-desc">Time-dominant imagery + analytics. Rapid revisit framing but not true persistence — key differentiator for infrastructure use cases.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-cell">
+      <div class="comp-category" style="color:var(--amber)">Analytics Vendors &amp; Defence Integrators</div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(240,160,32,.5)"></div>
+        <div>
+          <div class="comp-name">Orbital Insight / Kayrros / RS Metrics</div>
+          <div class="comp-desc">Software-first, data-agnostic analytics. Strong insight products but dependent on third-party data streams they cannot guarantee. Potential channel partners or downstream customers for Involve data.</div>
+        </div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(240,160,32,.5)"></div>
+        <div>
+          <div class="comp-name">Palantir</div>
+          <div class="comp-desc">Defence distribution and integration depth. "Integration over heterogeneous sensors" architecture — not owning a new stratospheric sensing layer. Their presence validates demand pull for integrated sensing-to-decision loops.</div>
+        </div>
+      </div>
+      <div class="comp-item">
+        <div class="comp-dot" style="background:rgba(240,160,32,.5)"></div>
+        <div>
+          <div class="comp-name">Anduril</div>
+          <div class="comp-desc">Defence-native sensing and AI company. US-centric, hardware + software stack but focused on autonomous systems rather than persistent stratospheric sensing. Different hardware archetype.</div>
+        </div>
+      </div>
+      <div class="comp-item" style="margin-top:.5rem;padding-top:.7rem;border-top:1px solid var(--border)">
+        <div class="comp-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="comp-name" style="color:var(--blue)">Involve Space — structural position</div>
+          <div class="comp-desc">Not "a satellite company" and not "just analytics." Controls the full stack from persistent stratospheric collection to sovereign-grade intelligence delivery. Only active European commercial operator in this category.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §8  STRATEGIC POSITIONING ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Strategic Positioning</div>
+  <h2 class="sec-title">Five investor-relevant structural advantages</h2>
+  <p class="sec-desc">Persistent stratospheric sensing + AI orchestration creates advantage across five dimensions that compound over time</p>
+
+  <div class="pillar-list">
+    <div class="pillar-row hdr">
+      <div class="p-cell">Dimension</div>
+      <div class="p-cell">Strategic logic</div>
+      <div class="p-cell">Evidence basis</div>
+    </div>
+    <div class="pillar-row">
+      <div class="p-cell name">Persistence &amp; tasking flexibility</div>
+      <div class="p-cell">HAPS-class systems maintain quasi-fixed presence at 20–50 km, enabling persistence over a target region rather than periodic revisits. For infrastructure corridors and maritime approaches, persistence is more valuable than global coverage. Days-to-months endurance is operationally relevant in ways hourly satellite revisit is not.</div>
+      <div class="p-cell"><span class="badge badge-blue">ITU HAPS definition</span> <span class="badge badge-green">Airbus Zephyr comparator</span> <span class="badge badge-green">NASA SPB 100-day missions</span></div>
+    </div>
+    <div class="pillar-row">
+      <div class="p-cell name">Cost per monitored km²</div>
+      <div class="p-cell">A persistent stratospheric platform concentrates sensing into the specific theatre where the buyer has risk exposure (grid corridor, pipeline route, border segment). Multi-tenancy on the same data stream — structurally impossible with tasked satellite capacity — allows unit economics to improve with scale without proportional capex.</div>
+      <div class="p-cell"><span class="badge badge-blue">DOE remote sensing guidance</span> <span class="badge badge-blue">Bottom-up TAM model</span></div>
+    </div>
+    <div class="pillar-row">
+      <div class="p-cell name">Data ownership &amp; sovereignty</div>
+      <div class="p-cell">EU policy explicitly centres autonomy and security for observation and monitoring capabilities. US USSF commercial strategy mandates hybrid architectures. "Who controls tasking, raw data custody, and model pipelines" is increasingly a procurement criterion, not just a technical feature. Involve controls all three.</div>
+      <div class="p-cell"><span class="badge badge-amber">EU Space Strategy for Security</span> <span class="badge badge-amber">USSF Commercial Space Strategy</span></div>
+    </div>
+    <div class="pillar-row">
+      <div class="p-cell name">Infrastructure monitoring pull</div>
+      <div class="p-cell">~79–80M km of power lines globally, 1M+ km gas pipelines, 0.5M km oil pipelines, 1.17M km rail. As monitoring systems become digital, fusing persistent sensing with AI-based prioritisation becomes an operating necessity. US DOE explicitly calls out satellite imagery + AI/ML for vegetation management — buyers already view remote sensing as part of the operational toolkit.</div>
+      <div class="p-cell"><span class="badge badge-green">IEA · GEM · UIC data</span> <span class="badge badge-green">DOE vegetation management guide</span></div>
+    </div>
+    <div class="pillar-row">
+      <div class="p-cell name">Margin compounding mechanism</div>
+      <div class="p-cell">Each incremental platform expands the labelled dataset, improves models, and increases the number of CLEAR workflows that can be sold on top of the same underlying collection. Gartner's Earth intelligence framing separates direct vendor revenues from broader value drivers — vendors who package repeatable, domain-specific solutions capture a greater share of that value over time.</div>
+      <div class="p-cell"><span class="badge badge-blue">Gartner Earth intelligence</span> <span class="badge badge-blue">Data flywheel model</span></div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:2rem">
+    <strong>Investor-grade conclusion:</strong> The market is large enough on a conservative basis ($37bn → $63bn by 2030 for GeoAI GI) and the vertical demand substrates are strong (energy grid expansion and defence spend concentration). The primary diligence question is therefore not "does demand exist?" but "<strong>can Involve Space scale the fleet, secure sovereign-aligned contracts, and convert persistent sensing into repeatable workflows faster than pure-play data providers and integrators can commoditise the analytics layer?</strong>" The SOM model shows that, if fleet scale is achieved, revenue can become material by 2028 without requiring implausible market share assumptions — but the gating factors remain procurement cycles, regulatory constraints, and operational execution of persistent stratospheric deployments.
+  </div>
+
+  <div class="ref-note">
+    Sources: Gartner (Earth intelligence / multimodal enterprise) · MarketsandMarkets (GeoAI, Decision Intelligence, Risk Analytics, Digital Twin) · Grand View Research (Geospatial Analytics, EO, Satellite Data) · EUSPA Market Report 2024 · SIPRI Military Expenditure 2024 · IEA Grid Investment 2023 · Global Energy Monitor (Gas + Oil Infrastructure Trackers) · UIC World Rail Statistics · US DOE Vegetation Management Guide · ITU HAPS backgrounder · Airbus Zephyr · NASA SPB programme · NRO EOCL contract announcement · EU Space Strategy for Security and Defence · USSF Commercial Space Strategy · Novaspace/Reuters EO market sizing 2024.
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div style="padding:2.5rem 0 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+  <div style="display:flex;align-items:center;gap:1.2rem">
+    <img src="https://cdn.prod.website-files.com/671f5ec2f687d2f55fafe279/672a0ca51d9e5090193779ed_symbol.svg"
+         alt="" style="height:16px;opacity:.3;filter:brightness(0) invert(1)"
+         onerror="this.style.display='none'">
+    <span style="font-family:var(--f-mono);font-size:.6rem;color:var(--text-3)">
+      Involve Space S.r.l. · IS-DR-08 · Market Overview &amp; TAM/SAM/SOM · REV A · Feb 2026
+    </span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span style="font-family:var(--f-mono);font-size:.6rem;color:var(--text-3)">
+      03. Market &amp; Opportunity
+    </span>
+    <span style="font-family:var(--f-mono);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(240,160,32,.2);padding:.22rem .65rem">CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /body -->
+</body>
+</html>

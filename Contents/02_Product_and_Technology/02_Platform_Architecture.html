@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Architecture | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── DESIGN TOKENS (identical to tech-master-01) ── */
+:root {
+  --bg:           #08090c;
+  --bg-1:         #0d0f14;
+  --bg-2:         #12151c;
+  --bg-3:         #171b24;
+  --bg-card:      #0f1218;
+  --border:       rgba(255,255,255,0.07);
+  --border-med:   rgba(255,255,255,0.12);
+  --border-hi:    rgba(255,255,255,0.2);
+  --text-1:       #eef1f6;
+  --text-2:       rgba(238,241,246,0.55);
+  --text-3:       rgba(238,241,246,0.28);
+  --blue:         #3d9bff;
+  --blue-dim:     rgba(61,155,255,0.15);
+  --blue-glow:    rgba(61,155,255,0.06);
+  --cyan:         #00c8e0;
+  --cyan-dim:     rgba(0,200,224,0.12);
+  --green:        #34d07a;
+  --green-dim:    rgba(52,208,122,0.12);
+  --amber:        #f0a020;
+  --amber-dim:    rgba(240,160,32,0.12);
+  --red:          #ff6060;
+  --red-dim:      rgba(255,96,96,0.12);
+  --f-body:       'Inter', -apple-system, sans-serif;
+  --f-mono:       'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--f-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 0 6rem;
+}
+
+/* ── HEADER ─────────────────────────────────────── */
+.doc-header {
+  position: relative;
+  padding: 3.5rem 3.5rem 3rem;
+  border-bottom: 1px solid var(--border-med);
+  overflow: hidden;
+}
+.doc-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+}
+.doc-header-inner { position: relative; z-index: 1; max-width: 860px; }
+
+.doc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+.doc-breadcrumb span { color: var(--blue); }
+
+.doc-title {
+  font-size: 2.4rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+.doc-title strong { font-weight: 600; }
+
+.doc-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  font-weight: 300;
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.doc-meta-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.doc-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.doc-meta-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.doc-meta-value { font-size: 0.8rem; font-weight: 500; color: var(--text-2); }
+
+/* ── BODY LAYOUT ────────────────────────────────── */
+.body { max-width: 860px; margin: 0 auto; padding: 0 3.5rem; }
+
+.sec {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.sec:last-child { border-bottom: none; }
+
+.sec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+.sec-eyebrow::before {
+  content: '';
+  display: block;
+  width: 14px; height: 1px;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+.sec-title {
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  margin-bottom: 0.35rem;
+  line-height: 1.2;
+}
+.sec-desc {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 2.2rem;
+  font-style: italic;
+}
+
+.prose {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-2);
+  max-width: 780px;
+}
+.prose strong { font-weight: 500; color: var(--text-1); }
+.prose em { font-style: italic; }
+.prose + .prose { margin-top: 0.9rem; }
+
+/* ── COMPARISON BAND ────────────────────────────── */
+.compare-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.compare-col {
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+}
+.compare-col-head {
+  padding: 1.4rem 1.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.compare-col-tag {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.35rem;
+}
+.compare-col-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+.compare-col-sub {
+  font-size: 0.77rem;
+  color: var(--text-3);
+  font-weight: 300;
+}
+.compare-col-img {
+  height: 210px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.compare-col-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.compare-col-body { padding: 1.4rem 1.6rem; flex: 1; }
+.compare-spec {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 0.77rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 0.8rem;
+}
+.compare-spec:last-child { border-bottom: none; }
+.cspec-key {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  padding-top: 0.05rem;
+}
+.cspec-val { font-weight: 400; color: var(--text-1); text-align: right; line-height: 1.4; }
+.cspec-val.hi { color: var(--green); font-weight: 500; }
+
+/* ── SUBSYSTEM LAYOUT ───────────────────────────── */
+.subsys-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.subsys-card {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  transition: background 0.15s;
+  cursor: default;
+}
+.subsys-card:hover { background: var(--bg-2); }
+.subsys-num {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  color: var(--blue);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.subsys-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.5rem;
+}
+.subsys-body {
+  font-size: 0.77rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 0.9rem;
+}
+.subsys-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+.ss-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  padding: 0.22rem 0;
+  border-bottom: 1px solid var(--border);
+  gap: 0.5rem;
+}
+.ss-row:last-child { border-bottom: none; }
+.ss-k { font-family: var(--f-mono); font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.04em; }
+.ss-v { font-weight: 500; color: var(--text-1); text-align: right; line-height: 1.3; font-size: 0.72rem; }
+
+/* ── BADGE ──────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: var(--f-mono); font-size: 0.58rem; font-weight: 500;
+  letter-spacing: 0.1em; padding: 0.2rem 0.6rem; border-radius: 2px; white-space: nowrap;
+}
+.badge::before { content:''; display:block; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+.badge-red    { background: var(--red-dim);    color: var(--red); }
+
+/* ── IMAGE PLACEHOLDER ──────────────────────────── */
+.img-ph {
+  background: var(--bg-2);
+  border: 1px dashed var(--border-hi);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 1rem;
+}
+.img-ph-icon { width: 32px; height: 32px; opacity: 0.18; }
+.img-ph-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+.img-ph-hint  { font-size: 0.68rem; color: var(--text-3); font-style: italic; max-width: 240px; line-height: 1.5; }
+
+/* ── DIAGRAM WRAP ───────────────────────────────── */
+.diag {
+  margin: 2rem 0;
+  background: var(--bg-1);
+  border: 1px solid var(--border-med);
+  padding: 2rem 2rem 1.5rem;
+  overflow-x: auto;
+}
+.diag-caption {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  color: var(--text-3);
+  text-align: center;
+  margin-top: 1.2rem;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+/* ── TABLES ─────────────────────────────────────── */
+.tbl-wrap { margin: 2rem 0; overflow-x: auto; border: 1px solid var(--border-med); }
+table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+thead tr { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--blue-glow); }
+td { padding: 0.7rem 1rem; vertical-align: top; color: var(--text-2); font-weight: 300; line-height: 1.5; }
+td:first-child { font-weight: 500; color: var(--text-1); }
+
+/* ── DETAIL BLOCK (2-col with image) ────────────── */
+.detail-block {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1px;
+  background: var(--border-med);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.detail-block-body { background: var(--bg-card); padding: 1.8rem; }
+.detail-block-img  { background: var(--bg-2); min-height: 260px; }
+
+.detail-block-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+.detail-block-sub {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.detail-block-prose {
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+.detail-block-prose strong { font-weight: 500; color: var(--text-1); }
+
+/* ── CALLOUT / REF ──────────────────────────────── */
+.callout {
+  margin: 1.8rem 0; padding: 1rem 1.3rem;
+  background: var(--blue-glow); border-left: 2px solid rgba(61,155,255,0.3);
+  font-size: 0.8rem; color: var(--text-2); font-style: italic; line-height: 1.65;
+}
+.callout strong { font-weight: 500; color: var(--text-1); font-style: normal; }
+
+.ref-note {
+  margin: 1.4rem 0; padding: 0.8rem 1.1rem;
+  background: var(--bg-2); border: 1px solid var(--border); border-left: 2px solid var(--blue);
+  font-family: var(--f-mono); font-size: 0.66rem; color: rgba(61,155,255,0.65);
+  letter-spacing: 0.01em; line-height: 1.6;
+}
+
+/* ── OPERATION TIMELINE ─────────────────────────── */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 2rem 0;
+  border: 1px solid var(--border-med);
+  overflow: hidden;
+}
+.timeline-row {
+  display: grid;
+  grid-template-columns: 160px 8px 1fr;
+  align-items: stretch;
+  gap: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.timeline-row:last-child { border-bottom: none; }
+.timeline-row:hover { background: var(--bg-2); }
+.timeline-phase {
+  padding: 1.1rem 1.2rem;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+  line-height: 1.5;
+}
+.timeline-phase span { color: var(--blue); font-size: 0.82rem; font-weight: 500; font-family: var(--f-body); letter-spacing: 0; margin-bottom: 0.15rem; display: block; }
+.timeline-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  position: relative;
+}
+.timeline-dot-col::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border-med);
+  transform: translateX(-50%);
+}
+.timeline-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--blue);
+  position: relative;
+  z-index: 1;
+  margin-top: 1.35rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(61,155,255,0.5);
+}
+.timeline-content {
+  padding: 1rem 1.4rem;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.timeline-content strong { font-weight: 500; color: var(--text-1); }
+.timeline-content ul { margin-top: 0.4rem; padding-left: 1.2rem; }
+.timeline-content li { margin-bottom: 0.2rem; color: var(--text-2); }
+
+/* ── ACS HIGHLIGHT BOX ──────────────────────────── */
+.highlight-box {
+  border: 1px solid var(--border-med);
+  border-top: 2px solid var(--blue);
+  background: var(--bg-card);
+  margin: 2rem 0;
+}
+.highlight-box-head {
+  padding: 1.2rem 1.6rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.highlight-box-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+}
+.highlight-box-body { padding: 1.6rem; }
+.highlight-box-body .prose { font-size: 0.83rem; }
+
+/* ── COMPONENT LIST ─────────────────────────────── */
+.component-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 1.5rem 0;
+}
+.component-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 140px;
+  background: var(--bg-card);
+  border: none;
+  transition: background 0.12s;
+}
+.component-row:hover { background: var(--bg-2); }
+.component-row.header { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+.c-cell {
+  padding: 0.75rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--text-2);
+  border-right: 1px solid var(--border);
+  line-height: 1.5;
+}
+.c-cell:last-child { border-right: none; }
+.component-row.header .c-cell {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.c-cell.name { font-weight: 500; color: var(--text-1); }
+
+/* ── SIDE-BY-SIDE FEATURE SPLIT ─────────────────── */
+.split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.split-cell { background: var(--bg-card); padding: 1.6rem; }
+.split-cell-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.6rem;
+}
+.split-cell-title { font-size: 0.88rem; font-weight: 600; color: var(--text-1); margin-bottom: 0.6rem; }
+.split-cell-body { font-size: 0.79rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.split-cell-body strong { font-weight: 500; color: var(--text-1); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sec { animation: fadeUp 0.5s ease both; }
+.sec:nth-child(2) { animation-delay: 0.05s; }
+.sec:nth-child(3) { animation-delay: 0.10s; }
+.sec:nth-child(4) { animation-delay: 0.15s; }
+.sec:nth-child(5) { animation-delay: 0.20s; }
+.sec:nth-child(6) { animation-delay: 0.25s; }
+.sec:nth-child(7) { animation-delay: 0.30s; }
+
+@media (max-width: 700px) {
+  .doc-header, .body { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .compare-band, .split-2, .subsys-grid, .detail-block { grid-template-columns: 1fr; }
+  .subsys-grid { grid-template-columns: 1fr 1fr; }
+  .component-row { grid-template-columns: 1fr 1fr; }
+  .component-row .c-cell:last-child { display: none; }
+}
+@media print {
+  body { background: #08090c; }
+  .sec { page-break-inside: avoid; animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     DOCUMENT HEADER
+══════════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+
+    <div class="doc-breadcrumb">
+      02. Product &amp; Technology
+      <span style="opacity:0.3">›</span>
+      <span>Platform Architecture</span>
+    </div>
+
+    <h1 class="doc-title">
+      Platform Architecture<br><strong>Stratostats® &amp; Stratorelay®</strong>
+    </h1>
+
+    <p class="doc-subtitle">
+      Engineering-level architecture of both stratospheric platforms. Covers subsystem design, the Altitude Control System, power, telecommunications, modular payload bay, gondola structure, and full mission lifecycle from launch to recovery.
+    </p>
+
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-03</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Precedes</span>
+        <span class="doc-meta-value">IS-DR-02-01 Tech Overview</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Platforms</span>
+        <span class="doc-meta-value">Stratostats® v1 / v2 · Stratorelay®</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Revision</span>
+        <span class="doc-meta-value">A — Feb 2026</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     BODY
+══════════════════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── §1  PLATFORM PHILOSOPHY ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Design Philosophy</div>
+  <h2 class="sec-title">Two platforms, one architecture logic</h2>
+  <p class="sec-desc">Same altitude layer, same payload interface — differentiated by navigation mode and operational profile</p>
+
+  <p class="prose">
+    Both Involve Space platforms operate in the same altitude band (20–30 km), carry the same modular payload bay, and connect to the same ground segment. The critical design fork is <strong>navigation strategy</strong>: Stratostats® continuously controls its altitude to station-keep over a target area; Stratorelay® deploys at a time and place where atmospheric winds will passively carry it over the target.
+  </p>
+  <p class="prose">
+    This gives operators a genuine economic choice. Stratostats® is the right tool when persistence and location-lock are requirements — ISR, continuous monitoring, defense. Stratorelay® is the right tool when the mission is on-demand, area-coverage, or cost-constrained — agricultural surveys, emergency mapping, rapid IOD validation.
+  </p>
+
+  <!-- Platform comparison -->
+  <div class="compare-band" style="margin-top:2.2rem">
+
+    <!-- Stratostats col -->
+    <div class="compare-col">
+      <div class="compare-col-head">
+        <div class="compare-col-tag">Active Platform</div>
+        <div class="compare-col-name" style="color:var(--blue)">Stratostats®</div>
+        <div class="compare-col-sub">Autonomous altitude control · Station-keeping · Extended persistence</div>
+        <div style="margin-top:0.7rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span class="badge badge-green">TRL 9 (v1)</span>
+          <span class="badge badge-amber">TRL 7 (v2)</span>
+        </div>
+      </div>
+      <div class="compare-col-img">
+        <div class="img-ph" style="height:100%;border:none;border-radius:0">
+          <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <div class="img-ph-label">Stratostats® in flight</div>
+          <div class="img-ph-hint">Balloon at stratospheric altitude — full platform with gondola visible below balloon envelope</div>
+        </div>
+      </div>
+      <div class="compare-col-body">
+        <div class="compare-spec"><span class="cspec-key">Altitude</span><span class="cspec-val">18–30 km operational</span></div>
+        <div class="compare-spec"><span class="cspec-key">Navigation</span><span class="cspec-val hi">Active — ACS pressurization</span></div>
+        <div class="compare-spec"><span class="cspec-key">Altitude range</span><span class="cspec-val">4 km adjustment range</span></div>
+        <div class="compare-spec"><span class="cspec-key">Altitude speed</span><span class="cspec-val">1 m/s average (ACS)</span></div>
+        <div class="compare-spec"><span class="cspec-key">Station-keeping</span><span class="cspec-val hi">50 km radius · 90% time</span></div>
+        <div class="compare-spec"><span class="cspec-key">Endurance</span><span class="cspec-val">90+ days (v2 target)</span></div>
+        <div class="compare-spec"><span class="cspec-key">Ascent rate</span><span class="cspec-val">2–4 m/s</span></div>
+        <div class="compare-spec"><span class="cspec-key">Power</span><span class="cspec-val">400 W solar + 800 Wh + 1000 Wh</span></div>
+        <div class="compare-spec"><span class="cspec-key">Telecom</span><span class="cspec-val">&gt;30 Mbps satellite uplink</span></div>
+        <div class="compare-spec"><span class="cspec-key">OBC</span><span class="cspec-val">Custom + GPS up to 80 km</span></div>
+        <div class="compare-spec"><span class="cspec-key">Flights executed</span><span class="cspec-val hi">30+ commercial · 100+ test</span></div>
+      </div>
+    </div>
+
+    <!-- Stratorelay col -->
+    <div class="compare-col">
+      <div class="compare-col-head">
+        <div class="compare-col-tag">Minimum Viable Platform</div>
+        <div class="compare-col-name" style="color:var(--green)">Stratorelay®</div>
+        <div class="compare-col-sub">Predictive wind-drift · Cost-optimized · Single-operator deployment</div>
+        <div style="margin-top:0.7rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span class="badge badge-green">TRL 8</span>
+          <span class="badge badge-cyan">Commercial</span>
+        </div>
+      </div>
+      <div class="compare-col-img">
+        <div class="img-ph" style="height:100%;border:none;border-radius:0">
+          <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <div class="img-ph-label">Stratorelay® launch</div>
+          <div class="img-ph-hint">Compact balloon at launch, single operator — showing simplified design vs Stratostats®</div>
+        </div>
+      </div>
+      <div class="compare-col-body">
+        <div class="compare-spec"><span class="cspec-key">Altitude</span><span class="cspec-val">18–30 km operational</span></div>
+        <div class="compare-spec"><span class="cspec-key">Navigation</span><span class="cspec-val" style="color:var(--amber)">Passive — predictive wind-drift</span></div>
+        <div class="compare-spec"><span class="cspec-key">Altitude control</span><span class="cspec-val">None — single float altitude</span></div>
+        <div class="compare-spec"><span class="cspec-key">Deployment</span><span class="cspec-val hi">48 hours · 1 operator</span></div>
+        <div class="compare-spec"><span class="cspec-key">Launch platform</span><span class="cspec-val hi">Any surface, including a van</span></div>
+        <div class="compare-spec"><span class="cspec-key">Mission cost</span><span class="cspec-val hi">€2,000–3,000 end-to-end</span></div>
+        <div class="compare-spec"><span class="cspec-key">Mission length</span><span class="cspec-val">Hours to 2–5 days</span></div>
+        <div class="compare-spec"><span class="cspec-key">Coverage (validated)</span><span class="cspec-val">181 km² Milan · 1,285 km² Rome</span></div>
+        <div class="compare-spec"><span class="cspec-key">Coverage per 18 h</span><span class="cspec-val">Up to 1,285 km²</span></div>
+        <div class="compare-spec"><span class="cspec-key">Key dependency</span><span class="cspec-val">Neurostar® deployment planning</span></div>
+        <div class="compare-spec"><span class="cspec-key">Status</span><span class="cspec-val hi">Fully commercial · ongoing missions</span></div>
+      </div>
+    </div>
+
+  </div><!-- /compare-band -->
+
+</div>
+
+<!-- ─── §2  STRATOSTATS® ARCHITECTURE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Stratostats® · Deep Dive</div>
+  <h2 class="sec-title">Stratostats® subsystem architecture</h2>
+  <p class="sec-desc">Seven primary subsystems, all coordinated through OBC + Neurostar®</p>
+
+  <p class="prose">
+    Stratostats® is a <strong>stratospheric pseudo-satellite</strong> — a balloon-lifted vehicle capable of persistent, controlled operation in the 20–30 km altitude band. Unlike weather balloons that drift passively or satellites that follow fixed orbital paths, it navigates by commanding its own altitude to move in and out of wind layers with different directions and speeds, then drifting laterally until the next correction.
+  </p>
+  <p class="prose">
+    The vehicle is organized around seven tightly integrated subsystems. The <strong>OBC (On-Board Computer)</strong> running Neurostar® acts as the central nervous system — receiving sensor inputs from all subsystems, computing navigation commands, and issuing control signals to the ACS. Every subsystem is redundantly connected to prevent single-point failures.
+  </p>
+
+  <!-- Main subsystem diagram -->
+  <div class="diag">
+    <svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#3d9bff"/></marker>
+        <marker id="a-g" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#34d07a"/></marker>
+        <marker id="a-d" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="rgba(238,241,246,0.2)"/></marker>
+        <filter id="blue-glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- ── Central OBC node ── -->
+      <rect x="295" y="168" width="210" height="76" rx="4"
+            fill="rgba(61,155,255,0.07)" stroke="rgba(61,155,255,0.55)" stroke-width="1.8"
+            filter="url(#blue-glow)"/>
+      <text x="400" y="194" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff" text-anchor="middle" letter-spacing="1">OBC + NEUROSTAR®</text>
+      <text x="400" y="212" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,0.65)" text-anchor="middle">Real-time nav · Closed-loop control</text>
+      <text x="400" y="226" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,0.5)" text-anchor="middle">GPS to 80 km · Atmospheric sensors</text>
+      <text x="400" y="238" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,0.4)" text-anchor="middle">Neurostar® RL agent · ECMWF wind model</text>
+
+      <!-- ── 1 — BALLOON + ACS (top) ── -->
+      <rect x="270" y="18" width="260" height="80" rx="3" fill="#0f1218" stroke="rgba(240,160,32,0.5)" stroke-width="1.3"/>
+      <text x="400" y="43"  font-family="DM Mono,monospace" font-size="9.5" fill="rgba(240,160,32,0.85)" text-anchor="middle" letter-spacing="0.5">BALLOON ENVELOPE + ACS</text>
+      <text x="400" y="59"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.4)"  text-anchor="middle">Polyethylene envelope · Proprietary gore algorithm</text>
+      <text x="400" y="73"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Internal ballonet · Low-pressure axial compressor</text>
+      <text x="400" y="87"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Vent valve · Remote Differential Pressure Sensor</text>
+      <line x1="400" y1="100" x2="400" y2="166" stroke="rgba(240,160,32,0.5)" stroke-width="1.5" marker-end="url(#a-b)" stroke-dasharray="4 3"/>
+      <text x="406" y="138" font-family="DM Mono,monospace" font-size="7" fill="rgba(240,160,32,0.45)">compress / vent cmd</text>
+
+      <!-- ── 2 — TELECOM (top right) ── -->
+      <rect x="594" y="80" width="196" height="70" rx="3" fill="#0f1218" stroke="rgba(238,241,246,0.18)" stroke-width="1"/>
+      <text x="692" y="104" font-family="DM Mono,monospace" font-size="9" fill="rgba(238,241,246,0.65)" text-anchor="middle">TELECOM SYSTEM</text>
+      <text x="692" y="120" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">&gt;30 Mbps satellite link</text>
+      <text x="692" y="134" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">C2 uplink · Data downlink</text>
+      <line x1="594" y1="115" x2="507" y2="196" stroke="rgba(238,241,246,0.25)" stroke-width="1" marker-end="url(#a-b)"/>
+
+      <!-- ── 3 — PAYLOAD BAY (right) ── -->
+      <rect x="618" y="190" width="172" height="70" rx="3" fill="#0f1218" stroke="rgba(0,200,224,0.35)" stroke-width="1"/>
+      <text x="704" y="214" font-family="DM Mono,monospace" font-size="9" fill="rgba(0,200,224,0.75)" text-anchor="middle">PAYLOAD BAY</text>
+      <text x="704" y="230" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Standardized mech + elec IF</text>
+      <text x="704" y="244" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">EO · SAR · Multispectral · SIGINT</text>
+      <line x1="618" y1="225" x2="507" y2="215" stroke="rgba(0,200,224,0.4)" stroke-width="1" marker-end="url(#a-b)"/>
+
+      <!-- ── 4 — SAFETY SYSTEMS (bottom right) ── -->
+      <rect x="596" y="306" width="194" height="70" rx="3" fill="#0f1218" stroke="rgba(52,208,122,0.3)" stroke-width="1"/>
+      <text x="693" y="330" font-family="DM Mono,monospace" font-size="9" fill="rgba(52,208,122,0.7)" text-anchor="middle">SAFETY SYSTEMS</text>
+      <text x="693" y="346" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Parachute · Termination valve</text>
+      <text x="693" y="360" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Multi-GPS · Beeper · Lights</text>
+      <line x1="596" y1="341" x2="507" y2="240" stroke="rgba(52,208,122,0.3)" stroke-width="1" marker-end="url(#a-b)"/>
+
+      <!-- ── 5 — EPS (bottom left) ── -->
+      <rect x="10" y="306" width="194" height="70" rx="3" fill="#0f1218" stroke="rgba(238,241,246,0.18)" stroke-width="1"/>
+      <text x="107" y="330" font-family="DM Mono,monospace" font-size="9" fill="rgba(238,241,246,0.65)" text-anchor="middle">EPS — DUAL BUS</text>
+      <text x="107" y="346" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">800 Wh Li-ion main bus</text>
+      <text x="107" y="360" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">1,000 Wh LiPo compressor bus</text>
+      <line x1="204" y1="341" x2="293" y2="240" stroke="rgba(238,241,246,0.25)" stroke-width="1" marker-end="url(#a-b)"/>
+      <!-- solar arrow comes in from above EPS -->
+      <text x="62" y="304" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)">400 W solar →</text>
+
+      <!-- ── 6 — GONDOLA STRUCTURE (bottom) ── -->
+      <rect x="270" y="326" width="260" height="68" rx="3" fill="#0f1218" stroke="rgba(238,241,246,0.14)" stroke-width="1"/>
+      <text x="400" y="350" font-family="DM Mono,monospace" font-size="9" fill="rgba(238,241,246,0.55)" text-anchor="middle">GONDOLA STRUCTURE</text>
+      <text x="400" y="366" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.3)" text-anchor="middle">Carbon fibre + Glass fibre · CFD-optimized</text>
+      <text x="400" y="380" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.3)" text-anchor="middle">Thermal insulation · Vibration-isolated mounts</text>
+      <line x1="400" y1="326" x2="400" y2="246" stroke="rgba(238,241,246,0.18)" stroke-width="1" marker-end="url(#a-d)"/>
+
+      <!-- ── 7 — GROUND STATION (left, external) ── -->
+      <rect x="10" y="158" width="194" height="90" rx="3" fill="#0d0f14" stroke="rgba(238,241,246,0.1)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="107" y="183" font-family="DM Mono,monospace" font-size="9" fill="rgba(238,241,246,0.4)" text-anchor="middle">GROUND STATION</text>
+      <text x="107" y="199" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.25)" text-anchor="middle">Mission control</text>
+      <text x="107" y="213" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.25)" text-anchor="middle">C2 interface</text>
+      <text x="107" y="227" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.25)" text-anchor="middle">Telemetry monitoring</text>
+      <line x1="204" y1="198" x2="293" y2="200" stroke="rgba(238,241,246,0.2)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a-d)"/>
+      <text x="216" y="192" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.18)">uplink / C2</text>
+
+      <!-- data downlink from OBC to ground -->
+      <line x1="293" y1="220" x2="204" y2="218" stroke="#34d07a" stroke-width="1" marker-end="url(#a-g)" opacity="0.5"/>
+      <text x="216" y="232" font-family="DM Mono,monospace" font-size="7" fill="rgba(52,208,122,0.4)">telemetry</text>
+
+      <!-- Legend -->
+      <g transform="translate(10, 400)">
+        <line x1="0" y1="6" x2="18" y2="6" stroke="rgba(240,160,32,0.6)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#a-b)"/>
+        <text x="22" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.25)">ACS commands</text>
+        <line x1="130" y1="6" x2="148" y2="6" stroke="rgba(238,241,246,0.25)" stroke-width="1" marker-end="url(#a-b)"/>
+        <text x="152" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.25)">power / signals</text>
+        <line x1="260" y1="6" x2="278" y2="6" stroke="#34d07a" stroke-width="1" marker-end="url(#a-g)" opacity="0.6"/>
+        <text x="282" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.25)">data downlink</text>
+        <line x1="380" y1="6" x2="398" y2="6" stroke="rgba(238,241,246,0.2)" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#a-d)"/>
+        <text x="402" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.25)">external / ground</text>
+      </g>
+    </svg>
+    <div class="diag-caption">
+      FIG 1 — Stratostats® subsystem architecture.<br>
+      OBC + Neurostar® at the centre coordinates all seven subsystems via a closed-loop control structure. Amber: ACS control path. Cyan: Payload data path. Green: data downlink to ground.
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §3  ALTITUDE CONTROL SYSTEM ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Key Differentiator</div>
+  <h2 class="sec-title">Altitude Control System (ACS)</h2>
+  <p class="sec-desc">The proprietary mechanism that enables station-keeping in the stratosphere</p>
+
+  <p class="prose">
+    The ACS is the engineering differentiator of Stratostats®. Every competitor in the HAPS space faces the same fundamental challenge: stratospheric winds at a given altitude will carry a balloon off-target. The Involve solution is to control altitude precisely, using internal pressurization to move the vehicle into wind layers that carry it back toward the target.
+  </p>
+  <p class="prose">
+    The core insight is that at 18–21 km altitude, there are typically wind inversions — the wind reverses direction between closely spaced altitude bands. By navigating within this 4 km range, Neurostar® can exploit these inversions to maintain station over a target, achieving a 50 km radius station-keeping constraint 90% of the time.
+  </p>
+
+  <div class="highlight-box">
+    <div class="highlight-box-head">
+      <div class="highlight-box-title">ACS — Component Architecture</div>
+      <span class="badge badge-amber">Stratostats® v2 · TRL 7 → TRL 9</span>
+    </div>
+    <div class="highlight-box-body">
+
+      <!-- ACS diagram -->
+      <div class="diag" style="margin: 0 0 1.5rem">
+        <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:780px;display:block;margin:0 auto">
+          <defs>
+            <marker id="a-a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#f0a020"/></marker>
+            <marker id="a-ab" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#3d9bff"/></marker>
+          </defs>
+
+          <!-- Outer balloon envelope -->
+          <ellipse cx="390" cy="120" rx="230" ry="95" fill="rgba(240,160,32,0.03)" stroke="rgba(240,160,32,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="390" y="22" font-family="DM Mono,monospace" font-size="8" fill="rgba(240,160,32,0.5)" text-anchor="middle" letter-spacing="1">OUTER BALLOON ENVELOPE — POLYETHYLENE</text>
+          <text x="390" y="34" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.2)" text-anchor="middle">Proprietary gore algorithm · Engineered stretch distribution under differential pressure</text>
+
+          <!-- Internal ballonet -->
+          <ellipse cx="390" cy="130" rx="110" ry="55" fill="rgba(61,155,255,0.06)" stroke="rgba(61,155,255,0.4)" stroke-width="1.5"/>
+          <text x="390" y="118" font-family="DM Mono,monospace" font-size="8.5" fill="#3d9bff" text-anchor="middle">INTERNAL BALLONET</text>
+          <text x="390" y="133" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.4)" text-anchor="middle">Air-filled internal sac</text>
+          <text x="390" y="147" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)" text-anchor="middle">Expands to increase buoyancy · Contracts to descend</text>
+
+          <!-- Compressor -->
+          <rect x="28" y="100" width="130" height="64" rx="3" fill="#111820" stroke="rgba(240,160,32,0.45)" stroke-width="1.2"/>
+          <text x="93" y="124" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(240,160,32,0.8)" text-anchor="middle">COMPRESSOR</text>
+          <text x="93" y="140" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.4)" text-anchor="middle">Low-pressure axial fan</text>
+          <text x="93" y="154" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)" text-anchor="middle">NablaWave partnership</text>
+          <!-- compressor → ballonet pipe -->
+          <path d="M158,132 Q220,132 278,130" fill="none" stroke="rgba(240,160,32,0.5)" stroke-width="2" marker-end="url(#a-a)"/>
+          <text x="185" y="125" font-family="DM Mono,monospace" font-size="7" fill="rgba(240,160,32,0.45)">inflate →</text>
+
+          <!-- Vent valve -->
+          <rect x="622" y="100" width="130" height="64" rx="3" fill="#111820" stroke="rgba(238,241,246,0.2)" stroke-width="1"/>
+          <text x="687" y="124" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.6)" text-anchor="middle">VENT VALVE</text>
+          <text x="687" y="140" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)" text-anchor="middle">Releases air to descend</text>
+          <text x="687" y="154" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)" text-anchor="middle">Motor-actuated · OBC cmd</text>
+          <!-- ballonet → vent pipe -->
+          <path d="M502,130 Q560,132 620,132" fill="none" stroke="rgba(238,241,246,0.25)" stroke-width="2" marker-end="url(#a-a)"/>
+          <text x="530" y="125" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)">deflate →</text>
+
+          <!-- Pressure sensor -->
+          <rect x="310" y="220" width="160" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.3)" stroke-width="1"/>
+          <text x="390" y="242" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(61,155,255,0.7)" text-anchor="middle">PRESSURE SENSOR</text>
+          <text x="390" y="258" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)" text-anchor="middle">Remote Differential · Reads inner/outer ΔP</text>
+          <!-- sensor reads ballonet -->
+          <line x1="390" y1="187" x2="390" y2="218" stroke="rgba(61,155,255,0.4)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a-ab)"/>
+          <text x="396" y="208" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.35)">reads ΔP</text>
+
+          <!-- OBC control arrows down -->
+          <rect x="26" y="188" width="134" height="30" rx="2" fill="rgba(61,155,255,0.07)" stroke="rgba(61,155,255,0.3)" stroke-width="1"/>
+          <text x="93" y="207" font-family="DM Mono,monospace" font-size="8" fill="#3d9bff" text-anchor="middle">OBC / NEUROSTAR®</text>
+          <!-- OBC → compressor -->
+          <line x1="93" y1="188" x2="93" y2="165" stroke="#3d9bff" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#a-ab)"/>
+          <!-- sensor → OBC feedback -->
+          <path d="M310,244 Q200,244 162,205" fill="none" stroke="rgba(61,155,255,0.3)" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#a-ab)"/>
+          <text x="232" y="252" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.3)">feedback</text>
+        </svg>
+        <div class="diag-caption">FIG 2 — ACS internal architecture. OBC commands compressor to inflate ballonet (ascend) or vent valve to deflate (descend). Differential pressure sensor closes the loop.</div>
+      </div>
+
+      <div class="split-2" style="margin:0">
+        <div class="split-cell">
+          <div class="split-cell-label">Ascent mechanism</div>
+          <div class="split-cell-title">Compressor fills ballonet → vehicle rises</div>
+          <div class="split-cell-body">When Neurostar® determines the vehicle needs to ascend to a higher-speed or direction-favourable wind layer, it commands the <strong>axial compressor</strong> to push atmospheric air into the internal ballonet. This increases the volume-to-mass ratio of the total envelope, increasing buoyancy and lifting the vehicle. The low-pressure axial compressor design — adapted from drone propulsion technology in collaboration with NablaWave — was purpose-developed for the low-density stratospheric environment where standard compressors fail.</div>
+        </div>
+        <div class="split-cell" style="background:var(--bg-2)">
+          <div class="split-cell-label">Descent mechanism</div>
+          <div class="split-cell-title">Vent valve releases air → vehicle descends</div>
+          <div class="split-cell-body">To descend, Neurostar® opens the <strong>motor-actuated vent valve</strong>, releasing pressurized air from the ballonet through a controlled orifice. As internal volume decreases, buoyancy drops and the vehicle descends at approximately <strong>1 m/s average</strong>. The Remote Differential Pressure Sensor monitors the pressure difference between the inner ballonet and the outer envelope continuously, feeding back to the OBC control loop. The 4 km usable adjustment range in altitude maps to the typical wind inversion profile at 18–22 km.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NablaWave note -->
+  <div class="callout">
+    <strong>NablaWave partnership:</strong> The low-pressure axial compressor is the component most technically demanding to adapt for stratospheric conditions. Standard electric compressors are designed for sea-level air density (~1.2 kg/m³); at 20 km altitude, density is approximately 0.09 kg/m³ — 13x thinner. Involve collaborated with NablaWave to develop a modified drone motor + rotor configuration specifically validated for this regime. This component represents a significant engineering moat: the design took years to validate and is not reproducible from commercial off-the-shelf components.
+  </div>
+
+</div>
+
+<!-- ─── §4  SUBSYSTEM DETAIL CARDS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Stratostats® · All Subsystems</div>
+  <h2 class="sec-title">Full subsystem reference</h2>
+  <p class="sec-desc">Engineering-level specification and design rationale for each of the seven subsystems</p>
+
+  <div class="subsys-grid">
+
+    <!-- Balloon Envelope -->
+    <div class="subsys-card">
+      <span class="subsys-num">01 — ENVELOPE</span>
+      <div class="subsys-title">Balloon Envelope</div>
+      <div class="subsys-body">
+        The primary lifting body. A large-volume polyethylene envelope filled with helium or hydrogen. The shape and material distribution are determined by a proprietary <strong>gore algorithm</strong> that computes the optimal cut pattern for minimum stress concentration under the differential pressure loading specific to stratospheric conditions.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Material</span><span class="ss-v">Ultra-thin polyethylene film</span></div>
+        <div class="ss-row"><span class="ss-k">Design</span><span class="ss-v">Proprietary gore algorithm</span></div>
+        <div class="ss-row"><span class="ss-k">Lifting gas</span><span class="ss-v">Helium (He) · or Hydrogen (H₂)</span></div>
+        <div class="ss-row"><span class="ss-k">Contains</span><span class="ss-v">Internal ballonet (ACS)</span></div>
+      </div>
+    </div>
+
+    <!-- ACS card (references §3) -->
+    <div class="subsys-card" style="border-top:2px solid rgba(240,160,32,0.4)">
+      <span class="subsys-num" style="color:var(--amber)">02 — ACS</span>
+      <div class="subsys-title">Altitude Control System</div>
+      <div class="subsys-body">
+        Internal ballonet pressurized by a low-pressure axial compressor. Vent valve for deflation. Remote Differential Pressure Sensor for closed-loop control. Enables ±2 km altitude adjustment at 1 m/s average, within a 4 km usable band. <em>See detailed ACS section above.</em>
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Altitude range</span><span class="ss-v">4 km usable band</span></div>
+        <div class="ss-row"><span class="ss-k">Ascent rate</span><span class="ss-v">~1 m/s (ACS commanded)</span></div>
+        <div class="ss-row"><span class="ss-k">Compressor</span><span class="ss-v">NablaWave · low-pressure axial</span></div>
+        <div class="ss-row"><span class="ss-k">TRL (v2)</span><span class="ss-v">7 → target 9 by 2026</span></div>
+      </div>
+    </div>
+
+    <!-- OBC -->
+    <div class="subsys-card" style="border-top:2px solid rgba(61,155,255,0.5)">
+      <span class="subsys-num" style="color:var(--blue)">03 — OBC</span>
+      <div class="subsys-title">On-Board Computer</div>
+      <div class="subsys-body">
+        Custom-built OBC running the Neurostar® navigation software. Reads GPS position (functional up to 80 km), atmospheric pressure and temperature sensors, and compressor state. Executes the real-time RL navigation policy and issues commands to ACS actuators at control loop frequency.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">GPS ceiling</span><span class="ss-v">Up to 80 km altitude</span></div>
+        <div class="ss-row"><span class="ss-k">Sensors</span><span class="ss-v">Pressure · temp · IMU · GPS</span></div>
+        <div class="ss-row"><span class="ss-k">Software</span><span class="ss-v">Neurostar® RL navigation core</span></div>
+        <div class="ss-row"><span class="ss-k">Fallback</span><span class="ss-v">Deterministic algorithm (always active)</span></div>
+      </div>
+    </div>
+
+    <!-- EPS -->
+    <div class="subsys-card">
+      <span class="subsys-num">04 — EPS</span>
+      <div class="subsys-title">Electrical Power System</div>
+      <div class="subsys-body">
+        Dual-bus architecture that electrically isolates the compressor from all other systems. If the compressor bus fails, navigation and comms remain powered on the main bus. Solar panels on the gondola charge both batteries. Designed for the high radiation environment and extreme temperature cycling of the stratosphere.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Solar generation</span><span class="ss-v">400 W peak (stratospheric)</span></div>
+        <div class="ss-row"><span class="ss-k">Main battery</span><span class="ss-v">800 Wh Li-ion (main bus)</span></div>
+        <div class="ss-row"><span class="ss-k">Compressor battery</span><span class="ss-v">1,000 Wh LiPo (isolated bus)</span></div>
+        <div class="ss-row"><span class="ss-k">Architecture</span><span class="ss-v">Dual-bus isolation · PMU protection</span></div>
+      </div>
+    </div>
+
+    <!-- Telecom -->
+    <div class="subsys-card">
+      <span class="subsys-num">05 — TELECOM</span>
+      <div class="subsys-title">Telecommunications</div>
+      <div class="subsys-body">
+        High-bandwidth satellite communications link providing both command & control uplink and high-speed data downlink. Enables real-time monitoring and live payload data streaming. Consistently operational across all Involve flights — TRL 9 status with no recorded link failures in commercial missions.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Downlink bandwidth</span><span class="ss-v">&gt;30 Mbps</span></div>
+        <div class="ss-row"><span class="ss-k">Link type</span><span class="ss-v">Satellite — LEO/GEO</span></div>
+        <div class="ss-row"><span class="ss-k">C2 uplink</span><span class="ss-v">Real-time command relay</span></div>
+        <div class="ss-row"><span class="ss-k">TRL</span><span class="ss-v">9 — operational on all flights</span></div>
+      </div>
+    </div>
+
+    <!-- Payload Bay -->
+    <div class="subsys-card" style="border-top:2px solid rgba(0,200,224,0.35)">
+      <span class="subsys-num" style="color:var(--cyan)">06 — PAYLOAD</span>
+      <div class="subsys-title">Modular Payload Bay</div>
+      <div class="subsys-body">
+        Standardized mechanical and electrical interfaces enable different sensor packages to be integrated without gondola redesign. This is the commercial revenue driver — clients fly their payloads, or Involve flies its own sensing stack (cameras, SAR, multispectral) for data-as-a-service missions. Over 40 distinct payload types have been elevated.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Interface</span><span class="ss-v">Standardized mech + elec</span></div>
+        <div class="ss-row"><span class="ss-k">Payloads flown</span><span class="ss-v">40+ types</span></div>
+        <div class="ss-row"><span class="ss-k">Sensor types</span><span class="ss-v">EO · SAR · Multispectral · SIGINT · IOD</span></div>
+        <div class="ss-row"><span class="ss-k">Integration time</span><span class="ss-v">Hours (standardized IF)</span></div>
+      </div>
+    </div>
+
+    <!-- Gondola Structure -->
+    <div class="subsys-card">
+      <span class="subsys-num">07 — GONDOLA</span>
+      <div class="subsys-title">Gondola Structure</div>
+      <div class="subsys-body">
+        The primary structural enclosure for all electronic subsystems. Carbon fibre and glass fibre composite construction provides the highest stiffness-to-mass ratio available. The external shape was optimized via CFD analysis to minimize drag and pendulum oscillation — a critical stability factor for imaging payloads.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Materials</span><span class="ss-v">Carbon fibre + Glass fibre composite</span></div>
+        <div class="ss-row"><span class="ss-k">Optimization</span><span class="ss-v">CFD drag + pendulum analysis</span></div>
+        <div class="ss-row"><span class="ss-k">Thermal</span><span class="ss-v">Insulated for –60°C stratosphere</span></div>
+        <div class="ss-row"><span class="ss-k">Mounts</span><span class="ss-v">Vibration-isolated component brackets</span></div>
+      </div>
+    </div>
+
+    <!-- Safety Systems -->
+    <div class="subsys-card" style="border-top:2px solid rgba(52,208,122,0.4)">
+      <span class="subsys-num" style="color:var(--green)">08 — SAFETY</span>
+      <div class="subsys-title">Safety Systems</div>
+      <div class="subsys-body">
+        Multi-layer, independent safety systems required by European aviation regulatory framework (SERA / national CAAs). All systems operate on independent power and logic from the main mission systems. Fully validated across all commercial and test flights.
+      </div>
+      <div class="subsys-specs">
+        <div class="ss-row"><span class="ss-k">Parachute</span><span class="ss-v">Deployment on termination signal</span></div>
+        <div class="ss-row"><span class="ss-k">Termination valve</span><span class="ss-v">Rapid gas release on command</span></div>
+        <div class="ss-row"><span class="ss-k">Tracking</span><span class="ss-v">Multi-GPS (independent systems)</span></div>
+        <div class="ss-row"><span class="ss-k">Locating</span><span class="ss-v">Acoustic beeper + alerting lights</span></div>
+      </div>
+    </div>
+
+    <!-- Image placeholder card -->
+    <div class="subsys-card" style="padding:0;overflow:hidden">
+      <div class="img-ph" style="height:100%;border:none;border-radius:0;min-height:260px">
+        <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="img-ph-label">Gondola detail photo</div>
+        <div class="img-ph-hint">Close-up of gondola showing payload bay, antenna array, solar panels, and structural frame</div>
+      </div>
+    </div>
+
+  </div><!-- /subsys-grid -->
+
+</div>
+
+<!-- ─── §5  STRATORELAY® ARCHITECTURE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Stratorelay® · Deep Dive</div>
+  <h2 class="sec-title">Stratorelay® — passive navigation system</h2>
+  <p class="sec-desc">How predictive deployment replaces active altitude control</p>
+
+  <p class="prose">
+    Stratorelay® inverts the Stratostats® design philosophy: instead of continuously fighting atmospheric winds to stay on target, it uses <strong>predictive weather modelling to choose when and where to launch</strong> so that the winds themselves carry it where it needs to go. This is analogous to sailing downwind rather than tacking — fundamentally simpler and cheaper, within the constraint that you cannot change course mid-mission.
+  </p>
+  <p class="prose">
+    The key enabling technology is the <strong>Neurostar® deployment planning module</strong>, which ingests ECMWF weather forecasts and runs trajectory simulations to identify the optimal launch window, launch position, and initial altitude that will route the balloon over the target area within the required mission window.
+  </p>
+
+  <div class="detail-block" style="grid-template-columns:1fr 300px">
+    <div class="detail-block-body">
+      <div class="detail-block-sub">Stratorelay® · Mission Logic</div>
+      <div class="detail-block-title">Pre-flight trajectory planning replaces onboard control</div>
+      <p class="detail-block-prose">
+        A typical Stratorelay® engagement works in three phases: <strong>(1) Planning</strong> — Neurostar® simulates hundreds of trajectory scenarios against the 10-day ECMWF forecast, outputting the optimal launch window and coordinates. <strong>(2) Launch</strong> — a single operator fills and releases the balloon from any ground surface (a van, a field, a rooftop) within 48 hours of engagement. No specialized launch infrastructure required. <strong>(3) Mission</strong> — the balloon climbs to float altitude where the selected wind layer carries it over the target. The operator monitors via telecom downlink. Recovery follows standard parachute descent.
+      </p>
+      <p class="detail-block-prose" style="margin-top:0.7rem">
+        The limitation is that if winds deviate significantly from forecast, the trajectory cannot be corrected. Stratorelay® is therefore suitable for missions where approximate, predictable coverage is sufficient — area mapping, IOD rideshare, scientific missions. For persistent, location-specific surveillance, Stratostats® is required.
+      </p>
+      <div class="subsys-specs" style="margin-top:1rem">
+        <div class="ss-row"><span class="ss-k">Deployment time</span><span class="ss-v">Within 48 hours of tasking</span></div>
+        <div class="ss-row"><span class="ss-k">Team size</span><span class="ss-v">1 operator</span></div>
+        <div class="ss-row"><span class="ss-k">Launch infrastructure</span><span class="ss-v">None — van/field/rooftop</span></div>
+        <div class="ss-row"><span class="ss-k">Mission cost</span><span class="ss-v">€2,000–3,000 complete</span></div>
+        <div class="ss-row"><span class="ss-k">Coverage (validated)</span><span class="ss-v">181 km² (Milan) · 1,285 km² (Rome)</span></div>
+        <div class="ss-row"><span class="ss-k">Endurance</span><span class="ss-v">Hours → 2–5 days depending on float altitude</span></div>
+      </div>
+    </div>
+    <div class="detail-block-img">
+      <div class="img-ph" style="height:100%;border:none;border-radius:0;min-height:280px">
+        <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="img-ph-label">Trajectory map</div>
+        <div class="img-ph-hint">Neurostar® trajectory prediction over Milan or Rome — wind-coloured path overlay on map</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §6  MISSION LIFECYCLE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Operations</div>
+  <h2 class="sec-title">Full mission lifecycle</h2>
+  <p class="sec-desc">Phase-by-phase walkthrough for a Stratostats® standard mission</p>
+
+  <p class="prose">
+    Each Stratostats® mission follows a structured lifecycle managed by the Involve mission control team using a proprietary operations software layer. The OBC + Neurostar® runs autonomously during float, but ground operators monitor all telemetry and can issue override commands at any time through the satellite uplink.
+  </p>
+
+  <div class="timeline" style="margin-top:2rem">
+
+    <div class="timeline-row">
+      <div class="timeline-phase"><span>Phase 1</span>Pre-mission</div>
+      <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+      <div class="timeline-content">
+        <strong>Mission planning and payload integration.</strong> Target area defined. Neurostar® StratoEye runs feasibility analysis — verifying the target is reachable from proposed launch coordinates given forecast wind conditions. Payload integrated into bay and tested. Safety systems inspection. Launch window confirmed with local aviation authority (NOTAM filed).
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-phase"><span>Phase 2</span>Launch &amp; Ascent</div>
+      <div class="timeline-dot-col"><div class="timeline-dot"></div></div>
+      <div class="timeline-content">
+        <strong>Gas fill, release, and climb to float altitude.</strong> The balloon is filled with helium/hydrogen on the launch pad. After system checks, it is released and climbs at <strong>2–4 m/s</strong> through the troposphere and tropopause. GPS and telemetry are tracked continuously. Neurostar® transitions from passive monitoring to active mode once the vehicle approaches the target float altitude band.
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-phase"><span>Phase 3</span>Float &amp; Station-keeping</div>
+      <div class="timeline-dot-col"><div class="timeline-dot" style="background:var(--amber);box-shadow:0 0 6px rgba(240,160,32,0.5)"></div></div>
+      <div class="timeline-content">
+        <strong>Primary mission phase — active ACS station-keeping.</strong> Neurostar® continuously reads GPS position, atmospheric data, and wind estimates from onboard sensors + ECMWF model. It computes altitude commands at each control loop step, issuing compressor or vent valve signals to keep the vehicle within the 50 km target radius. The payload operates continuously. Ground operators monitor via live telemetry stream.
+        <ul style="margin-top:0.5rem">
+          <li>Altitude band: 18–22 km (wind inversion zone)</li>
+          <li>Station-keeping achieved: 50 km radius, 90% of time</li>
+          <li>Payload data downlinked continuously via &gt;30 Mbps satellite link</li>
+          <li>Typical mission duration: days to 90+ days (v2)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-phase"><span>Phase 4</span>Termination</div>
+      <div class="timeline-dot-col"><div class="timeline-dot" style="background:var(--red);box-shadow:0 0 6px rgba(255,96,96,0.5)"></div></div>
+      <div class="timeline-content">
+        <strong>Mission end — commanded or autonomous cutdown.</strong> On scheduled mission end, an anomaly trigger, or low battery condition, the ground operator (or OBC autonomously) fires the termination signal. The termination valve opens, rapidly releasing lifting gas. The parachute deploys and the gondola descends to a pre-calculated recovery zone.
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-phase"><span>Phase 5</span>Recovery</div>
+      <div class="timeline-dot-col"><div class="timeline-dot" style="background:var(--green);box-shadow:0 0 6px rgba(52,208,122,0.5)"></div></div>
+      <div class="timeline-content">
+        <strong>Gondola retrieval and refurbishment.</strong> Multi-GPS tracking, acoustic beeper, and lights guide the recovery team to the landing site. The gondola is retrieved and transported back to the operations base. After inspection, most gondola components are refurbished and reused. The balloon envelope is typically replaced. Payload data is extracted and transferred to the data infrastructure pipeline.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Two image placeholders -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-med);border:1px solid var(--border-med);margin-top:2rem">
+    <div class="img-ph" style="height:200px;border:none;border-radius:0">
+      <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <div class="img-ph-label">Launch sequence photo</div>
+      <div class="img-ph-hint">Team preparing or releasing balloon at launch site — gas fill or initial rise</div>
+    </div>
+    <div class="img-ph" style="height:200px;border:none;border-radius:0">
+      <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <div class="img-ph-label">Recovery photo</div>
+      <div class="img-ph-hint">Gondola on the ground after landing — recovery team with retrieved platform</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §7  PAYLOAD MODULARITY ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Payload System</div>
+  <h2 class="sec-title">Modular payload architecture</h2>
+  <p class="sec-desc">Standardized integration enabling diverse sensing across EO, SAR, SIGINT, and scientific payloads</p>
+
+  <p class="prose">
+    The payload bay is the commercial revenue interface of the platform. A standardized mechanical mounting system and electrical power + data bus allow different sensor packages to be integrated in hours, not weeks. This is the physical mechanism by which Involve serves both its own data-as-a-service missions (flying its own cameras and sensors) and third-party rideshare customers (flying customer payloads to the stratosphere).
+  </p>
+  <p class="prose">
+    As CLEAR matures, the payload architecture also becomes the sensing input layer of the intelligence system — each payload type requiring a corresponding CLEAR vision agent module to process its data output.
+  </p>
+
+  <div class="tbl-wrap" style="margin-top:2rem">
+    <table>
+      <thead>
+        <tr>
+          <th>Payload Type</th>
+          <th>Application Domain</th>
+          <th>Data Output</th>
+          <th>CLEAR Agent</th>
+          <th>Missions flown</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>High-res EO cameras</td>
+          <td>Earth observation, mapping, surveillance</td>
+          <td>10 cm/px visible imagery, video</td>
+          <td>Vision agents — operational</td>
+          <td><span class="badge badge-green">30+ commercial</span></td>
+        </tr>
+        <tr>
+          <td>Multispectral sensors</td>
+          <td>Agriculture, vegetation health, environmental</td>
+          <td>NDVI, band-separated rasters</td>
+          <td>Spectral analysis agents (WIP)</td>
+          <td><span class="badge badge-green">Multiple</span></td>
+        </tr>
+        <tr>
+          <td>SAR (Synthetic Aperture Radar)</td>
+          <td>Defense, maritime, all-weather EO</td>
+          <td>Backscatter intensity, interferograms</td>
+          <td>SAR processing agents (planned)</td>
+          <td><span class="badge badge-amber">MoD programme</span></td>
+        </tr>
+        <tr>
+          <td>Hyperspectral</td>
+          <td>Mining, precision agriculture, environmental</td>
+          <td>Full spectral cube per pixel</td>
+          <td>Spectral library matching (planned)</td>
+          <td><span class="badge badge-blue">In integration</span></td>
+        </tr>
+        <tr>
+          <td>SIGINT / RF monitoring</td>
+          <td>Defense, border, maritime domain awareness</td>
+          <td>RF signal capture, frequency maps</td>
+          <td>RF analysis agents (planned)</td>
+          <td><span class="badge badge-amber">Qualification</span></td>
+        </tr>
+        <tr>
+          <td>Customer IOD payloads</td>
+          <td>Satellite instrument validation, EDL testing</td>
+          <td>Telemetry, performance data</td>
+          <td>Not applicable</td>
+          <td><span class="badge badge-green">Active rideshare programme</span></td>
+        </tr>
+        <tr>
+          <td>Scientific instruments</td>
+          <td>Atmospheric research, radiation, cosmic rays</td>
+          <td>Time-series sensor data</td>
+          <td>Not applicable</td>
+          <td><span class="badge badge-green">Multiple institutions</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="img-ph" style="height:240px;margin-top:1px">
+    <svg class="img-ph-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    <div class="img-ph-label">Payload bay photo</div>
+    <div class="img-ph-hint">Open gondola showing payload bay with a sensor integrated — ideally with a camera or multispectral unit visible in the mount</div>
+  </div>
+
+  <div class="ref-note" style="margin-top:1.5rem">
+    Detailed payload-to-CLEAR data pipeline architecture is documented in <strong>CLEAR GeoAI Layer (IS-DR-06)</strong>. SAR-specific data products and StratoSAR programme details are in the <strong>Defense Use Cases</strong> document.
+  </div>
+
+</div>
+
+<!-- ─── §8  LoonHive® SCALABILITY ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Fleet Architecture</div>
+  <h2 class="sec-title">LoonHive® — from platform to constellation</h2>
+  <p class="sec-desc">How multiple Stratostats® units are coordinated into a persistent sensing network</p>
+
+  <p class="prose">
+    LoonHive® is the fleet coordination architecture that transforms individual Stratostats® units into a geographically distributed sensing network. It extends the single-platform station-keeping problem into a multi-agent optimization: given N balloons with individual position states and ACS capabilities, compute the altitude command sequence for each unit that collectively maximizes coverage of a defined area while satisfying separation constraints.
+  </p>
+
+  <div class="split-2">
+    <div class="split-cell">
+      <div class="split-cell-label">The computational challenge</div>
+      <div class="split-cell-title">Classical solvers: 11 days for 150+ balloons</div>
+      <div class="split-cell-body">
+        Classical optimization solvers treat each balloon as an independent agent and exhaustively search the joint action space. For a 150-balloon fleet, this joint space is astronomically large — runtime on conventional hardware exceeds <strong>11 days</strong> per planning cycle, making real-time or even daily replanning impossible. Any fleet-level HAPS operator faces this problem. Most solve it by dramatically reducing fleet size, accepting much lower coverage density.
+      </div>
+    </div>
+    <div class="split-cell" style="background:var(--bg-2);border-top:2px solid var(--blue)">
+      <div class="split-cell-label">Neurostar® fleet solution</div>
+      <div class="split-cell-title">Quantum-inspired optimization: minutes</div>
+      <div class="split-cell-body">
+        The Neurostar® fleet module applies a <strong>quantum-inspired combinatorial optimization approach</strong> (based on simulated annealing and variational quantum eigensolver frameworks) to the same problem. By reformulating the fleet coordination as a QUBO (Quadratic Unconstrained Binary Optimization) problem and solving it on GPU-accelerated hardware, the planning cycle for 150+ balloons completes in <strong>minutes</strong>. This is not a marginal improvement — it is the difference between the fleet being practically unmanageable and fully operational.
+      </div>
+    </div>
+  </div>
+
+  <!-- Fleet scalability diagram -->
+  <div class="diag">
+    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a-sc" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="rgba(61,155,255,0.5)"/></marker>
+      </defs>
+
+      <!-- Stage 1 — Single -->
+      <rect x="8" y="44" width="164" height="110" rx="3" fill="#0f1218" stroke="rgba(61,155,255,0.55)" stroke-width="1.3"/>
+      <text x="90" y="68"  font-family="DM Mono,monospace" font-size="9"   fill="#3d9bff"                  text-anchor="middle">SINGLE PLATFORM</text>
+      <text x="90" y="84"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.45)"  text-anchor="middle">1 Stratostats®</text>
+      <text x="90" y="98"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)"  text-anchor="middle">50 km radius · 90+ days</text>
+      <text x="90" y="112" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)"  text-anchor="middle">Neurostar® station-keeping</text>
+      <text x="90" y="145" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(52,208,122,0.7)"   text-anchor="middle">TRL 9 · Operational</text>
+
+      <!-- Stage 2 — Small fleet -->
+      <rect x="204" y="34" width="174" height="124" rx="3" fill="#0f1218" stroke="rgba(240,160,32,0.4)" stroke-width="1"/>
+      <text x="291" y="58"  font-family="DM Mono,monospace" font-size="9"   fill="rgba(240,160,32,0.8)"   text-anchor="middle">SMALL FLEET</text>
+      <text x="291" y="74"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.45)" text-anchor="middle">2–10 Stratostats®</text>
+      <text x="291" y="88"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Overlapping coverage zones</text>
+      <text x="291" y="102" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">LoonHive® coordination</text>
+      <text x="291" y="116" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Redundant data paths</text>
+      <text x="291" y="152" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(240,160,32,0.65)"  text-anchor="middle">TRL 5 · 2026 flight tests</text>
+
+      <!-- Stage 3 — Regional -->
+      <rect x="412" y="24" width="174" height="144" rx="3" fill="#0f1218" stroke="rgba(238,241,246,0.2)" stroke-width="1"/>
+      <text x="499" y="48"  font-family="DM Mono,monospace" font-size="9"   fill="rgba(238,241,246,0.65)" text-anchor="middle">REGIONAL NETWORK</text>
+      <text x="499" y="64"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.4)"  text-anchor="middle">10–50 platforms</text>
+      <text x="499" y="78"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Continental coverage</text>
+      <text x="499" y="92"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Persistent regional ISR</text>
+      <text x="499" y="106" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Adaptive re-tasking</text>
+      <text x="499" y="120" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">Quantum-opt. routing</text>
+      <text x="499" y="162" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.3)"  text-anchor="middle">Roadmap 2027–28</text>
+
+      <!-- Stage 4 — Global -->
+      <rect x="620" y="12" width="172" height="168" rx="3" fill="#0d0f14" stroke="rgba(238,241,246,0.12)" stroke-width="1"/>
+      <text x="706" y="36"  font-family="DM Mono,monospace" font-size="9"   fill="rgba(238,241,246,0.5)"  text-anchor="middle">GLOBAL INFRA.</text>
+      <text x="706" y="52"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.35)" text-anchor="middle">150+ platforms</text>
+      <text x="706" y="66"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.3)"  text-anchor="middle">Multi-domain sensing</text>
+      <text x="706" y="80"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.3)"  text-anchor="middle">Full-spectrum intelligence</text>
+      <text x="706" y="94"  font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.3)"  text-anchor="middle">Defense + commercial</text>
+      <text x="706" y="108" font-family="Inter,sans-serif"  font-size="8"   fill="rgba(238,241,246,0.3)"  text-anchor="middle">Hybrid HAPS + satellite</text>
+      <text x="706" y="174" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.2)"  text-anchor="middle">Roadmap 2029+</text>
+
+      <!-- Arrows -->
+      <line x1="174" y1="99" x2="202" y2="99" stroke="rgba(61,155,255,0.45)" stroke-width="1.4" marker-end="url(#a-sc)"/>
+      <line x1="380" y1="96" x2="410" y2="96" stroke="rgba(61,155,255,0.3)"  stroke-width="1.4" marker-end="url(#a-sc)"/>
+      <line x1="588" y1="96" x2="618" y2="96" stroke="rgba(61,155,255,0.2)"  stroke-width="1.4" marker-end="url(#a-sc)"/>
+    </svg>
+    <div class="diag-caption">FIG 3 — LoonHive® fleet scalability progression. Each stage is additive and interoperable. TRL 9 single-platform capability is the foundation; subsequent stages layer coordination on top.</div>
+  </div>
+
+  <div class="ref-note">
+    LoonHive® design specifications, hundreds of simulations completed, and incremental flight test roadmap starting 2026 are detailed in the <strong>HAPS Roadmap</strong> document (IS-DR-04). Neurostar® fleet optimization algorithm details are in <strong>Flight Control System</strong> (IS-DR-05).
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div style="padding:2.5rem 0 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+  <div style="display:flex;align-items:center;gap:1.2rem">
+    <img src="https://cdn.prod.website-files.com/671f5ec2f687d2f55fafe279/672a0ca51d9e5090193779ed_symbol.svg"
+         alt="" style="height:16px;opacity:0.3;filter:brightness(0) invert(1)"
+         onerror="this.style.display='none'">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Involve Space S.r.l. · IS-DR-03 · Platform Architecture · REV A · Feb 2026
+    </span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Next → HAPS Roadmap (IS-DR-04)
+    </span>
+    <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(240,160,32,0.2);padding:0.22rem 0.65rem">CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /body -->
+</body>
+</html>

@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ── Backgrounds ──────────────────── */
+  --color-involve-bg: var(--involve-bg);
+  --color-involve-default: var(--involve-default);
+  --color-involve-panel: var(--involve-panel);
+  --color-involve-bg2: var(--involve-bg2);
+  --color-involve-bg3: var(--involve-bg3);
+
+  /* ── Borders ──────────────────────── */
+  --color-involve-border: var(--involve-border);
+  --color-involve-border-med: var(--involve-border-med);
+  --color-involve-border-hi: var(--involve-border-hi);
+
+  /* ── Text ─────────────────────────── */
+  --color-involve-text: var(--involve-text);
+  --color-involve-muted: var(--involve-muted);
+  --color-involve-dim: var(--involve-dim);
+
+  /* ── Accent — Blue (primary) ──────── */
+  --color-involve-blue: #3d9bff;
+  --color-involve-blue-dim: var(--involve-blue-dim);
+  --color-involve-blue-glow: var(--involve-blue-glow);
+
+  /* ── Accent — Cyan (secondary) ────── */
+  --color-involve-cyan: #00c8e0;
+  --color-involve-cyan-dim: var(--involve-cyan-dim);
+
+  /* ── Semantic accents ─────────────── */
+  --color-involve-green: #34d07a;
+  --color-involve-green-dim: var(--involve-green-dim);
+  --color-involve-amber: #f0a020;
+  --color-involve-amber-dim: var(--involve-amber-dim);
+  --color-involve-purple: #a78bfa;
+  --color-involve-purple-dim: var(--involve-purple-dim);
+  --color-involve-red: #ff6060;
+  --color-involve-red-dim: var(--involve-red-dim);
+
+  /* ── Typography ───────────────────── */
+  --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  /* ── Animations ───────────────────── */
+  --animate-shimmer: shimmer 2s infinite linear;
+}
+
+@layer base {
+  :root {
+    /* ── Light Mode Palette ───────────── */
+    --involve-bg: #f8fafc;
+    --involve-default: #ffffff;
+    --involve-panel: #ffffff;
+    --involve-bg2: #f1f5f9;
+    --involve-bg3: #e2e8f0;
+
+    --involve-border: #e2e8f0;
+    --involve-border-med: #cbd5e1;
+    --involve-border-hi: #94a3b8;
+
+    --involve-text: #0f172a;
+    --involve-muted: #475569;
+    --involve-dim: #94a3b8;
+
+    --involve-blue-dim: rgba(61, 155, 255, 0.1);
+    --involve-blue-glow: rgba(61, 155, 255, 0.1);
+    --involve-cyan-dim: rgba(0, 200, 224, 0.1);
+    --involve-green-dim: rgba(52, 208, 122, 0.1);
+    --involve-amber-dim: rgba(240, 160, 32, 0.1);
+    --involve-purple-dim: rgba(167, 139, 250, 0.1);
+    --involve-red-dim: rgba(255, 96, 96, 0.1);
+  }
+
+  .dark {
+    /* ── Dark Mode Palette ───────────── */
+    --involve-bg: #08090c;
+    --involve-default: #0d0f14;
+    --involve-panel: #0f1218;
+    --involve-bg2: #12151c;
+    --involve-bg3: #171b24;
+
+    --involve-border: rgba(255, 255, 255, 0.07);
+    --involve-border-med: rgba(255, 255, 255, 0.12);
+    --involve-border-hi: rgba(255, 255, 255, 0.20);
+
+    --involve-text: #eef1f6;
+    --involve-muted: rgba(238, 241, 246, 0.55);
+    --involve-dim: rgba(238, 241, 246, 0.28);
+
+    --involve-blue-dim: rgba(61, 155, 255, 0.15);
+    --involve-blue-glow: rgba(61, 155, 255, 0.06);
+    --involve-cyan-dim: rgba(0, 200, 224, 0.12);
+    --involve-green-dim: rgba(52, 208, 122, 0.12);
+    --involve-amber-dim: rgba(240, 160, 32, 0.12);
+    --involve-purple-dim: rgba(167, 139, 250, 0.12);
+    --involve-red-dim: rgba(255, 96, 96, 0.12);
+  }
+}
+
+@layer base {
+  html {
+    font-size: 15px;
+  }
+
+  body {
+    @apply bg-involve-bg text-involve-text font-sans antialiased;
+    line-height: 1.65;
+  }
+}
+
+@layer utilities {
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-involve-border-med);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-involve-muted);
+  }
+}

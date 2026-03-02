@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeoAI & Earth Intelligence — Strategic Category Positioning | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg:         #08090c;
+  --bg-1:       #0d0f14;
+  --bg-2:       #12151c;
+  --bg-3:       #171b24;
+  --bg-card:    #0f1218;
+  --border:     rgba(255,255,255,0.07);
+  --border-med: rgba(255,255,255,0.12);
+  --border-hi:  rgba(255,255,255,0.20);
+  --text-1:     #eef1f6;
+  --text-2:     rgba(238,241,246,0.55);
+  --text-3:     rgba(238,241,246,0.28);
+  --blue:       #3d9bff;
+  --blue-dim:   rgba(61,155,255,0.15);
+  --blue-glow:  rgba(61,155,255,0.06);
+  --cyan:       #00c8e0;
+  --cyan-dim:   rgba(0,200,224,0.12);
+  --green:      #34d07a;
+  --green-dim:  rgba(52,208,122,0.12);
+  --amber:      #f0a020;
+  --amber-dim:  rgba(240,160,32,0.12);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --f-body: 'Inter', -apple-system, sans-serif;
+  --f-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  background: var(--bg); color: var(--text-1);
+  font-family: var(--f-body); font-weight: 400;
+  line-height: 1.65; -webkit-font-smoothing: antialiased;
+  padding: 0 0 6rem;
+}
+
+/* ── HEADER ─────────────────────────── */
+.doc-header {
+  position: relative; padding: 3.5rem 3.5rem 3rem;
+  border-bottom: 1px solid var(--border-med); overflow: hidden;
+}
+.doc-header::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+}
+.doc-header-inner { position: relative; z-index: 1; max-width: 860px; }
+.doc-breadcrumb {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--f-mono); font-size: 0.62rem;
+  color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.6rem;
+}
+.doc-breadcrumb span { color: var(--blue); }
+.doc-title { font-size: 2.4rem; font-weight: 300; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 0.6rem; }
+.doc-title strong { font-weight: 600; }
+.doc-subtitle { font-size: 0.85rem; color: var(--text-2); font-weight: 300; max-width: 640px; line-height: 1.7; margin-bottom: 2rem; }
+.doc-meta-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.doc-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.doc-meta-label { font-family: var(--f-mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-3); }
+.doc-meta-value { font-size: 0.8rem; font-weight: 500; color: var(--text-2); }
+
+/* ── BODY ───────────────────────────── */
+.body { max-width: 860px; margin: 0 auto; padding: 0 3.5rem; }
+.sec { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+.sec:last-child { border-bottom: none; }
+.sec-eyebrow {
+  display: flex; align-items: center; gap: 0.7rem;
+  font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--blue); margin-bottom: 1rem;
+}
+.sec-eyebrow::before { content:''; display:block; width:14px; height:1px; background:var(--blue); flex-shrink:0; }
+.sec-title { font-size: 1.6rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.35rem; }
+.sec-desc { font-size: 0.78rem; color: var(--text-3); margin-bottom: 2.2rem; font-style: italic; }
+.prose { font-size: 0.875rem; font-weight: 300; line-height: 1.8; color: var(--text-2); max-width: 780px; }
+.prose strong { font-weight: 500; color: var(--text-1); }
+.prose + .prose { margin-top: 0.9rem; }
+
+/* ── BADGE ──────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: var(--f-mono); font-size: 0.58rem; font-weight: 500;
+  letter-spacing: 0.1em; padding: 0.2rem 0.6rem; border-radius: 2px; white-space: nowrap;
+}
+.badge::before { content:''; display:block; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* ── DIAG ───────────────────────────── */
+.diag { margin: 2rem 0; background: var(--bg-1); border: 1px solid var(--border-med); padding: 2rem 2rem 1.5rem; overflow-x: auto; }
+.diag-caption { font-family: var(--f-mono); font-size: 0.6rem; color: var(--text-3); text-align: center; margin-top: 1.2rem; letter-spacing: 0.05em; line-height: 1.6; }
+
+/* ── 3-COL CARDS ────────────────────── */
+.card-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.card-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.g-card { background: var(--bg-card); padding: 1.6rem; transition: background 0.15s; }
+.g-card:hover { background: var(--bg-2); }
+.g-card-num { font-family: var(--f-mono); font-size: 0.6rem; color: var(--blue); letter-spacing: 0.15em; margin-bottom: 0.5rem; display: block; }
+.g-card-title { font-size: 0.88rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; margin-bottom: 0.6rem; line-height: 1.3; }
+.g-card-body { font-size: 0.77rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.g-card-body strong { font-weight: 500; color: var(--text-1); }
+.g-card-stat { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--border); font-family: var(--f-mono); font-size: 0.62rem; color: var(--text-3); line-height: 1.5; }
+.g-card-stat em { color: var(--blue); font-style: normal; }
+
+/* ── EVOLUTION TIMELINE ──────────────── */
+.evo-track { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border-med); border: 1px solid var(--border-med); margin: 2rem 0; position: relative; }
+.evo-stage { background: var(--bg-card); padding: 1.8rem; display: flex; flex-direction: column; gap: 0; position: relative; }
+.evo-stage:hover { background: var(--bg-2); }
+.evo-era { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.5rem; }
+.evo-label { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+.evo-sub { font-size: 0.78rem; font-weight: 300; color: var(--text-3); margin-bottom: 1rem; font-style: italic; }
+.evo-desc { font-size: 0.79rem; font-weight: 300; color: var(--text-2); line-height: 1.65; flex: 1; }
+.evo-desc strong { font-weight: 500; color: var(--text-1); }
+.evo-traits { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.evo-trait { display: flex; align-items: center; gap: 0.5rem; font-size: 0.74rem; color: var(--text-3); }
+.evo-trait::before { content: '—'; font-family: var(--f-mono); color: var(--text-3); font-size: 0.7rem; flex-shrink: 0; }
+.evo-arrow { position: absolute; right: -1px; top: 50%; width: 18px; height: 18px; background: var(--bg-2); border: 1px solid var(--border-med); border-left: none; clip-path: polygon(0 0, 100% 50%, 0 100%); transform: translateY(-50%); z-index: 2; }
+
+/* ── STACK DIAGRAM ROWS ──────────────── */
+.stack { display: flex; flex-direction: column; gap: 1px; background: var(--border-med); border: 1px solid var(--border-med); margin: 2rem 0; }
+.stack-row { display: grid; grid-template-columns: 180px 1fr; background: var(--bg-card); align-items: stretch; transition: background 0.12s; }
+.stack-row:hover { background: var(--bg-2); }
+.stack-label { padding: 1.2rem 1.4rem; font-family: var(--f-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); line-height: 1.4; }
+.stack-label span { font-size: 0.82rem; font-weight: 600; font-family: var(--f-body); letter-spacing: 0; margin-bottom: 0.15rem; display: block; }
+.stack-content { padding: 1.2rem 1.4rem; font-size: 0.81rem; font-weight: 300; color: var(--text-2); line-height: 1.7; }
+.stack-content strong { font-weight: 500; color: var(--text-1); }
+
+/* ── SPLIT-2 ────────────────────────── */
+.split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.split-cell { background: var(--bg-card); padding: 1.6rem; }
+.split-cell-label { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.6rem; }
+.split-cell-title { font-size: 0.88rem; font-weight: 600; color: var(--text-1); margin-bottom: 0.6rem; letter-spacing: -0.015em; }
+.split-cell-body { font-size: 0.79rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.split-cell-body strong { font-weight: 500; color: var(--text-1); }
+.split-cell-body ul { margin-top: 0.5rem; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.split-cell-body li { color: var(--text-2); }
+
+/* ── CALLOUT / REF ──────────────────── */
+.callout { margin: 1.8rem 0; padding: 1rem 1.3rem; background: var(--blue-glow); border-left: 2px solid rgba(61,155,255,0.3); font-size: 0.8rem; color: var(--text-2); font-style: italic; line-height: 1.65; }
+.callout strong { font-weight: 500; color: var(--text-1); font-style: normal; }
+.callout-amber { background: var(--amber-dim); border-left: 2px solid rgba(240,160,32,0.4); }
+.callout-green { background: var(--green-dim); border-left: 2px solid rgba(52,208,122,0.4); }
+.ref-note { margin: 1.4rem 0; padding: 0.8rem 1.1rem; background: var(--bg-2); border: 1px solid var(--border); border-left: 2px solid var(--blue); font-family: var(--f-mono); font-size: 0.66rem; color: rgba(61,155,255,0.65); letter-spacing: 0.01em; line-height: 1.6; }
+
+/* ── COMP TABLE ─────────────────────── */
+.comp-table { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.comp-row { display: grid; grid-template-columns: 200px 1fr 160px; background: var(--bg-card); align-items: start; transition: background 0.12s; }
+.comp-row:hover { background: var(--bg-2); }
+.comp-row.header { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+.c-cell { padding: 0.8rem 1rem; font-size: 0.78rem; color: var(--text-2); font-weight: 300; border-right: 1px solid var(--border); line-height: 1.5; }
+.c-cell:last-child { border-right: none; }
+.comp-row.header .c-cell { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); font-weight: 500; }
+.c-cell.name { font-weight: 500; color: var(--text-1); }
+
+/* ── STATS ROW ───────────────────────── */
+.stats-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.stat-cell { background: var(--bg-card); padding: 1.4rem 1.6rem; transition: background 0.15s; }
+.stat-cell:hover { background: var(--bg-2); }
+.stat-val { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.04em; color: var(--text-1); line-height: 1; margin-bottom: 0.3rem; }
+.stat-val span { color: var(--blue); }
+.stat-label { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); line-height: 1.5; }
+.stat-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 0.2rem; }
+
+/* ── IMPLICATION BAND ───────────────── */
+.impl-band { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.impl-row { display: grid; grid-template-columns: 260px 1fr; background: var(--bg-card); transition: background 0.12s; }
+.impl-row:hover { background: var(--bg-2); }
+.impl-title { padding: 1.3rem 1.4rem; font-size: 0.85rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; border-right: 1px solid var(--border); display: flex; align-items: flex-start; line-height: 1.35; }
+.impl-body { padding: 1.3rem 1.4rem; font-size: 0.8rem; font-weight: 300; color: var(--text-2); line-height: 1.7; }
+.impl-body strong { font-weight: 500; color: var(--text-1); }
+
+/* ── DOMAIN BOX ─────────────────────── */
+.domain-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.domain-card { background: var(--bg-card); padding: 1.5rem; transition: background 0.15s; }
+.domain-card:hover { background: var(--bg-2); }
+.domain-icon-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.7rem; }
+.domain-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.domain-label { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.domain-title { font-size: 0.88rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; margin-bottom: 0.55rem; }
+.domain-body { font-size: 0.77rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.domain-body strong { font-weight: 500; color: var(--text-1); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+.sec{animation:fadeUp 0.5s ease both}
+.sec:nth-child(2){animation-delay:.05s}.sec:nth-child(3){animation-delay:.1s}
+.sec:nth-child(4){animation-delay:.15s}.sec:nth-child(5){animation-delay:.2s}
+.sec:nth-child(6){animation-delay:.25s}.sec:nth-child(7){animation-delay:.3s}
+.sec:nth-child(8){animation-delay:.35s}.sec:nth-child(9){animation-delay:.4s}
+
+@media(max-width:700px){
+  .doc-header,.body{padding-left:1.5rem;padding-right:1.5rem}
+  .card-grid-3,.evo-track,.domain-grid,.stats-bar{grid-template-columns:1fr}
+  .card-grid-2,.split-2{grid-template-columns:1fr}
+  .comp-row,.impl-row,.stack-row{grid-template-columns:1fr}
+  .comp-row .c-cell:last-child{display:none}
+}
+@media print{body{background:#08090c}.sec{page-break-inside:avoid;animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+    <div class="doc-breadcrumb">
+      03. Market &amp; Commercial
+      <span style="opacity:0.3">›</span>
+      <span>GeoAI Positioning</span>
+    </div>
+    <h1 class="doc-title">GeoAI &amp; Earth Intelligence<br><strong>Strategic Category Positioning</strong></h1>
+    <p class="doc-subtitle">
+      How the Earth Intelligence category is forming, why it is becoming foundational infrastructure, and where Involve Space sits within it. Covers the EO-to-Intelligence evolution, GeoAI definition, hardware–AI convergence thesis, multidomain fusion, competitive landscape framing, and the strategic implications of vertical integration.
+    </p>
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-MKT-02</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Type</span>
+        <span class="doc-meta-value">Strategic positioning · Category analysis</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Audience</span>
+        <span class="doc-meta-value">Investor · Partner · Strategic</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Revision</span>
+        <span class="doc-meta-value">A — Feb 2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     BODY
+══════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── §1  EXECUTIVE STRATEGIC OVERVIEW ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Executive Overview</div>
+  <h2 class="sec-title">Earth Intelligence: from data product to foundational infrastructure</h2>
+  <p class="sec-desc">AI is not a tool layered on top of Earth Observation — it is the catalyst transforming geospatial data into decision-ready intelligence</p>
+
+  <p class="prose">
+    GeoAI and "Earth Intelligence" mark a structural shift beyond traditional Earth Observation. Rather than simply collecting imagery (EO 1.0) or running standalone analytics (EO 2.0), the industry is converging on an integrated intelligence layer: <strong>continuous, multi-source sensing fused with advanced AI to deliver real-time insights</strong>. In this paradigm, AI is the catalyst that transforms vast geospatial data into decisions.
+  </p>
+  <p class="prose">
+    Involve Space sits at the nexus of this transformation: persistent stratospheric sensor fleets coupled with a GeoAI orchestration layer (CLEAR). By <strong>controlling both sensing hardware and the AI-driven intelligence layer end-to-end</strong>, Involve aligns with the emerging model of Earth Intelligence as foundational infrastructure — akin to cloud computing or energy networks. Most players in this space focus on only one piece of the stack. Involve's vertical integration is the structural differentiator.
+  </p>
+
+  <!-- Summary positioning -->
+  <div style="border:1px solid rgba(61,155,255,0.2);background:rgba(61,155,255,0.04);padding:1.8rem 2rem;margin:2.5rem 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem">
+    <div>
+      <div style="font-family:var(--f-mono);font-size:0.58rem;color:var(--text-3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem">Category position</div>
+      <div style="font-size:0.9rem;font-weight:600;color:var(--blue);margin-bottom:0.4rem">Earth Intelligence Infrastructure</div>
+      <div style="font-size:0.76rem;font-weight:300;color:var(--text-2);line-height:1.55">Not a satellite operator. Not an analytics vendor. The first vertically-integrated stratospheric sensing + GeoAI platform.</div>
+    </div>
+    <div>
+      <div style="font-family:var(--f-mono);font-size:0.58rem;color:var(--text-3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem">Stack ownership</div>
+      <div style="font-size:0.9rem;font-weight:600;color:var(--text-1);margin-bottom:0.4rem">Sensing → Data → AI → Intelligence</div>
+      <div style="font-size:0.76rem;font-weight:300;color:var(--text-2);line-height:1.55">Every layer controlled in-house: platforms, Neurostar® navigation, CLEAR GeoAI, and data infrastructure.</div>
+    </div>
+    <div>
+      <div style="font-family:var(--f-mono);font-size:0.58rem;color:var(--text-3);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem">Market timing</div>
+      <div style="font-size:0.9rem;font-weight:600;color:var(--green);margin-bottom:0.4rem">Category formation window open</div>
+      <div style="font-size:0.76rem;font-weight:300;color:var(--text-2);line-height:1.55">Resembles early cloud: sensors are cheaper, AI is powerful enough, end-users have demand and budget simultaneously.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §2  INDUSTRY EVOLUTION ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Industry Evolution</div>
+  <h2 class="sec-title">From EO 1.0 to Intelligence Infrastructure</h2>
+  <p class="sec-desc">Three stages of Earth Observation evolution — and three industry pressures driving the transition to EO 3.0</p>
+
+  <!-- Evolution stages -->
+  <div class="evo-track">
+    <div class="evo-stage" style="border-top:2px solid rgba(238,241,246,0.15)">
+      <div class="evo-era">EO 1.0 · Pre-2010s</div>
+      <div class="evo-label" style="color:var(--text-2)">Data Collection</div>
+      <div class="evo-sub">Government imagery · coarse coverage · long latency</div>
+      <div class="evo-desc">
+        Governments and early satellite firms provided imagery with limited resolution and revisit schedules measured in days or weeks. Analysis required specialist GIS teams and significant post-processing time. Outputs were static reports, not operational decisions.
+      </div>
+      <div class="evo-traits">
+        <div class="evo-trait">Government-dominated supply</div>
+        <div class="evo-trait">Weeks-long delivery cycles</div>
+        <div class="evo-trait">Specialist GIS expertise required</div>
+        <div class="evo-trait">Static output formats</div>
+      </div>
+    </div>
+
+    <div class="evo-stage" style="border-top:2px solid var(--amber)">
+      <div class="evo-era">EO 2.0 · 2010s</div>
+      <div class="evo-label" style="color:var(--amber)">Sensor Proliferation</div>
+      <div class="evo-sub">Micro-satellite constellations · analytics startups · data overload</div>
+      <div class="evo-desc">
+        Planet, ICEYE, and dozens of startups drove resolution up and revisit times down. Simultaneously, analytics companies emerged to apply computer vision and statistical methods to the resulting imagery. The result: more data than anyone could process, and a proliferation of disconnected tools.
+      </div>
+      <div class="evo-traits">
+        <div class="evo-trait">Commercial constellations scale</div>
+        <div class="evo-trait">Standalone analytics tools</div>
+        <div class="evo-trait">WEF: 2 exabytes by 2032</div>
+        <div class="evo-trait">Data bottleneck emerges</div>
+      </div>
+    </div>
+
+    <div class="evo-stage" style="border-top:2px solid var(--blue)">
+      <div class="evo-era">EO 3.0 · Now</div>
+      <div class="evo-label" style="color:var(--blue)">Intelligence Infrastructure</div>
+      <div class="evo-sub">Continuous AI-fused intelligence · always-on services · decision layer</div>
+      <div class="evo-desc">
+        Constant data streams from space, stratosphere, and ground are integrated with AI to support <strong>immediate decisions</strong>. The ICEYE–Esri model reframes geospatial intelligence as an infrastructure subscription — not a report, but a continuous geo-streaming layer users embed into operational workflows.
+      </div>
+      <div class="evo-traits">
+        <div class="evo-trait">Multi-domain sensor fusion</div>
+        <div class="evo-trait">Always-on intelligence streams</div>
+        <div class="evo-trait">Agentic AI orchestration</div>
+        <div class="evo-trait">Embedded in operations</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three pressures driving the shift -->
+  <div class="card-grid-3" style="margin-top:2.5rem">
+    <div class="g-card" style="border-top:2px solid rgba(238,241,246,0.2)">
+      <span class="g-card-num">PRESSURE 01</span>
+      <div class="g-card-title">Sensor proliferation and data overload</div>
+      <div class="g-card-body">Satellite constellations and HAPS generate petabytes of imagery. Without AI, "actionable insights" become almost impossible — there is simply too much data for manual analysis to handle.</div>
+      <div class="g-card-stat"><em>2 exabytes</em> of satellite data projected by 2032 (WEF) — the data bottleneck is the constraint, not data availability</div>
+    </div>
+    <div class="g-card" style="border-top:2px solid var(--amber)">
+      <span class="g-card-num">PRESSURE 02</span>
+      <div class="g-card-title">Real-time decision requirements</div>
+      <div class="g-card-body">Climate disasters, infrastructure failures, and military events unfold in hours. Users now expect geospatial intelligence as an <strong>"always-on" service</strong> — analogous to subscribing to an insurance policy that provides immediate risk awareness rather than periodic assessments.</div>
+      <div class="g-card-stat"><em>Operational standard:</em> continuous geo-streaming embedded directly into GIS and decision tools</div>
+    </div>
+    <div class="g-card" style="border-top:2px solid var(--red, #ff6060)">
+      <span class="g-card-num">PRESSURE 03</span>
+      <div class="g-card-title">Geopolitical and environmental instability</div>
+      <div class="g-card-body">Climate volatility and great-power competition raise the stakes. Military and policy planners now see space-based ISR as <strong>essential infrastructure</strong>. Europe explicitly calls for EO to be treated as strategic infrastructure for climate resilience, disaster response, and security.</div>
+      <div class="g-card-stat"><em>$2.718tn</em> global military expenditure in 2024 — steepest increase since at least 1988 (SIPRI)</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §3  DEFINING GEOAI ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Technology Definition</div>
+  <h2 class="sec-title">What GeoAI is — and what it is not</h2>
+  <p class="sec-desc">GeoAI goes beyond traditional GIS and classical EO analytics — it applies deep learning to multi-modal geospatial inputs with spatially-explicit models</p>
+
+  <div class="split-2" style="margin-bottom:2rem">
+    <div class="split-cell">
+      <div class="split-cell-label">Traditional GIS</div>
+      <div class="split-cell-title">Deterministic overlays on structured geodata</div>
+      <div class="split-cell-body">
+        GIS (Geographic Information Systems) are platforms for storing, managing, and visualizing structured geodata using deterministic overlays and queries. Classical EO analytics apply computer vision or statistical methods to imagery — change detection, vegetation indices, classification rules. <strong>Outputs are static and require human interpretation</strong> to translate into decisions.
+      </div>
+    </div>
+    <div class="split-cell" style="background:var(--bg-2);border-top:2px solid var(--blue)">
+      <div class="split-cell-label">GeoAI</div>
+      <div class="split-cell-title">Machine learning on multi-modal spatial inputs</div>
+      <div class="split-cell-body">
+        GeoAI uses machine learning and deep learning to extract, classify, and detect patterns from multi-modal geospatial inputs: images, LiDAR, IoT sensors, and even text. It encompasses <strong>"spatially explicit" AI models</strong> tailored to geography — models that factor in location, shape, and proximity for tasks like object detection, pattern recognition, and spatiotemporal forecasting.
+      </div>
+    </div>
+  </div>
+
+  <p class="prose">
+    The rise of <strong>geospatial foundation models</strong> is amplifying GeoAI's potential. Just as large language models embed text semantics, emerging geospatial foundation models embed visual and spatial context, compressing vast imagery archives into compact representations. IBM's Prithvi-EO series, for example, enables processing of decades of satellite data via "earth embeddings" — mapping forests, floods, and infrastructure with high accuracy. These models can classify land cover or estimate biomass without per-task training data.
+  </p>
+  <p class="prose">
+    The most advanced GeoAI systems balance predictive performance with interpretability: deterministic spatial analysis is embedded in AI workflows to ensure outputs reflect physical reality. In parallel, <strong>agentic systems</strong> are emerging — AI agents that autonomously task sensors, dispatch platforms to detected events, and orchestrate multi-modal pipelines. Involve's CLEAR platform is architected exactly for this role: a cloud-based GeoAI orchestration layer that ingests multi-source feeds, applies foundation-model analytics, and coordinates platform re-tasking.
+  </p>
+
+  <!-- GeoAI capability stack -->
+  <div class="stack" style="margin-top:2rem">
+    <div style="background:var(--bg-2);border-bottom:1px solid var(--border-med);padding:0.6rem 1rem;font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase">GeoAI Capability Progression</div>
+    <div class="stack-row">
+      <div class="stack-label" style="color:var(--text-3)"><span style="color:var(--text-3)">Classical GIS</span>Deterministic</div>
+      <div class="stack-content">Structured geodata storage, overlay queries, static map output. Human analyst interprets results. No learning, no multi-modal fusion. Output: maps and reports.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label" style="color:var(--amber)"><span style="color:var(--amber)">EO Analytics</span>Statistical</div>
+      <div class="stack-content">Classical computer vision on satellite imagery — change detection, NDVI, object classification using hand-engineered features. Faster than manual GIS but still single-source, periodic, and requires human review.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label" style="color:var(--blue)"><span style="color:var(--blue)">GeoAI</span>Multi-modal ML</div>
+      <div class="stack-content">Deep learning on multi-modal inputs (imagery, SAR, LiDAR, IoT, weather). <strong>Spatially-explicit models</strong> — location-aware architecture. Foundation models compress vast archives. High-accuracy classification without per-task training. Probabilistic outputs with uncertainty quantification.</div>
+    </div>
+    <div class="stack-row" style="border-bottom:none">
+      <div class="stack-label" style="color:var(--green)"><span style="color:var(--green)">Agentic GeoAI</span>Orchestration</div>
+      <div class="stack-content">AI agents that <strong>autonomously task sensors</strong>, route intelligence requests, fuse outputs across domains, and trigger operational responses. The system decides which sensor to use, when to acquire data, and how to deliver insight. CLEAR is designed for this layer: agentic decoupling across multi-modal vision agents, with natural language interfaces and automated reporting.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §4  EARTH INTELLIGENCE AS INFRASTRUCTURE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Structural Framework</div>
+  <h2 class="sec-title">Earth Intelligence as foundational infrastructure</h2>
+  <p class="sec-desc">Five macro drivers are making geospatial AI a ubiquitous platform — on par with cloud and energy networks</p>
+
+  <p class="prose">
+    "Earth Intelligence" refers to treating geospatial data and AI as core infrastructure — not a discretionary analytics service, but a <strong>foundational decision-support layer</strong> embedded in operations. The EU Space Conference declared that space assets (satellite navigation, EO, communications) are strategic infrastructure vital for climate monitoring, disaster response, security, and economic resilience. The Group on Earth Observations similarly defines Earth Intelligence as applying AI to EO data to "transform raw data into actionable insights for policy and resilience."
+  </p>
+
+  <div class="domain-grid" style="margin-top:2rem">
+
+    <div class="domain-card">
+      <div class="domain-icon-row">
+        <div class="domain-dot" style="background:var(--blue)"></div>
+        <div class="domain-label">Sovereignty & Strategic Autonomy</div>
+      </div>
+      <div class="domain-title">Nations want independent access to Earth data</div>
+      <div class="domain-body">Europe's Copernicus Sentinel constellations and the proposed EU Governmental EO Service explicitly aim for autonomy in weather, environment, and security data. NATO's JADC2 and US Space Force modernization both depend on integrated geospatial ISR. Governments view geospatial infrastructure as critical to sovereignty — <strong>building their own capabilities rather than depending on foreign providers</strong>. This creates a structural demand pull for sovereign-controlled, domestic sensing infrastructure.</div>
+    </div>
+
+    <div class="domain-card">
+      <div class="domain-icon-row">
+        <div class="domain-dot" style="background:var(--amber)"></div>
+        <div class="domain-label">Climate Risk Exposure</div>
+      </div>
+      <div class="domain-title">Climate change is now a systemic economic risk</div>
+      <div class="domain-body">WEF ranks failure to mitigate climate change among the top near-term global threats. Businesses and regulators demand quantifiable climate analytics. Continuous Earth monitoring feeds adaptation: tracking ice melt, deforestation, flood extents, and urban heat islands. Companies like Satelligence have noted that embedding "Earth Intelligence" into supply-chain decisions is <strong>no longer optional — it is central to risk management</strong>. ESG investor demands are creating markets for granular sustainability intelligence.</div>
+    </div>
+
+    <div class="domain-card">
+      <div class="domain-icon-row">
+        <div class="domain-dot" style="background:var(--green)"></div>
+        <div class="domain-label">Energy Transition</div>
+      </div>
+      <div class="domain-title">Renewables and smart grids depend on geospatial data</div>
+      <div class="domain-body">Solar irradiance mapping, land-use analysis for wind farms, grid stability monitoring, and vegetation management along transmission corridors all require persistent, AI-enhanced Earth data. Countries under pressure to decarbonise will depend on continuous geospatial intelligence to manage ecosystems and infrastructure resources. The US DOE explicitly calls out satellite imagery and AI/ML analytics for enhanced vegetation management as operational requirements — not future-state experiments.</div>
+    </div>
+
+    <div class="domain-card">
+      <div class="domain-icon-row">
+        <div class="domain-dot" style="background:var(--purple)"></div>
+        <div class="domain-label">Defence Modernisation</div>
+      </div>
+      <div class="domain-title">Real-time ISR now extends beyond satellites</div>
+      <div class="domain-body">Current conflicts have highlighted the need for real-time situational awareness at operational tempo. ISR now extends beyond orbital satellites to high-altitude platforms and UAVs, fusing multiple domains. IRIS-France notes that Western militaries are rapidly integrating space and stratospheric sensors for "persistent, AI-driven data fusion." <strong>The stratospheric layer specifically fills the gap</strong> between drones (short-range, weather-limited) and satellites (fixed orbit, coarse revisit) — with both persistence and re-taskability.</div>
+    </div>
+
+    <div class="domain-card" style="grid-column:1/-1;background:rgba(61,155,255,0.04)">
+      <div class="domain-icon-row">
+        <div class="domain-dot" style="background:var(--cyan)"></div>
+        <div class="domain-label">Supply Chain Resilience</div>
+      </div>
+      <div class="domain-title" style="color:var(--cyan)">Global supply chains embed Earth Intelligence into logistics and insurance</div>
+      <div class="domain-body" style="max-width:680px">Firms use satellite analytics to monitor shipping routes, ports, factories, and commodity landscapes for risk — crop failures, fires, flooding, sanctions enforcement. This embeds Earth Intelligence directly into financial risk models and supply-chain operations platforms. The industry direction is clear: <strong>geospatial, AI, IoT, and cloud are converging into new "digital infrastructures"</strong> that businesses pay for on subscription, just as they pay for cloud compute and networking today.</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── §5  HARDWARE + AI CONVERGENCE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Strategic Thesis</div>
+  <h2 class="sec-title">Convergence of hardware and AI — why owning the full stack matters</h2>
+  <p class="sec-desc">McKinsey observes that the most competitive technology acquirers target "strategic control of data, AI models, and computing efficiency" — this maps directly to Involve's architecture</p>
+
+  <p class="prose">
+    In technology industries, leaders strive for end-to-end control of the stack. McKinsey's analysis of technology M&A finds that recent targets are structured around "strategic control of data, access to AI models, and computing efficiency" — and predicts convergence of hardware, cloud, and model layers to secure performance and IP. In the GeoAI context, controlling the sensor layer, the data processing layer, and the intelligence layer creates a compounding moat: each additional data source strengthens models, which in turn increases demand for more data.
+  </p>
+
+  <!-- Satellites vs stratosphere comparison -->
+  <div class="split-2" style="margin-top:2rem">
+    <div class="split-cell">
+      <div class="split-cell-label">Orbiting Satellites</div>
+      <div class="split-cell-title">Global reach, fixed revisit schedule</div>
+      <div class="split-cell-body">
+        Traditional EO uses orbiting satellites for global snapshots — high resolution at high launch cost, but episodic: coverage is tied to the orbital period. A satellite photographs your area of interest on a schedule. It cannot loiter. It cannot be rapidly retasked to a new region without waiting for the next orbital window. Re-launch after a failure is a $100M+ event.
+        <ul style="margin-top:0.7rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:0.3rem">
+          <li style="font-size:0.76rem;color:var(--text-2)">Global coverage but sparse temporal density</li>
+          <li style="font-size:0.76rem;color:var(--text-2)">Fixed revisit intervals — orbital mechanics determine coverage</li>
+          <li style="font-size:0.76rem;color:var(--text-2)">High launch and replacement cost</li>
+          <li style="font-size:0.76rem;color:var(--text-2)">Cannot loiter over a specific target</li>
+        </ul>
+      </div>
+    </div>
+    <div class="split-cell" style="background:rgba(61,155,255,0.04);border-top:2px solid var(--blue)">
+      <div class="split-cell-label">Stratospheric Platforms (HAPS)</div>
+      <div class="split-cell-title" style="color:var(--blue)">Regional persistence, rapid re-deployment, reusable</div>
+      <div class="split-cell-body">
+        Stratospheric platforms loiter over an area for days or weeks at a fraction of satellite cost. Airbus Zephyr flew <strong>64 days continuously</strong>. Involve's Stratostats® v2 targets 90+ days. Unlike a satellite, a platform can be recovered, refurbished, and re-deployed. Real-time intelligence requires continuous monitoring — HAPS provides the "standing watch" that orbital mechanics prevents.
+        <ul style="margin-top:0.7rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:0.3rem">
+          <li style="font-size:0.76rem;color:var(--blue);font-weight:400">Persistent coverage over target area — not scheduled revisit</li>
+          <li style="font-size:0.76rem;color:var(--blue);font-weight:400">Rapidly retasked — re-deploy within 48 hours</li>
+          <li style="font-size:0.76rem;color:var(--blue);font-weight:400">Reusable hardware — recovery and refurbishment cycle</li>
+          <li style="font-size:0.76rem;color:var(--blue);font-weight:400">Lower regulatory burden than orbital launches</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full stack layers -->
+  <div style="margin:2.5rem 0 0.3rem;font-family:var(--f-mono);font-size:0.62rem;color:var(--text-3);letter-spacing:0.12em;text-transform:uppercase">Involve Space — Full Stack Control</div>
+  <div class="stack">
+    <div class="stack-row" style="border-top:2px solid var(--amber)">
+      <div class="stack-label" style="color:var(--amber)"><span style="color:var(--amber)">Hardware Layer</span>Data ownership</div>
+      <div class="stack-content">Controlling the sensing hardware means owning the raw data pipeline. Many competitors outsource satellites or rely on commercial data providers. Involve's <strong>independence on hardware yields proprietary data</strong> — an advantage for unique coverage density, operational stealth (dual-use), and guaranteed availability without third-party dependency. Stratostats® and Stratorelay® are the hardware layer; no external provider can replicate Involve's persistent stratospheric data stream.</div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label" style="color:var(--blue)"><span style="color:var(--blue)">Data &amp; Orchestration</span>Fusion layer</div>
+      <div class="stack-content">Beyond hardware, one must manage, tag, index, and fuse data across sources. Involve's data infrastructure ingests multiple sensor feeds (EO, SAR, multispectral, IoT) into a unified system. The <strong>orchestration capability</strong> — deciding which sensor to task, when to acquire, and how to align outputs — is itself a competitive edge. This is the layer that enables multi-tenancy: multiple customers consuming the same persistent data stream, multiplying margin without multiplying cost.</div>
+    </div>
+    <div class="stack-row" style="border-bottom:none">
+      <div class="stack-label" style="color:var(--green)"><span style="color:var(--green)">Intelligence (AI) Layer</span>CLEAR platform</div>
+      <div class="stack-content">Converting data to intelligence requires AI models and domain-specific workflows. A pure hardware firm delivers imagery; a pure software firm needs to license data from someone else. Involve's integrated model delivers both — enabling <strong>tighter innovation loops</strong>. CLEAR's agentic architecture (prompt router, vision agents, standardizer) processes data from all Involve platforms into structured intelligence output: annotated maps, sector reports, quantitative alerts, and API streams. As McKinsey emphasises, the most valuable players will integrate data, compute, and models into a single compounding system.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-green">
+    <strong>The moat mechanism:</strong> Vertical integration across sensing, data, and AI creates defensibility in two directions. First, new customers face switching costs because Involve controls both input (unique persistent data with no open-access equivalent) and output (tailored, domain-specific intelligence). Second, the data flywheel compounds: each mission generates labelled data that improves models, which delivers better intelligence, which attracts more customers, which funds more missions.
+  </div>
+
+</div>
+
+<!-- ─── §6  MULTIDOMAIN INTELLIGENCE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Future Architecture</div>
+  <h2 class="sec-title">Multidomain intelligence evolution</h2>
+  <p class="sec-desc">Earth Intelligence will not be siloed by altitude or sector — it blends space, stratosphere, aerial, and ground sensing across civil and defence domains</p>
+
+  <p class="prose">
+    The future of Earth Intelligence is inherently multi-domain. It blends space, stratospheric, aerial, and ground sensing — and it serves both civil and defence simultaneously. Currently, EO and ISR systems have been somewhat siloed: civil satellites for weather and mapping, military satellites for reconnaissance, drones for local tasks. GeoAI demands fusion across these silos.
+  </p>
+
+  <div class="card-grid-2" style="margin-top:2rem">
+
+    <div class="g-card" style="border-top:2px solid var(--blue)">
+      <span class="g-card-num">DOMAIN 01 — STRATOSPHERE</span>
+      <div class="g-card-title">The persistence layer that satellites cannot provide</div>
+      <div class="g-card-body">
+        High-altitude drones and balloons serve both commercial (telecom, environmental) and military (ISR, communications relay) missions. The US, China, Russia, and India are all testing stratospheric ISR platforms to fill intelligence gaps. This domain provides <strong>persistent monitoring without the diplomatic complications of satellite overflight</strong> and without the range limitations of conventional aircraft. Involve operates in this domain by design — and has the only commercial HAPS platform with demonstrated station-keeping TRL 9.
+      </div>
+      <div class="g-card-stat"><em>Involve position:</em> Stratostats® TRL 9 · 200+ flights · only commercial HAPS with persistent station-keeping at this maturity level</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--amber)">
+      <span class="g-card-num">DOMAIN 02 — SATELLITE</span>
+      <div class="g-card-title">Complementary global coverage layer</div>
+      <div class="g-card-body">
+        New constellations — optical, radar (SAR), hyperspectral — will complement stratospheric data, not replace it. A forest cover analysis might use daily UAV scans plus weekly satellite imagery plus continuous HAPS data. Advances in multi-sensor satellite platforms (radar-optical hybrids) also contribute data diversity. <strong>GeoAI's role is fusion</strong>: ingesting all three into a unified model that resolves the temporal and spatial gaps each source alone cannot fill.
+      </div>
+      <div class="g-card-stat"><em>CLEAR role:</em> Ingests Copernicus, commercial satellite, IoT feeds alongside Involve platform data — single intelligence output regardless of source</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--green)">
+      <span class="g-card-num">DOMAIN 03 — GROUND / IOT</span>
+      <div class="g-card-title">In-situ context that remote sensing alone cannot provide</div>
+      <div class="g-card-body">
+        Sensors on the ground — weather stations, seismographs, traffic cameras, industrial IoT — add the physical context that aerial imagery cannot directly measure. Future GeoAI platforms will correlate in-situ signals with aerial data. This fusion is already proven in climate models (satellite + ocean buoy data) and smart cities (satellite imagery + IoT traffic sensors). <strong>CLEAR's architecture is designed to be domain-agnostic</strong>, accepting any structured sensor feed alongside platform imagery.
+      </div>
+      <div class="g-card-stat"><em>CLEAR architecture:</em> Multi-source fusion — agentic decoupling allows any sensor type to be added as a new vision agent module</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--purple)">
+      <span class="g-card-num">DOMAIN 04 — CIVIL–DEFENCE CONVERGENCE</span>
+      <div class="g-card-title">Dual-use by design — same algorithms, different frontends</div>
+      <div class="g-card-body">
+        The same geospatial AI platforms are used for climate resilience and national security. Mapping wildfire risk and mapping battlefield terrain both use similar algorithms on multispectral imagery. Involve's platform is dual-use by design — its persistent monitoring benefits disaster response and treaty verification as much as border security and ISR. <strong>The same CLEAR layer can feed different frontends</strong> for different customer types. This broadens the addressable market while sharing underlying model and data infrastructure costs.
+      </div>
+      <div class="g-card-stat"><em>Involve dual-use:</em> MoD contract for defence ISR · commercial EO mapping · IOD rideshare · agricultural intelligence — same platform, different customers</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── §7  COMPETITIVE LANDSCAPE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Competitive Landscape</div>
+  <h2 class="sec-title">Structural positioning across the competitor landscape</h2>
+  <p class="sec-desc">Involve occupies a category position that no existing player covers — not because it is better at one layer, but because it controls all three</p>
+
+  <p class="prose">
+    The competitive landscape for Earth Intelligence is organised around players who own one or two layers of the sensing-to-intelligence stack. <strong>No pure competitor covers the entire spectrum with the same sensor modality</strong> (stratosphere) and an integrated AI platform. Understanding where each competitor type sits explains why Involve's vertical integration is structurally differentiated, not just technically distinct.
+  </p>
+
+  <div class="comp-table">
+    <div class="comp-row header">
+      <div class="c-cell">Competitor type</div>
+      <div class="c-cell">What they own · What they lack</div>
+      <div class="c-cell">Involve's gap vs them</div>
+    </div>
+
+    <!-- Satellite operators -->
+    <div class="comp-row" style="background:rgba(255,255,255,0.01)">
+      <div class="c-cell" style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;grid-column:1/-1;border-right:none;background:var(--bg-2);padding:0.5rem 1rem">Satellite Operators</div>
+    </div>
+    <div class="comp-row">
+      <div class="c-cell name">Planet Labs, Maxar, ICEYE, BlackSky</div>
+      <div class="c-cell"><strong>Own:</strong> satellite constellations, basic analytics dashboards, government distribution relationships. <strong>Lack:</strong> persistence over a single area (orbit-constrained revisit), re-taskability within hours, low-cost deployment, and an integrated AI intelligence layer that goes beyond imagery delivery.</div>
+      <div class="c-cell"><span class="badge badge-blue">Persistence + AI layer</span></div>
+    </div>
+
+    <!-- EO analytics -->
+    <div class="comp-row" style="background:rgba(255,255,255,0.01)">
+      <div class="c-cell" style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;grid-column:1/-1;border-right:none;background:var(--bg-2);padding:0.5rem 1rem">EO Analytics Firms — Software-first, Data-light</div>
+    </div>
+    <div class="comp-row">
+      <div class="c-cell name">Orbital Insight, Descartes Labs, Capella Insight, Upstream Tech</div>
+      <div class="c-cell"><strong>Own:</strong> AI models, domain analytics, customer relationships in specific verticals. <strong>Lack:</strong> hardware — they purchase third-party imagery and are therefore dependent on external data providers for quality, cadence, and availability. They cannot customize data acquisition or create proprietary coverage.</div>
+      <div class="c-cell"><span class="badge badge-green">Hardware independence</span></div>
+    </div>
+
+    <!-- Defence integrators -->
+    <div class="comp-row" style="background:rgba(255,255,255,0.01)">
+      <div class="c-cell" style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;grid-column:1/-1;border-right:none;background:var(--bg-2);padding:0.5rem 1rem">Defence Integrators and Primes</div>
+    </div>
+    <div class="comp-row">
+      <div class="c-cell name">Lockheed Martin, Thales, BAE Systems</div>
+      <div class="c-cell"><strong>Own:</strong> defence distribution, program management depth, classified infrastructure access. <strong>Lack:</strong> entrepreneurial speed, commercial infrastructure pricing, proprietary AI layer. They integrate other vendors' technology rather than owning novel sensing infrastructure. Programmes are classified, slow to procure, and not available commercially.</div>
+      <div class="c-cell"><span class="badge badge-amber">Agility + dual-use commercial</span></div>
+    </div>
+
+    <!-- AI SaaS -->
+    <div class="comp-row" style="background:rgba(255,255,255,0.01)">
+      <div class="c-cell" style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;grid-column:1/-1;border-right:none;background:var(--bg-2);padding:0.5rem 1rem">AI-first SaaS / Intelligence Platforms</div>
+    </div>
+    <div class="comp-row">
+      <div class="c-cell name">Palantir, Anduril, niche spatial SaaS</div>
+      <div class="c-cell"><strong>Own:</strong> data platform infrastructure, government integration, AI orchestration frameworks. <strong>Lack:</strong> control over data acquisition — they ingest whatever is available. For an AI-SaaS to match Involve, they would need to secure the same kind of persistent, high-cadence vertical data feed. Their data quality and availability depends on third-party supply.</div>
+      <div class="c-cell"><span class="badge badge-purple">Proprietary data pipeline</span></div>
+    </div>
+
+    <!-- Involve -->
+    <div class="comp-row" style="background:rgba(61,155,255,0.04);border-top:1px solid rgba(61,155,255,0.2)">
+      <div class="c-cell" style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3);letter-spacing:0.1em;text-transform:uppercase;font-weight:400;grid-column:1/-1;border-right:none;padding:0.5rem 1rem">Involve Space — Full-Stack Earth Intelligence</div>
+    </div>
+    <div class="comp-row" style="background:rgba(61,155,255,0.04)">
+      <div class="c-cell name" style="color:var(--blue)">Involve Space</div>
+      <div class="c-cell"><strong style="font-weight:500;color:var(--text-1)">Owns all three layers:</strong> stratospheric sensing hardware (Stratostats® + Stratorelay®), autonomous navigation and data infrastructure (Neurostar®), and AI-native GeoAI platform (CLEAR). Persistent stratospheric coverage cannot be replicated by satellite operators. Proprietary data pipeline cannot be matched by analytics-only firms. Integrated commercial + defence model differentiates from defence primes. <strong>No single competitor covers this spectrum in the stratospheric domain.</strong></div>
+      <div class="c-cell"><span class="badge badge-green">Integrated infrastructure</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §8  WHY THIS MOMENT MATTERS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Market Timing</div>
+  <h2 class="sec-title">Why this moment matters — five timing indicators</h2>
+  <p class="sec-desc">Sensors are cheaper, AI is powerful enough, and end-users have both demand and budget — a rare alignment that mirrors the early days of cloud infrastructure</p>
+
+  <div class="stats-bar">
+    <div class="stat-cell">
+      <div class="stat-val">$<span>12.1</span>bn</div>
+      <div class="stat-label">Satellite data services 2024</div>
+      <div class="stat-sub">→ $29.6bn by 2030 · 16.3% CAGR</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">25<span>%</span></div>
+      <div class="stat-label">HAPS market CAGR (2026–2031)</div>
+      <div class="stat-sub">→ $4.3bn by 2031 (Mordor Intelligence)</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">$<span>470</span>M</div>
+      <div class="stat-label">GeoAI solutions by 2030</div>
+      <div class="stat-sub">25% CAGR · from sub-$100M base today</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">$<span>2.7</span>tn</div>
+      <div class="stat-label">Global military spend 2024</div>
+      <div class="stat-sub">+9.4% YoY · steepest increase since 1988</div>
+    </div>
+  </div>
+
+  <div class="card-grid-3" style="margin-top:2rem">
+
+    <div class="g-card" style="border-top:2px solid var(--green)">
+      <span class="g-card-num">INDICATOR 01</span>
+      <div class="g-card-title">Surging geospatial markets across all segments</div>
+      <div class="g-card-body">Satellite data services are growing at 16.3% CAGR. The defence/security segment is already ~25% of this market. High-growth niches — climate monitoring, 5G relay, HAPS telecommunications — are compounding growth. GeoAI solutions specifically are forecast at 25% CAGR, reflecting AI's penetration of the geospatial workflow.</div>
+      <div class="g-card-stat"><em>Defence share:</em> ~25% of satellite data services market today — and defence spend is accelerating</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--blue)">
+      <span class="g-card-num">INDICATOR 02</span>
+      <div class="g-card-title">Pent-up demand from commercial digitisation</div>
+      <div class="g-card-body">Smart-city initiatives, digital twins, precision agriculture, and industrial asset monitoring all require continuous remote sensing. As companies digitise physical assets — pipelines, mines, farms, transmission corridors — they demand always-on monitoring. This is not new demand created by marketing; it is latent demand that existing technology could not previously serve economically.</div>
+      <div class="g-card-stat"><em>Digital twins:</em> $21bn (2025) → $150bn (2030) at 47.9% CAGR — all require persistent EO updates</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--amber)">
+      <span class="g-card-num">INDICATOR 03</span>
+      <div class="g-card-title">Defence procurement at record pace and openness to commercial</div>
+      <div class="g-card-body">Global military budgets at $2.718tn — the highest ever recorded. A significant and growing fraction is devoted to space, ISR, and C4ISR systems. Critically, procurement is opening to commercial: NRO's "largest-ever" decade-long EOCL commercial imagery contracts prove governments will buy commercial at scale when it improves resilience.</div>
+      <div class="g-card-stat"><em>MoD entry:</em> Involve's €2M Italian MoD contract is the template — replicable across NATO procurement vehicles</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid rgba(52,208,122,0.5)">
+      <span class="g-card-num">INDICATOR 04</span>
+      <div class="g-card-title">Climate and nature mandates creating regulatory demand</div>
+      <div class="g-card-body">International commitments (Paris Agreement, Global Stocktake) and emerging regulations require enhanced monitoring of emissions, land-use, and hazards. COP29 and the UN explicitly recognised EO and AI systems as critical for resilience. Investor ESG demands are creating markets for detailed sustainability intelligence — <strong>corporates must report what they previously only needed to estimate</strong>.</div>
+      <div class="g-card-stat"><em>Emerging compliance:</em> CSRD, TNFD, SFDR all create mandatory monitoring obligations for large corporates</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--purple)">
+      <span class="g-card-num">INDICATOR 05</span>
+      <div class="g-card-title">AI adoption in geospatial workflows is accelerating</div>
+      <div class="g-card-body">Platform providers (Esri, Google Earth Engine) are embedding ML features and integrating with enterprise data stacks. The GEO/OECD AI for Earth initiative shows that organisations now expect GeoAI capabilities as first-class features — not specialised add-ons. Spatial analytics are becoming standard capabilities in data platforms, not optional extensions.</div>
+      <div class="g-card-stat"><em>Platform signal:</em> Esri + ICEYE integration embeds continuous SAR directly into ArcGIS operations workflows</div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--cyan);background:rgba(0,200,224,0.03)">
+      <span class="g-card-num">TIMING SYNTHESIS</span>
+      <div class="g-card-title" style="color:var(--cyan)">The cloud parallel — a rare confluence window</div>
+      <div class="g-card-body">Taken together, these trends imply a rare alignment: <strong>sensors are cheaper and more available, AI is powerful enough to use them, and end-users have both demand and budget simultaneously</strong>. In broad strokes, this resembles the early days of cloud computing — large unmet demand meeting new enabling technology. This confluence creates a window where a new category — Earth Intelligence — can be shaped by an early leader.</div>
+      <div class="g-card-stat"><em>Window thesis:</em> Category leaders in infrastructure technology tend to be defined in the first 3–5 years of formation — before the category becomes contested by incumbents</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── §9  STRATEGIC POSITIONING IMPLICATIONS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Strategic Conclusions</div>
+  <h2 class="sec-title">Four strategic positioning implications</h2>
+  <p class="sec-desc">How the above analysis translates into defensible competitive advantages for Involve Space</p>
+
+  <div class="impl-band">
+
+    <div class="impl-row" style="border-top:2px solid var(--blue)">
+      <div class="impl-title">Owning sensing + AI yields leverage</div>
+      <div class="impl-body">
+        Control over the full stack — from data capture to intelligence delivery — creates <strong>high switching costs</strong>: customers relying on Involve's data loop cannot easily substitute only a part without losing either persistence or the integrated insight. It also multiplies value: each additional sensor or data source strengthens models, which increases demand for more data. In technology M&A, companies securing "strategic control of data" and convergence of hardware and software have been most competitive. Involve's integrated pipeline is the analogue in Earth Intelligence.
+      </div>
+    </div>
+
+    <div class="impl-row">
+      <div class="impl-title">Infrastructure logic enhances defensibility</div>
+      <div class="impl-body">
+        Infrastructure platforms benefit from scale and network effects. Every new user that depends on Involve's intelligence layer deepens its moat. This is similar to how early cloud providers built lock-in. As more civil and defence actors integrate Involve's data into operations, Involve can leverage that scale to improve models, negotiate data partnerships, and standardise APIs — promoting category lock-in. Infrastructure players also enjoy <strong>more stable, recurring subscription revenue</strong> than one-off data or analytics sales.
+      </div>
+    </div>
+
+    <div class="impl-row">
+      <div class="impl-title">Category creation — "Earth Intelligence Infrastructure" — is achievable</div>
+      <div class="impl-body">
+        "Geospatial intelligence" was historically military jargon. "Earth observation" is too broad. But "Earth Intelligence Infrastructure" is emerging as a distinct category — an intelligent sensing layer that spans sectors and altitudes. By articulating itself as an infrastructure provider (not just a satellite or an analytics firm), <strong>Involve can claim category leadership</strong> rather than a position in an existing contested market. This grants marketing and partner advantages: Involve becomes the reference point for the category.
+      </div>
+    </div>
+
+    <div class="impl-row" style="border-bottom:none">
+      <div class="impl-title">Dual-use and sovereignty — a structural procurement advantage</div>
+      <div class="impl-body">
+        Involve's technology serves both commercial and national-security needs, appealing to a wider set of stakeholders. In contexts where <strong>strategic data sovereignty is a procurement criterion</strong> — increasingly the case across Europe and NATO — having a domestic provider and non-satellite sensing modality is a decisive advantage. This opens both public contracts with favourable terms and new civilian markets that would otherwise require explicit government approval for foreign-controlled sensing infrastructure.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-green" style="margin-top:2.5rem">
+    <strong>Investor-grade conclusion:</strong> Involve's structural positioning — controlling sensors, data, and AI — aligns with the deep market forces at play. This is not merely a business plan; it is a solution emerging naturally from the industry's evolution. The company is poised to benefit from ongoing shifts towards integrated geospatial infrastructure, and its positioning is both <strong>timely</strong> (the category formation window is open now) and <strong>defensible</strong> (vertical integration creates compounding switching costs at every layer of the stack).
+  </div>
+
+  <div class="ref-note">
+    Sources: GEO / AI for Good Summit · WEF (2024) · SIPRI (2025) · EU Space Conference / Copernicus · McKinsey Technology M&A · IRIS-France (2026) · TRENDS Research &amp; Advisory · Grand View Research · Mordor Intelligence · IndustryARC · Satelligence · Esri GeoAI Documentation · GeoBuiz 2026. Full source list with footnote references [1–37] available in the source document.
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div style="padding:2.5rem 0 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+  <div style="display:flex;align-items:center;gap:1.2rem">
+    <img src="https://cdn.prod.website-files.com/671f5ec2f687d2f55fafe279/672a0ca51d9e5090193779ed_symbol.svg"
+         alt="" style="height:16px;opacity:0.3;filter:brightness(0) invert(1)"
+         onerror="this.style.display='none'">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Involve Space S.r.l. · IS-DR-MKT-02 · GeoAI &amp; Earth Intelligence Positioning · REV A · Feb 2026
+    </span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Related: Market Overview (IS-DR-MKT-01) · CLEAR GeoAI Layer (IS-DR-06)
+    </span>
+    <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(240,160,32,0.2);padding:0.22rem 0.65rem">CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /body -->
+</body>
+</html>

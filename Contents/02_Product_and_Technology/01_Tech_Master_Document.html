@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Master Document — Technology Overview | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── DESIGN TOKENS ─────────────────────────── */
+:root {
+  --bg:           #08090c;
+  --bg-1:         #0d0f14;
+  --bg-2:         #12151c;
+  --bg-3:         #171b24;
+  --bg-card:      #0f1218;
+  --border:       rgba(255,255,255,0.07);
+  --border-med:   rgba(255,255,255,0.12);
+  --border-hi:    rgba(255,255,255,0.2);
+  --text-1:       #eef1f6;
+  --text-2:       rgba(238,241,246,0.55);
+  --text-3:       rgba(238,241,246,0.28);
+  --blue:         #3d9bff;
+  --blue-dim:     rgba(61,155,255,0.15);
+  --blue-glow:    rgba(61,155,255,0.06);
+  --cyan:         #00c8e0;
+  --cyan-dim:     rgba(0,200,224,0.12);
+  --green:        #34d07a;
+  --green-dim:    rgba(52,208,122,0.12);
+  --amber:        #f0a020;
+  --amber-dim:    rgba(240,160,32,0.12);
+  --red-dim:      rgba(255,80,80,0.12);
+  --red:          #ff6060;
+  --f-body:       'Inter', -apple-system, sans-serif;
+  --f-mono:       'DM Mono', monospace;
+  --r:            4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--f-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 0 6rem;
+}
+
+/* ── DOCUMENT HEADER ───────────────────────── */
+.doc-header {
+  position: relative;
+  padding: 3.5rem 3.5rem 3rem;
+  border-bottom: 1px solid var(--border-med);
+  overflow: hidden;
+}
+
+/* Subtle grid bg */
+.doc-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.doc-header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+
+.doc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+
+.doc-breadcrumb span { color: var(--blue); }
+
+.doc-title {
+  font-size: 2.4rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin-bottom: 0.6rem;
+}
+
+.doc-title strong { font-weight: 600; }
+
+.doc-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  font-weight: 300;
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.doc-meta-row {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.doc-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.doc-meta-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.doc-meta-value {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── LAYOUT ────────────────────────────────── */
+.body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 3.5rem;
+}
+
+/* ── SECTIONS ──────────────────────────────── */
+.sec {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.sec:last-child { border-bottom: none; }
+
+.sec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+.sec-eyebrow::before {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 1px;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+
+.sec-title {
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  margin-bottom: 0.35rem;
+  line-height: 1.2;
+}
+
+.sec-desc {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 2.2rem;
+  font-style: italic;
+}
+
+/* ── BODY TEXT ─────────────────────────────── */
+.prose {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-2);
+  max-width: 780px;
+}
+.prose + .prose { margin-top: 0.9rem; }
+.prose strong { font-weight: 500; color: var(--text-1); }
+.prose em { color: var(--text-2); font-style: italic; }
+
+/* ── STATS BAR ─────────────────────────────── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+
+.stat-cell {
+  background: var(--bg-card);
+  padding: 1.4rem 1.6rem;
+  transition: background 0.15s;
+}
+.stat-cell:hover { background: var(--bg-2); }
+
+.stat-val {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.stat-val span { color: var(--blue); }
+
+.stat-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ── IMAGE PLACEHOLDER ─────────────────────── */
+.img-placeholder {
+  background: var(--bg-2);
+  border: 1px dashed var(--border-hi);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+}
+
+.img-placeholder-icon {
+  width: 36px;
+  height: 36px;
+  opacity: 0.18;
+}
+
+.img-placeholder-label {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.img-placeholder-hint {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  font-style: italic;
+  max-width: 260px;
+}
+
+/* ── TECH CARD GRID ────────────────────────── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+
+.tech-card {
+  background: var(--bg-card);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.15s;
+}
+.tech-card:hover { background: var(--bg-2); }
+
+.tech-card-img {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tech-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tech-card-body { padding: 1.5rem; flex: 1; }
+
+.tech-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8rem;
+  gap: 0.8rem;
+}
+
+.tech-card-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+}
+
+.tech-card-role {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-bottom: 0.6rem;
+}
+
+.tech-card-desc {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin-bottom: 1.2rem;
+}
+
+.tech-card-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.spec-row:last-child { border-bottom: none; }
+
+.spec-key {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+}
+
+.spec-val {
+  font-weight: 500;
+  color: var(--text-1);
+  font-size: 0.75rem;
+}
+
+/* Neurostar card spans full width on its own row */
+.tech-card-wide {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+.tech-card-wide .tech-card-img { height: auto; min-height: 200px; }
+
+/* ── BADGE ─────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+
+.badge::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── DIAGRAM WRAPPER ───────────────────────── */
+.diag {
+  margin: 2rem 0;
+  background: var(--bg-1);
+  border: 1px solid var(--border-med);
+  padding: 2rem 2rem 1.5rem;
+  overflow-x: auto;
+}
+
+.diag-caption {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  color: var(--text-3);
+  text-align: center;
+  margin-top: 1.2rem;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+/* ── FLOW ROWS ─────────────────────────────── */
+.flow-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+
+.flow-label {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding-top: 0.1rem;
+}
+
+.flow-content {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+  border-left: 1px solid var(--border-med);
+  padding-left: 1.2rem;
+}
+.flow-content strong { font-weight: 500; color: var(--text-1); }
+
+/* ── CALLOUT / REF ─────────────────────────── */
+.callout {
+  margin: 1.8rem 0;
+  padding: 1rem 1.3rem;
+  background: var(--blue-glow);
+  border-left: 2px solid rgba(61,155,255,0.3);
+  font-size: 0.8rem;
+  color: var(--text-2);
+  font-style: italic;
+  line-height: 1.65;
+}
+.callout strong { font-weight: 500; color: var(--text-1); font-style: normal; }
+
+.ref-note {
+  margin: 1.4rem 0;
+  padding: 0.8rem 1.1rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--blue);
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  color: rgba(61,155,255,0.65);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+/* ── INTERCONNECT TABLE ─────────────────────── */
+.tbl-wrap {
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border-med);
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+thead tr { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--blue-glow); }
+td { padding: 0.7rem 1rem; vertical-align: top; color: var(--text-2); font-weight: 300; line-height: 1.5; }
+td:first-child { font-weight: 500; color: var(--text-1); white-space: nowrap; }
+
+/* ── SCROLL REVEAL (CSS only) ───────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sec { animation: fadeUp 0.5s ease both; }
+.sec:nth-child(2) { animation-delay: 0.05s; }
+.sec:nth-child(3) { animation-delay: 0.10s; }
+.sec:nth-child(4) { animation-delay: 0.15s; }
+.sec:nth-child(5) { animation-delay: 0.20s; }
+
+@media (max-width: 680px) {
+  .doc-header, .body { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .tech-card-wide { grid-template-columns: 1fr; }
+  .flow-row { grid-template-columns: 1fr; }
+}
+
+@media print {
+  body { background: #08090c; }
+  .sec { page-break-inside: avoid; animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     DOCUMENT HEADER
+═══════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+
+    <div class="doc-breadcrumb">
+      02. Product &amp; Technology
+      <span style="opacity:0.3">›</span>
+      <span>Tech Master Document</span>
+      <span style="opacity:0.3">›</span>
+      Part 1 / Technology Overview
+    </div>
+
+    <h1 class="doc-title">
+      Technology Overview &<br><strong>System Architecture</strong>
+    </h1>
+
+    <p class="doc-subtitle">
+      A system-level map of Involve Space's proprietary technology stack — what each technology does, how they interconnect, and why the vertical integration creates a structural advantage in stratospheric Earth intelligence.
+    </p>
+
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-02-01</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Section</span>
+        <span class="doc-meta-value">Tech Master Document — Part 1</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Status</span>
+        <span class="doc-meta-value" style="color:var(--green)">Current</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Revision</span>
+        <span class="doc-meta-value">A — Feb 2026</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     BODY
+═══════════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── 1. WHAT INVOLVE SPACE BUILDS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Executive Overview</div>
+  <h2 class="sec-title">What Involve Space builds</h2>
+  <p class="sec-desc">Stratospheric intelligence infrastructure — sensing, autonomy, and AI as one system</p>
+
+  <p class="prose">
+    Involve Space designs, builds, and operates <strong>autonomous stratospheric platforms</strong> that carry sensing payloads to altitudes of 20–30 km — the stratosphere — and maintain position there for hours, days, or weeks. From that altitude layer, the platforms collect <strong>ultra-high-resolution Earth observation data</strong> with persistence and coverage no satellite or drone can match. That data feeds <strong>CLEAR</strong>, a proprietary AI-native geospatial intelligence system that converts raw imagery into structured, queryable intelligence.
+  </p>
+  <p class="prose" style="margin-top:0.9rem">
+    The three core capabilities — <strong>stratospheric platforms</strong>, <strong>autonomous navigation</strong>, and <strong>GeoAI analytics</strong> — are not independent products. They are co-designed subsystems with shared data flows, interdependent control loops, and compounding value. This vertical integration is the structural core of the company.
+  </p>
+
+  <!-- Stats -->
+  <div class="stats-bar" style="margin-top:2.5rem">
+    <div class="stat-cell">
+      <div class="stat-val">200<span>+</span></div>
+      <div class="stat-label">Flights executed</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">30<span>km</span></div>
+      <div class="stat-label">Max operating altitude</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">90<span>+d</span></div>
+      <div class="stat-label">Max endurance (Stratostats® v2)</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">10<span>cm</span></div>
+      <div class="stat-label">Imagery resolution per pixel</div>
+    </div>
+  </div>
+
+  <!-- Image placeholder — hero shot -->
+  <div class="img-placeholder" style="height:320px;margin-top:0.5rem">
+    <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <path d="M21 15l-5-5L5 21"/>
+    </svg>
+    <div class="img-placeholder-label">Hero Image</div>
+    <div class="img-placeholder-hint">Stratostats® in flight at stratospheric altitude — recommended: wide landscape shot showing balloon with Earth curvature below</div>
+  </div>
+
+</div>
+
+<!-- ─── 2. THE TECHNOLOGY STACK ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Proprietary Technologies</div>
+  <h2 class="sec-title">Four technologies, one integrated stack</h2>
+  <p class="sec-desc">Each technology is proprietary, at advanced TRL, and designed to interact with the others</p>
+
+  <p class="prose">
+    Involve Space has developed four core proprietary technologies. Three operate at the <strong>hardware + autonomy layer</strong> (Stratostats®, Stratorelay®, LoonHive®) and one at the <strong>intelligence layer</strong> (CLEAR). All four are orchestrated by <strong>Neurostar®</strong>, the AI-based mission control and navigation system that runs across all platform types.
+  </p>
+
+  <div class="tech-grid" style="margin-top:2rem">
+
+    <!-- STRATOSTATS -->
+    <div class="tech-card">
+      <div class="tech-card-img">
+        <div class="img-placeholder" style="height:100%;border:none;border-radius:0">
+          <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <div class="img-placeholder-label">Stratostats® Photo</div>
+          <div class="img-placeholder-hint">Balloon + gondola at launch or in flight</div>
+        </div>
+      </div>
+      <div class="tech-card-body">
+        <div class="tech-card-header">
+          <div>
+            <div class="tech-card-name">Stratostats®</div>
+            <div class="tech-card-role">Active Pseudo-Satellite Platform</div>
+          </div>
+          <span class="badge badge-green">TRL 9</span>
+        </div>
+        <p class="tech-card-desc">
+          Fully autonomous stratospheric platform with active altitude control. Navigates by shifting between wind layers at different altitudes — like a sailboat exploiting wind direction changes. Carries a modular payload bay and maintains position over a target area for extended missions.
+        </p>
+        <div class="tech-card-specs">
+          <div class="spec-row">
+            <span class="spec-key">Altitude</span>
+            <span class="spec-val">20–30 km</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Endurance</span>
+            <span class="spec-val">90+ days (v2)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Station-keeping</span>
+            <span class="spec-val">50 km radius, 90% time</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Telecom</span>
+            <span class="spec-val">&gt;30 Mbps satellite link</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Power</span>
+            <span class="spec-val">400 W solar + 1,800 Wh battery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRATORELAY -->
+    <div class="tech-card">
+      <div class="tech-card-img">
+        <div class="img-placeholder" style="height:100%;border:none;border-radius:0">
+          <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <div class="img-placeholder-label">Stratorelay® Photo</div>
+          <div class="img-placeholder-hint">Small balloon at launch — simplified design vs Stratostats®</div>
+        </div>
+      </div>
+      <div class="tech-card-body">
+        <div class="tech-card-header">
+          <div>
+            <div class="tech-card-name">Stratorelay®</div>
+            <div class="tech-card-role">Minimum Viable Platform — Passive Navigation</div>
+          </div>
+          <span class="badge badge-green">TRL 8</span>
+        </div>
+        <p class="tech-card-desc">
+          Cost-optimized platform without active altitude control. Uses predictive deployment software to calculate optimal launch time and position so that atmospheric winds naturally carry it over the target area. Deployed within 48h by one operator, from any surface including a van.
+        </p>
+        <div class="tech-card-specs">
+          <div class="spec-row">
+            <span class="spec-key">Mission cost</span>
+            <span class="spec-val">€2,000–3,000 end-to-end</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Deployment</span>
+            <span class="spec-val">1 operator · within 48h</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Navigation</span>
+            <span class="spec-val">Predictive wind-drift (passive)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Demonstrated</span>
+            <span class="spec-val">181 km² Milan · 1,285 km² Rome</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOOONHIVE -->
+    <div class="tech-card">
+      <div class="tech-card-img">
+        <div class="img-placeholder" style="height:100%;border:none;border-radius:0">
+          <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <div class="img-placeholder-label">LoonHive® Simulation</div>
+          <div class="img-placeholder-hint">Constellation simulation over Europe — the pressure-colored distribution map</div>
+        </div>
+      </div>
+      <div class="tech-card-body">
+        <div class="tech-card-header">
+          <div>
+            <div class="tech-card-name">LoonHive®</div>
+            <div class="tech-card-role">Scalable Stratospheric Constellation</div>
+          </div>
+          <span class="badge badge-amber">TRL 5</span>
+        </div>
+        <p class="tech-card-desc">
+          The fleet architecture layer. Multiple Stratostats® units coordinated as a sensing network, delivering continuous coverage of entire regions. Classical solvers need 11 days to optimize a 150-balloon configuration — Neurostar® solves the same problem in minutes using a quantum-inspired approach.
+        </p>
+        <div class="tech-card-specs">
+          <div class="spec-row">
+            <span class="spec-key">Scale</span>
+            <span class="spec-val">2 → 150+ platforms</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Optimization</span>
+            <span class="spec-val">Quantum-inspired · minutes vs 11 days</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Coverage</span>
+            <span class="spec-val">Regional → continental</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">First flights</span>
+            <span class="spec-val">2026 (incremental)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLEAR -->
+    <div class="tech-card">
+      <div class="tech-card-img">
+        <div class="img-placeholder" style="height:100%;border:none;border-radius:0">
+          <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <div class="img-placeholder-label">CLEAR Interface Screenshot</div>
+          <div class="img-placeholder-hint">CLEAR dashboard with GeoAssistant panel open — the sign-in or data catalog view</div>
+        </div>
+      </div>
+      <div class="tech-card-body">
+        <div class="tech-card-header">
+          <div>
+            <div class="tech-card-name">CLEAR</div>
+            <div class="tech-card-role">GeoAI Platform — Earth Analytics & Reconnaissance</div>
+          </div>
+          <span class="badge badge-amber">TRL 5</span>
+        </div>
+        <p class="tech-card-desc">
+          Cloud-native AI platform that converts stratospheric imagery into natural language-responsive intelligence. Users query in plain language; CLEAR returns annotated maps, reports, and quantitative insights. Integrates proprietary stratospheric data with external sources (Copernicus, commercial satellites, IoT).
+        </p>
+        <div class="tech-card-specs">
+          <div class="spec-row">
+            <span class="spec-key">Interface</span>
+            <span class="spec-val">Natural language queries</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Architecture</span>
+            <span class="spec-val">Agentic decoupling · multi-model</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Output</span>
+            <span class="spec-val">Reports · maps · quantitative data</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Target</span>
+            <span class="spec-val">TRL 7 by end-2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tech-grid -->
+
+  <!-- NEUROSTAR — full width -->
+  <div style="background:var(--bg-card);border:1px solid var(--border-med);border-top:2px solid var(--blue);display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-med);margin-top:1px">
+    <div style="background:var(--bg-card);padding:1.8rem">
+      <div class="tech-card-header">
+        <div>
+          <div class="tech-card-name" style="font-size:1rem">Neurostar®</div>
+          <div class="tech-card-role">AI Mission Control &amp; Navigation Suite — runs across all platforms</div>
+        </div>
+        <span class="badge badge-blue">TRL 6</span>
+      </div>
+      <p class="tech-card-desc">
+        The AI software suite that enables active control of stratospheric balloons — and the connective tissue of the entire stack. Unlike passive systems that drift unpredictably, Neurostar® reads atmospheric data from onboard sensors and ECMWF weather forecasts in real time, then commands the altitude control system to navigate into wind layers that push the platform toward its goal.
+      </p>
+      <p class="tech-card-desc" style="margin-top:0.6rem">
+        Neurostar® is not a single algorithm. It is a suite of tools: <strong>StationSeeker/AI</strong> for real-time altitude navigation, <strong>StratoLoop</strong> for long-range trajectory planning, <strong>StratoEye</strong> for global feasibility mapping, and a <strong>quantum-inspired fleet optimizer</strong> for LoonHive® coordination. The navigation core is a deep reinforcement learning MultiLayer Perceptron trained on 3 years of global wind data.
+      </p>
+      <div class="tech-card-specs" style="margin-top:1rem">
+        <div class="spec-row">
+          <span class="spec-key">Core method</span>
+          <span class="spec-val">Deep RL (MLP) + Deterministic fallback</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Training data</span>
+          <span class="spec-val">3 years global wind DB + ECMWF</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Tools</span>
+          <span class="spec-val">StationSeeker · StratoLoop · StratoEye</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Fleet mode</span>
+          <span class="spec-val">Quantum-inspired optimization</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--bg-2)">
+      <div class="img-placeholder" style="height:100%;border:none;min-height:200px">
+        <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <div class="img-placeholder-label">Neurostar® AI Diagram</div>
+        <div class="img-placeholder-hint">The AI agent logic diagram — compressor/valve action flow, wind estimator, decision maker blocks</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── 3. INTERCONNECTION DIAGRAM ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">System Interconnection</div>
+  <h2 class="sec-title">How the technologies interconnect</h2>
+  <p class="sec-desc">Data flows, control signals, and feedback loops across the full stack</p>
+
+  <p class="prose">
+    The five technologies do not operate in isolation. They form a <strong>closed-loop system</strong>: physical platforms collect data, Neurostar® uses that data to navigate, CLEAR consumes the imagery to produce intelligence, and intelligence outputs can trigger new mission tasking. Each loop reinforces the others — more flight data trains a better Neurostar®, a better Neurostar® enables more precise missions, and more precise missions produce better data for CLEAR.
+  </p>
+
+  <!-- Main interconnection SVG -->
+  <div class="diag" style="padding: 2.5rem 2rem 1.5rem">
+    <svg viewBox="0 0 820 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr-blue" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0,8 3.5,0 7" fill="#3d9bff"/>
+        </marker>
+        <marker id="arr-cyan" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0,8 3.5,0 7" fill="#00c8e0"/>
+        </marker>
+        <marker id="arr-green" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0,8 3.5,0 7" fill="#34d07a"/>
+        </marker>
+        <marker id="arr-dim" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+          <polygon points="0 0,8 3.5,0 7" fill="rgba(238,241,246,0.2)"/>
+        </marker>
+        <filter id="glow-blue">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ── LAYER BANDS ── -->
+      <!-- Sensing layer -->
+      <rect x="0" y="280" width="820" height="190" fill="#0d0f14" rx="0"/>
+      <text x="12" y="300" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.2)" letter-spacing="2">SENSING LAYER — STRATOSPHERIC PLATFORMS</text>
+
+      <!-- Coordination layer -->
+      <rect x="0" y="160" width="820" height="112" fill="#0f1218" rx="0"/>
+      <text x="12" y="180" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.2)" letter-spacing="2">COORDINATION LAYER — NEUROSTAR®</text>
+
+      <!-- Intelligence layer -->
+      <rect x="0" y="0" width="820" height="152" fill="#12151c" rx="0"/>
+      <text x="12" y="20" font-family="DM Mono,monospace" font-size="8" fill="rgba(61,155,255,0.4)" letter-spacing="2">INTELLIGENCE LAYER — CLEAR GEOAI</text>
+
+
+      <!-- ── SENSING LAYER NODES ── -->
+
+      <!-- Stratorelay -->
+      <rect x="30" y="310" width="160" height="72" rx="3" fill="#0d0f14" stroke="rgba(238,241,246,0.18)" stroke-width="1"/>
+      <text x="110" y="336" font-family="DM Mono,monospace" font-size="9" fill="rgba(238,241,246,0.7)" text-anchor="middle" letter-spacing="0.5">STRATORELAY®</text>
+      <text x="110" y="352" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Passive · Predictive nav</text>
+      <text x="110" y="366" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">TRL 8 · Commercial</text>
+      <rect x="70"  y="374" width="80" height="4" rx="1" fill="rgba(52,208,122,0.3)"/>
+
+      <!-- Stratostats v1 -->
+      <rect x="220" y="300" width="180" height="88" rx="3" fill="#0d1117" stroke="rgba(61,155,255,0.4)" stroke-width="1.2"/>
+      <text x="310" y="326" font-family="DM Mono,monospace" font-size="9" fill="#3d9bff" text-anchor="middle" letter-spacing="0.5">STRATOSTATS®</text>
+      <text x="310" y="342" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">Active altitude control</text>
+      <text x="310" y="356" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">ACS · OBC · EPS · Payload</text>
+      <text x="310" y="370" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">TRL 9 (v1) · TRL 7 (v2)</text>
+      <rect x="258" y="378" width="104" height="4" rx="1" fill="rgba(61,155,255,0.4)"/>
+
+      <!-- LoonHive -->
+      <rect x="430" y="310" width="180" height="72" rx="3" fill="#0d0f14" stroke="rgba(240,160,32,0.3)" stroke-width="1"/>
+      <text x="520" y="336" font-family="DM Mono,monospace" font-size="9" fill="rgba(240,160,32,0.8)" text-anchor="middle" letter-spacing="0.5">LOOONHIVE®</text>
+      <text x="520" y="352" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Constellation architecture</text>
+      <text x="520" y="366" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">TRL 5 → flights 2026</text>
+      <rect x="474" y="374" width="92" height="4" rx="1" fill="rgba(240,160,32,0.3)"/>
+
+      <!-- External data (right) -->
+      <rect x="650" y="310" width="150" height="72" rx="3" fill="#0d0f14" stroke="rgba(238,241,246,0.1)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="725" y="336" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.3)" text-anchor="middle">EXTERNAL DATA</text>
+      <text x="725" y="352" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.25)" text-anchor="middle">Copernicus · Satellites</text>
+      <text x="725" y="366" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.25)" text-anchor="middle">IoT · Commercial EO</text>
+
+      <!-- ── COORDINATION LAYER — NEUROSTAR ── -->
+      <rect x="200" y="180" width="420" height="72" rx="3"
+            fill="rgba(61,155,255,0.06)" stroke="rgba(61,155,255,0.45)" stroke-width="1.5"
+            filter="url(#glow-blue)"/>
+      <text x="410" y="204" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff" text-anchor="middle" letter-spacing="1">NEUROSTAR®</text>
+      <text x="245" y="222" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">StationSeeker/AI</text>
+      <text x="340" y="222" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">StratoLoop</text>
+      <text x="420" y="222" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">StratoEye</text>
+      <text x="520" y="222" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">Fleet Optimizer</text>
+      <text x="620" y="222" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.45)" text-anchor="middle">Wind Estimator</text>
+      <text x="410" y="238" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,0.5)" text-anchor="middle">Deep RL (MLP) · ECMWF · 3yr global wind DB · Proximal Policy Optimization</text>
+
+      <!-- ── INTELLIGENCE LAYER — CLEAR ── -->
+      <!-- Data store -->
+      <rect x="30" y="28" width="180" height="110" rx="3" fill="#111820" stroke="rgba(238,241,246,0.12)" stroke-width="1"/>
+      <text x="120" y="50" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.5)" text-anchor="middle">DATA INFRASTRUCTURE</text>
+      <text x="120" y="66" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Raw Archive DB</text>
+      <text x="120" y="80" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Structured Spatial DB</text>
+      <text x="120" y="94" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Compute Core</text>
+      <text x="120" y="108" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Standardizer</text>
+      <text x="120" y="126" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)" text-anchor="middle">feeds → CLEAR</text>
+
+      <!-- CLEAR core -->
+      <rect x="250" y="22" width="330" height="118" rx="3"
+            fill="rgba(61,155,255,0.05)" stroke="rgba(61,155,255,0.5)" stroke-width="1.5"/>
+      <text x="415" y="44" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff" text-anchor="middle" letter-spacing="1">CLEAR</text>
+      <text x="415" y="58" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,0.6)" text-anchor="middle">Cloud-based LLM-enhanced Earth Analytics &amp; Reconnaissance</text>
+      <!-- CLEAR internal boxes -->
+      <rect x="262" y="68" width="90" height="28" rx="2" fill="rgba(61,155,255,0.08)" stroke="rgba(61,155,255,0.25)" stroke-width="1"/>
+      <text x="307" y="86" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.55)" text-anchor="middle">Prompt Router</text>
+      <rect x="364" y="68" width="90" height="28" rx="2" fill="rgba(61,155,255,0.08)" stroke="rgba(61,155,255,0.25)" stroke-width="1"/>
+      <text x="409" y="86" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.55)" text-anchor="middle">Vision Agents</text>
+      <rect x="466" y="68" width="100" height="28" rx="2" fill="rgba(61,155,255,0.08)" stroke="rgba(61,155,255,0.25)" stroke-width="1"/>
+      <text x="516" y="86" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.55)" text-anchor="middle">Standardizer</text>
+      <text x="415" y="122" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)" text-anchor="middle">Agentic decoupling · NL interface · Continuous learning</text>
+
+      <!-- Intelligence output -->
+      <rect x="620" y="22" width="170" height="118" rx="3" fill="#111820" stroke="rgba(238,241,246,0.12)" stroke-width="1"/>
+      <text x="705" y="46" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.5)" text-anchor="middle">INTELLIGENCE OUT</text>
+      <text x="705" y="62" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Annotated maps</text>
+      <text x="705" y="76" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Sector reports</text>
+      <text x="705" y="90" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">Quantitative alerts</text>
+      <text x="705" y="104" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)" text-anchor="middle">API data stream</text>
+      <text x="705" y="118" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)" text-anchor="middle">→ Clients / Mission Tasking</text>
+
+      <!-- ── FLOW ARROWS ── -->
+
+      <!-- Sensing → Neurostar (control data up) -->
+      <line x1="310" y1="300" x2="310" y2="255" stroke="#3d9bff" stroke-width="1.3" marker-end="url(#arr-blue)"/>
+      <text x="316" y="280" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.5)">sensor data</text>
+
+      <!-- Neurostar → Stratostats (commands down) -->
+      <line x1="360" y1="255" x2="360" y2="302" stroke="rgba(238,241,246,0.25)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-dim)"/>
+      <text x="364" y="280" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)">commands</text>
+
+      <!-- Neurostar → LoonHive (fleet control) -->
+      <line x1="490" y1="255" x2="500" y2="310" stroke="#3d9bff" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr-blue)"/>
+
+      <!-- Stratostats → Data Infra (imagery up) -->
+      <line x1="280" y1="300" x2="180" y2="142" stroke="#34d07a" stroke-width="1.3" marker-end="url(#arr-green)"/>
+      <text x="195" y="220" font-family="DM Mono,monospace" font-size="7" fill="rgba(52,208,122,0.5)" transform="rotate(-42,195,220)">imagery / telemetry</text>
+
+      <!-- Stratorelay → Data Infra -->
+      <line x1="100" y1="310" x2="110" y2="142" stroke="#34d07a" stroke-width="1" marker-end="url(#arr-green)" opacity="0.5"/>
+
+      <!-- Data Infra → CLEAR -->
+      <line x1="212" y1="82" x2="248" y2="82" stroke="#3d9bff" stroke-width="1.3" marker-end="url(#arr-blue)"/>
+      <text x="218" y="77" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.45)">structured data</text>
+
+      <!-- CLEAR → Intelligence out -->
+      <line x1="582" y1="82" x2="618" y2="82" stroke="#3d9bff" stroke-width="1.3" marker-end="url(#arr-blue)"/>
+
+      <!-- External data → CLEAR (dashed) -->
+      <line x1="680" y1="310" x2="650" y2="142" stroke="rgba(238,241,246,0.15)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-dim)"/>
+      <text x="672" y="225" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)" transform="rotate(-80,672,225)">fusion</text>
+
+      <!-- Intelligence → Mission retasking (feedback arc) -->
+      <path d="M705,142 Q705,460 520,460 Q200,460 70,346" fill="none" stroke="rgba(238,241,246,0.1)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arr-dim)"/>
+      <text x="390" y="456" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.18)" text-anchor="middle">mission re-tasking / replanning feedback</text>
+
+      <!-- Neurostar ↔ CLEAR (bidirectional AI sync) -->
+      <line x1="410" y1="180" x2="410" y2="142" stroke="rgba(61,155,255,0.35)" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr-blue)"/>
+      <text x="416" y="165" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.3)">nav state</text>
+
+      <!-- Legend -->
+      <g transform="translate(10, 450)">
+        <line x1="0" y1="6" x2="20" y2="6" stroke="#3d9bff" stroke-width="1.3" marker-end="url(#arr-blue)"/>
+        <text x="24" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.3)">data / intelligence flow</text>
+        <line x1="150" y1="6" x2="170" y2="6" stroke="#34d07a" stroke-width="1.3" marker-end="url(#arr-green)"/>
+        <text x="174" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.3)">imagery uplink</text>
+        <line x1="290" y1="6" x2="310" y2="6" stroke="rgba(238,241,246,0.25)" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-dim)"/>
+        <text x="314" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.3)">control commands</text>
+        <line x1="440" y1="6" x2="460" y2="6" stroke="rgba(238,241,246,0.15)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arr-dim)"/>
+        <text x="464" y="10" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.3)">feedback / replanning</text>
+      </g>
+    </svg>
+    <div class="diag-caption">
+      FIG 1 — Full technology interconnection map.<br>
+      Three layers: Intelligence (top) · Coordination (centre) · Sensing (bottom). Arrows show actual data and control flows between subsystems.
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── 4. DATA FLYWHEEL ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Vertical Integration Logic</div>
+  <h2 class="sec-title">The data flywheel</h2>
+  <p class="sec-desc">Why controlling the full stack creates compounding value</p>
+
+  <p class="prose">
+    Involve Space does not buy data from third parties to feed its AI — it generates that data from infrastructure it owns. This is the structural core of the company's competitive advantage. Each element of the stack feeds the next, and each operational cycle makes the system as a whole more capable.
+  </p>
+
+  <!-- Flywheel SVG -->
+  <div class="diag" style="padding:2.5rem 1.5rem 1.5rem">
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="fw-arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <polygon points="0 0,7 3.5,0 7" fill="#3d9bff"/>
+        </marker>
+      </defs>
+
+      <!-- Central label -->
+      <circle cx="350" cy="150" r="56" fill="rgba(61,155,255,0.06)" stroke="rgba(61,155,255,0.3)" stroke-width="1.5"/>
+      <text x="350" y="145" font-family="DM Mono,monospace" font-size="9" fill="#3d9bff" text-anchor="middle">DATA</text>
+      <text x="350" y="160" font-family="DM Mono,monospace" font-size="9" fill="#3d9bff" text-anchor="middle">FLYWHEEL</text>
+
+      <!-- 5 nodes in a pentagon -->
+      <!-- Node 1: Platform flies (top) -->
+      <rect x="273" y="14" width="154" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.35)" stroke-width="1"/>
+      <text x="350" y="36" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.7)" text-anchor="middle">PLATFORM FLIES</text>
+      <text x="350" y="51" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Stratostats® mission · EO data acquired</text>
+
+      <!-- Node 2: Data trains Neurostar (top right) -->
+      <rect x="546" y="90" width="148" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.25)" stroke-width="1"/>
+      <text x="620" y="112" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.7)" text-anchor="middle">NEUROSTAR® TRAINS</text>
+      <text x="620" y="127" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Flight data improves nav AI</text>
+
+      <!-- Node 3: Better missions (bottom right) -->
+      <rect x="500" y="218" width="160" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.2)" stroke-width="1"/>
+      <text x="580" y="240" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.7)" text-anchor="middle">BETTER MISSIONS</text>
+      <text x="580" y="255" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Longer · more precise · lower cost</text>
+
+      <!-- Node 4: Higher quality data → CLEAR (bottom left) -->
+      <rect x="40" y="218" width="160" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.2)" stroke-width="1"/>
+      <text x="120" y="240" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.7)" text-anchor="middle">CLEAR IMPROVES</text>
+      <text x="120" y="255" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Better data → sharper intelligence</text>
+
+      <!-- Node 5: More clients (top left) -->
+      <rect x="6" y="90" width="148" height="48" rx="3" fill="#111820" stroke="rgba(61,155,255,0.2)" stroke-width="1"/>
+      <text x="80" y="112" font-family="DM Mono,monospace" font-size="8.5" fill="rgba(238,241,246,0.7)" text-anchor="middle">MORE CLIENTS</text>
+      <text x="80" y="127" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)" text-anchor="middle">Client queries fuel CLEAR feedback</text>
+
+      <!-- Circular arrows (clockwise) -->
+      <!-- 1 → 2 (top → top-right) -->
+      <path d="M427,38 Q500,40 546,100" fill="none" stroke="#3d9bff" stroke-width="1.2" marker-end="url(#fw-arr)" opacity="0.7"/>
+      <!-- 2 → 3 (top-right → bottom-right) -->
+      <path d="M652,138 Q668,178 660,218" fill="none" stroke="#3d9bff" stroke-width="1.2" marker-end="url(#fw-arr)" opacity="0.6"/>
+      <!-- 3 → 4 (bottom-right → bottom-left) -->
+      <path d="M500,242 Q350,272 200,242" fill="none" stroke="#3d9bff" stroke-width="1.2" marker-end="url(#fw-arr)" opacity="0.5"/>
+      <!-- 4 → 5 (bottom-left → top-left) -->
+      <path d="M48,218 Q32,178 40,138" fill="none" stroke="#3d9bff" stroke-width="1.2" marker-end="url(#fw-arr)" opacity="0.5"/>
+      <!-- 5 → 1 (top-left → top) -->
+      <path d="M154,100 Q200,40 273,38" fill="none" stroke="#3d9bff" stroke-width="1.2" marker-end="url(#fw-arr)" opacity="0.6"/>
+
+      <!-- Moat label -->
+      <text x="350" y="288" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.2)" text-anchor="middle">Each cycle widens the moat — compounding advantage with every flight and every query</text>
+    </svg>
+    <div class="diag-caption">FIG 2 — The data flywheel. Five reinforcing loops driven by vertical integration of sensing, autonomy, and intelligence.</div>
+  </div>
+
+  <div class="callout">
+    <strong>Why this matters for investors:</strong> Competitors offering EO analytics without sensing infrastructure are constrained by third-party data availability, resolution, and cadence. Involve controls its data source. The AI system trains on proprietary data that no external party can replicate — the archive grows with each flight and has no open-access equivalent.
+  </div>
+
+</div>
+
+<!-- ─── 5. HOW IT MAPS TO MISSIONS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Mission Architecture</div>
+  <h2 class="sec-title">How technology maps to missions</h2>
+  <p class="sec-desc">Which platform combination is used for each mission type</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Mission Type</th>
+          <th>Platform</th>
+          <th>Navigation</th>
+          <th>AI System</th>
+          <th>Typical Output</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>On-demand area mapping</td>
+          <td>Stratorelay®</td>
+          <td>Predictive wind-drift (Neurostar® deployment planning)</td>
+          <td>CLEAR — post-flight processing</td>
+          <td>Orthorectified imagery, change detection maps</td>
+          <td><span class="badge badge-green">Commercial</span></td>
+        </tr>
+        <tr>
+          <td>Persistent surveillance / ISR</td>
+          <td>Stratostats®</td>
+          <td>Neurostar® active station-keeping</td>
+          <td>CLEAR — real-time query interface</td>
+          <td>Continuous video · anomaly alerts · sector reports</td>
+          <td><span class="badge badge-green">Operational</span></td>
+        </tr>
+        <tr>
+          <td>Defense / reconnaissance</td>
+          <td>Stratostats® + SAR payload</td>
+          <td>Neurostar® active · classified routing</td>
+          <td>CLEAR — restricted intelligence layer</td>
+          <td>SAR imagery · RF monitoring · EW data</td>
+          <td><span class="badge badge-blue">MoD Contract</span></td>
+        </tr>
+        <tr>
+          <td>Continental monitoring</td>
+          <td>LoonHive® constellation</td>
+          <td>Neurostar® fleet coordination · quantum-opt.</td>
+          <td>CLEAR — multi-source fusion</td>
+          <td>Regional intelligence dashboards</td>
+          <td><span class="badge badge-amber">Roadmap 2027</span></td>
+        </tr>
+        <tr>
+          <td>Payload / satellite IOD</td>
+          <td>Stratostats® / Stratorelay®</td>
+          <td>Neurostar® trajectory planning</td>
+          <td>Telemetry logging only</td>
+          <td>Performance data, EDL validation</td>
+          <td><span class="badge badge-green">Commercial</span></td>
+        </tr>
+        <tr>
+          <td>Agricultural intelligence</td>
+          <td>Stratorelay® (multi-launch campaign)</td>
+          <td>Predictive deployment per field zone</td>
+          <td>CLEAR — crop health indices, harvest prediction</td>
+          <td>NDVI maps · anomaly reports · NL summaries</td>
+          <td><span class="badge badge-blue">CLEAR Beta</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Two image placeholders side by side -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-med);margin-top:1px">
+    <div class="img-placeholder" style="height:220px;border:none">
+      <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      <div class="img-placeholder-label">Mission Operations Image</div>
+      <div class="img-placeholder-hint">Ground control / launch team in the field — or mission control screen during a flight</div>
+    </div>
+    <div class="img-placeholder" style="height:220px;border:none">
+      <svg class="img-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      <div class="img-placeholder-label">Aerial Imagery Sample</div>
+      <div class="img-placeholder-hint">High-resolution imagery captured from stratosphere — Milan/Rome mapping, or agriculture sample</div>
+    </div>
+  </div>
+
+  <div class="ref-note" style="margin-top:2rem">
+    Detailed platform-level engineering for each mission configuration is provided in <strong>Platform Architecture (IS-DR-03)</strong>. CLEAR analytics pipeline is expanded in <strong>CLEAR GeoAI Layer (IS-DR-06)</strong>. Mission-level use cases are detailed in <strong>Use Cases</strong> documentation.
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div style="padding:2.5rem 0 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+  <div style="display:flex;align-items:center;gap:1.2rem">
+    <img src="https://cdn.prod.website-files.com/671f5ec2f687d2f55fafe279/672a0ca51d9e5090193779ed_symbol.svg"
+         alt="" style="height:16px;opacity:0.3;filter:brightness(0) invert(1)"
+         onerror="this.style.display='none'">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Involve Space S.r.l. · IS-DR-02-01 · Tech Master Doc Part 1 · REV A · Feb 2026
+    </span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Continues → Part 2: Platform Architecture
+    </span>
+    <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(240,160,32,0.2);padding:0.22rem 0.65rem">CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /body -->
+</body>
+</html>

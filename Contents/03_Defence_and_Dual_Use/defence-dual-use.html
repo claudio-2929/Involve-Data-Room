@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defence & Dual-Use | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --bg:         #08090c;
+  --bg-1:       #0d0f14;
+  --bg-2:       #12151c;
+  --bg-3:       #171b24;
+  --bg-card:    #0f1218;
+  --border:     rgba(255,255,255,0.07);
+  --border-med: rgba(255,255,255,0.12);
+  --border-hi:  rgba(255,255,255,0.22);
+  --text-1:     #eef1f6;
+  --text-2:     rgba(238,241,246,0.55);
+  --text-3:     rgba(238,241,246,0.28);
+  --blue:       #3d9bff;
+  --blue-dim:   rgba(61,155,255,0.15);
+  --blue-glow:  rgba(61,155,255,0.06);
+  --cyan:       #00c8e0;
+  --cyan-dim:   rgba(0,200,224,0.12);
+  --green:      #34d07a;
+  --green-dim:  rgba(52,208,122,0.12);
+  --amber:      #f0a020;
+  --amber-dim:  rgba(240,160,32,0.12);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --red:        #ff6060;
+  --red-dim:    rgba(255,96,96,0.1);
+  --f-body: 'Inter', -apple-system, sans-serif;
+  --f-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  background: var(--bg); color: var(--text-1);
+  font-family: var(--f-body); font-weight: 400;
+  line-height: 1.65; -webkit-font-smoothing: antialiased;
+  padding: 0 0 6rem;
+}
+
+/* ── HEADER ─────────────────────────── */
+.doc-header {
+  position: relative; padding: 3.5rem 3.5rem 3rem;
+  border-bottom: 1px solid var(--border-med); overflow: hidden;
+}
+.doc-header::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+}
+.doc-header-inner { position: relative; z-index: 1; max-width: 860px; }
+.doc-breadcrumb {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: var(--f-mono); font-size: 0.62rem;
+  color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.6rem;
+}
+.doc-breadcrumb span { color: var(--blue); }
+.doc-title { font-size: 2.4rem; font-weight: 300; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 0.6rem; }
+.doc-title strong { font-weight: 600; }
+.doc-subtitle { font-size: 0.85rem; color: var(--text-2); font-weight: 300; max-width: 640px; line-height: 1.7; margin-bottom: 2rem; }
+.doc-meta-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.doc-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+.doc-meta-label { font-family: var(--f-mono); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-3); }
+.doc-meta-value { font-size: 0.8rem; font-weight: 500; color: var(--text-2); }
+
+/* ── BODY ───────────────────────────── */
+.body { max-width: 860px; margin: 0 auto; padding: 0 3.5rem; }
+.sec { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+.sec:last-child { border-bottom: none; }
+.sec-eyebrow {
+  display: flex; align-items: center; gap: 0.7rem;
+  font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--blue); margin-bottom: 1rem;
+}
+.sec-eyebrow::before { content:''; display:block; width:14px; height:1px; background:var(--blue); flex-shrink:0; }
+.sec-title { font-size: 1.6rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.35rem; }
+.sec-desc { font-size: 0.78rem; color: var(--text-3); margin-bottom: 2.2rem; font-style: italic; }
+.prose { font-size: 0.875rem; font-weight: 300; line-height: 1.8; color: var(--text-2); max-width: 780px; }
+.prose strong { font-weight: 500; color: var(--text-1); }
+.prose + .prose { margin-top: 0.9rem; }
+.subsec { font-family: var(--f-mono); font-size: 0.62rem; color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; margin: 2.5rem 0 0.6rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-med); }
+
+/* ── BADGE ──────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-family: var(--f-mono); font-size: 0.58rem; font-weight: 500;
+  letter-spacing: 0.1em; padding: 0.2rem 0.6rem; border-radius: 2px; white-space: nowrap;
+}
+.badge::before { content:''; display:block; width:5px; height:5px; border-radius:50%; background:currentColor; }
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+.badge-red    { background: var(--red-dim);    color: var(--red); }
+
+/* ── IMAGE PLACEHOLDER ──────────────── */
+.img-ph {
+  background: var(--bg-2); border: 1px dashed var(--border-hi);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 0.5rem; text-align: center; padding: 1.5rem;
+}
+.img-ph-label { font-family: var(--f-mono); font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+.img-ph-hint  { font-size: 0.68rem; color: var(--text-3); font-style: italic; max-width: 280px; line-height: 1.5; }
+.img-ph svg   { width: 28px; height: 28px; opacity: 0.15; }
+
+/* ── DIAG ───────────────────────────── */
+.diag { margin: 2rem 0; background: var(--bg-1); border: 1px solid var(--border-med); padding: 2rem 2rem 1.5rem; overflow-x: auto; }
+.diag-caption { font-family: var(--f-mono); font-size: 0.6rem; color: var(--text-3); text-align: center; margin-top: 1.2rem; letter-spacing: 0.05em; line-height: 1.6; }
+
+/* ── STATS BAR ───────────────────────── */
+.stats-bar { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.stat-cell { background: var(--bg-card); padding: 1.4rem 1.6rem; transition: background 0.15s; }
+.stat-cell:hover { background: var(--bg-2); }
+.stat-val { font-size: 1.8rem; font-weight: 600; letter-spacing: -0.04em; color: var(--text-1); line-height: 1; margin-bottom: 0.3rem; }
+.stat-val span { color: var(--blue); }
+.stat-label { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); line-height: 1.5; }
+.stat-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 0.2rem; }
+
+/* ── CARD GRIDS ──────────────────────── */
+.card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.card-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.g-card { background: var(--bg-card); padding: 1.5rem; transition: background 0.15s; }
+.g-card:hover { background: var(--bg-2); }
+.g-card-num  { font-family: var(--f-mono); font-size: 0.6rem; color: var(--blue); letter-spacing: 0.15em; margin-bottom: 0.5rem; display: block; }
+.g-card-title{ font-size: 0.88rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; margin-bottom: 0.55rem; line-height: 1.3; }
+.g-card-body { font-size: 0.77rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.g-card-body strong { font-weight: 500; color: var(--text-1); }
+.g-card-stat { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--border); font-family: var(--f-mono); font-size: 0.62rem; color: var(--text-3); line-height: 1.5; }
+.g-card-stat em { color: var(--blue); font-style: normal; }
+
+/* ── USE CASE TRACK ──────────────────── */
+.usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.uc-card { background: var(--bg-card); padding: 1.6rem; display: flex; flex-direction: column; gap: 0; transition: background 0.15s; }
+.uc-card:hover { background: var(--bg-2); }
+.uc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.7rem; }
+.uc-title { font-size: 0.9rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; line-height: 1.25; }
+.uc-body { font-size: 0.78rem; font-weight: 300; color: var(--text-2); line-height: 1.65; flex: 1; }
+.uc-body strong { font-weight: 500; color: var(--text-1); }
+.uc-why { margin-top: 0.9rem; padding: 0.75rem; background: rgba(61,155,255,0.04); border-left: 2px solid rgba(61,155,255,0.3); font-size: 0.75rem; color: var(--text-2); font-weight: 300; line-height: 1.6; }
+.uc-why strong { font-weight: 500; color: var(--blue); }
+.uc-constraint { margin-top: 0.6rem; padding: 0.6rem 0.75rem; background: rgba(240,160,32,0.05); border-left: 2px solid rgba(240,160,32,0.25); font-size: 0.73rem; color: var(--text-3); line-height: 1.55; }
+.uc-constraint strong { color: var(--amber); font-weight: 500; }
+
+/* ── COMPARISON TABLE ────────────────── */
+.comp-tbl { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.comp-tbl thead tr { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+.comp-tbl thead th { padding: 0.75rem 1rem; text-align: left; font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); font-weight: 500; }
+.comp-tbl thead th:nth-child(2) { color: var(--blue); }
+.comp-tbl thead th:nth-child(3) { color: var(--amber); }
+.comp-tbl thead th:nth-child(4) { color: var(--text-3); }
+.comp-tbl tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+.comp-tbl tbody tr:last-child { border-bottom: none; }
+.comp-tbl tbody tr:hover { background: var(--blue-glow); }
+.comp-tbl td { padding: 0.8rem 1rem; vertical-align: top; color: var(--text-2); font-weight: 300; line-height: 1.5; }
+.comp-tbl td:first-child { font-weight: 600; color: var(--text-1); font-size: 0.8rem; white-space: nowrap; }
+.comp-tbl td:nth-child(2) { color: rgba(61,155,255,0.75); }
+
+/* ── COMPLIANCE ROADMAP ──────────────── */
+.compliance-track { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.cr-row { display: grid; grid-template-columns: 190px 220px 1fr; background: var(--bg-card); align-items: start; transition: background 0.12s; }
+.cr-row:hover { background: var(--bg-2); }
+.cr-row.header { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+.cr-cell { padding: 1rem 1.1rem; font-size: 0.79rem; color: var(--text-2); font-weight: 300; border-right: 1px solid var(--border); line-height: 1.6; }
+.cr-cell:last-child { border-right: none; }
+.cr-row.header .cr-cell { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); font-weight: 500; padding: 0.65rem 1.1rem; }
+.cr-cell.horizon { font-weight: 600; color: var(--text-1); font-size: 0.82rem; }
+.cr-cell.horizon span { display: block; font-family: var(--f-mono); font-size: 0.58rem; font-weight: 400; color: var(--text-3); letter-spacing: 0.08em; margin-top: 0.2rem; }
+.cr-cell strong { font-weight: 500; color: var(--text-1); }
+
+/* ── B2G PIPELINE ────────────────────── */
+.pipeline-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.pl-row { display: grid; grid-template-columns: 200px 1fr; background: var(--bg-card); align-items: start; transition: background 0.12s; }
+.pl-row:hover { background: var(--bg-2); }
+.pl-label { padding: 1.1rem 1.2rem; font-size: 0.82rem; font-weight: 600; color: var(--text-1); border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.2rem; line-height: 1.3; }
+.pl-label span { font-family: var(--f-mono); font-size: 0.58rem; color: var(--text-3); font-weight: 400; letter-spacing: 0.05em; }
+.pl-content { padding: 1.1rem 1.2rem; font-size: 0.8rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.pl-content strong { font-weight: 500; color: var(--text-1); }
+
+/* ── FUNDING BAND ────────────────────── */
+.funding-band { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.fb-cell { background: var(--bg-card); padding: 1.3rem 1.4rem; transition: background 0.15s; }
+.fb-cell:hover { background: var(--bg-2); }
+.fb-val { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.04em; line-height: 1; margin-bottom: 0.3rem; }
+.fb-label { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); line-height: 1.5; }
+.fb-sub { font-size: 0.7rem; color: var(--text-3); margin-top: 0.2rem; }
+
+/* ── PARTNER LOGIC TABLE ─────────────── */
+.partner-tbl { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.pt-row { display: grid; grid-template-columns: 130px 1fr 1fr; background: var(--bg-card); align-items: start; transition: background 0.12s; }
+.pt-row:hover { background: var(--bg-2); }
+.pt-row.header { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+.pt-cell { padding: 1rem 1.1rem; font-size: 0.79rem; color: var(--text-2); font-weight: 300; border-right: 1px solid var(--border); line-height: 1.6; }
+.pt-cell:last-child { border-right: none; }
+.pt-row.header .pt-cell { font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); font-weight: 500; padding: 0.65rem 1.1rem; }
+.pt-cell.mode { font-weight: 700; font-size: 0.85rem; }
+.pt-cell strong { font-weight: 500; color: var(--text-1); }
+
+/* ── PHASE ROWS ──────────────────────── */
+.phase-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.phase-row { display: grid; grid-template-columns: 160px 1fr; background: var(--bg-card); align-items: stretch; transition: background 0.12s; }
+.phase-row:hover { background: var(--bg-2); }
+.phase-num { padding: 1.3rem 1.4rem; font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; gap: 0.2rem; color: var(--text-3); }
+.phase-num strong { font-size: 0.84rem; font-weight: 600; font-family: var(--f-body); letter-spacing: -0.01em; display: block; }
+.phase-content { padding: 1.3rem 1.4rem; font-size: 0.81rem; font-weight: 300; color: var(--text-2); line-height: 1.7; }
+.phase-content strong { font-weight: 500; color: var(--text-1); }
+
+/* ── RISK CARDS ──────────────────────── */
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.risk-card { background: var(--bg-card); padding: 1.5rem; transition: background 0.15s; }
+.risk-card:hover { background: var(--bg-2); }
+.risk-title { font-size: 0.88rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.risk-body { font-size: 0.77rem; font-weight: 300; color: var(--text-2); line-height: 1.65; }
+.risk-body strong { font-weight: 500; color: var(--text-1); }
+.risk-mitigation { margin-top: 0.85rem; padding: 0.7rem 0.9rem; background: var(--green-dim); border-left: 2px solid rgba(52,208,122,0.35); font-size: 0.74rem; color: rgba(52,208,122,0.85); line-height: 1.55; }
+.risk-mitigation strong { font-weight: 500; }
+
+/* ── CALLOUT ─────────────────────────── */
+.callout { margin: 1.8rem 0; padding: 1rem 1.3rem; background: var(--blue-glow); border-left: 2px solid rgba(61,155,255,0.3); font-size: 0.8rem; color: var(--text-2); font-style: italic; line-height: 1.65; }
+.callout strong { font-weight: 500; color: var(--text-1); font-style: normal; }
+.callout-amber { background: var(--amber-dim); border-left: 2px solid rgba(240,160,32,0.4); }
+.callout-green { background: var(--green-dim); border-left: 2px solid rgba(52,208,122,0.4); }
+.callout-red { background: var(--red-dim); border-left: 2px solid rgba(255,96,96,0.35); }
+.ref-note { margin: 1.4rem 0; padding: 0.8rem 1.1rem; background: var(--bg-2); border: 1px solid var(--border); border-left: 2px solid var(--blue); font-family: var(--f-mono); font-size: 0.66rem; color: rgba(61,155,255,0.65); letter-spacing: 0.01em; line-height: 1.6; }
+
+/* ── IMPL ROWS ───────────────────────── */
+.impl-band { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border-med); margin: 2rem 0; }
+.impl-row { display: grid; grid-template-columns: 240px 1fr; background: var(--bg-card); transition: background 0.12s; }
+.impl-row:hover { background: var(--bg-2); }
+.impl-title { padding: 1.3rem 1.4rem; font-size: 0.84rem; font-weight: 600; color: var(--text-1); letter-spacing: -0.015em; border-right: 1px solid var(--border); display: flex; align-items: flex-start; line-height: 1.35; }
+.impl-body { padding: 1.3rem 1.4rem; font-size: 0.8rem; font-weight: 300; color: var(--text-2); line-height: 1.7; }
+.impl-body strong { font-weight: 500; color: var(--text-1); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)} }
+.sec{animation:fadeUp 0.5s ease both}
+.sec:nth-child(2){animation-delay:.05s}.sec:nth-child(3){animation-delay:.1s}
+.sec:nth-child(4){animation-delay:.15s}.sec:nth-child(5){animation-delay:.2s}
+.sec:nth-child(6){animation-delay:.25s}.sec:nth-child(7){animation-delay:.3s}
+.sec:nth-child(8){animation-delay:.35s}.sec:nth-child(9){animation-delay:.4s}
+.sec:nth-child(10){animation-delay:.45s}
+
+@media(max-width:700px){
+  .doc-header,.body{padding-left:1.5rem;padding-right:1.5rem}
+  .card-grid-2,.card-grid-3,.usecase-grid,.risk-grid,.funding-band,.stats-bar{grid-template-columns:1fr}
+  .cr-row,.pt-row,.pl-row,.phase-row,.impl-row{grid-template-columns:1fr}
+  .comp-tbl thead th:nth-child(3),.comp-tbl td:nth-child(3),
+  .comp-tbl thead th:nth-child(4),.comp-tbl td:nth-child(4){display:none}
+}
+@media print{body{background:#08090c}.sec{page-break-inside:avoid;animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+    <div class="doc-breadcrumb">
+      04. Product &amp; Technology
+      <span style="opacity:0.3">›</span>
+      <span>Defence &amp; Dual-Use</span>
+    </div>
+    <h1 class="doc-title">Defence &amp; Dual-Use<br><strong>Strategic Positioning Document</strong></h1>
+    <p class="doc-subtitle">
+      Involve Space's thesis, positioning, and operating framework as a European Earth Intelligence infrastructure provider serving civil and defence markets with a single sovereign-grade stack. Covers the dual-use architecture, all defence use cases, regulatory and compliance framework, security and data sovereignty model, B2G procurement pathway, competitive context, and risk register.
+    </p>
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-DEF-01</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Prepared</span>
+        <span class="doc-meta-value">25 February 2026</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Classification</span>
+        <span class="doc-meta-value">Series A Data Room — Confidential</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Version</span>
+        <span class="doc-meta-value">1.0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     BODY
+══════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── §1  EXECUTIVE DEFENCE THESIS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Executive Defence Thesis</div>
+  <h2 class="sec-title">Earth Intelligence infrastructure is inherently dual-use</h2>
+  <p class="sec-desc">The same persistent sensing, secure data processing, and decision support capabilities serve both civil and public-sector missions — this is physics, not positioning</p>
+
+  <p class="prose">
+    Earth Intelligence sits at the convergence of persistent sensing, secure data processing, and decision support. These capabilities are <strong>intrinsically dual-use</strong> because the same physical phenomena and operational needs exist across civil and public-sector missions: border integrity, maritime safety, disaster response, environmental monitoring, and critical infrastructure protection all rely on timely geospatial situational awareness.
+  </p>
+  <p class="prose">
+    Involve is not a weapons manufacturer. We deliver <strong>stratospheric sensing infrastructure and Earth intelligence services</strong>: data collection at altitude, secure transmission, processing, and analytics outputs configurable for civil and government users. Our dual-use posture is an infrastructure posture — we build a persistent sensing layer and a secure analytics layer, and we integrate into institutional workflows where appropriate, without becoming a weapons prime.
+  </p>
+
+  <!-- Infrastructure posture callout -->
+  <div class="callout" style="margin-top:2rem">
+    <strong>Infrastructure, not weapons:</strong> In our product structure, we explicitly position ourselves as service-centric — "we do not sell hardware or software; instead, we deliver high-value services and data" — complemented by custom missions for clients with specific operational requirements, including defence and security users. This distinction is central to our procurement strategy, regulatory posture, and investor narrative.
+  </div>
+
+  <!-- Defence spending context -->
+  <div class="stats-bar" style="margin-top:2.5rem">
+    <div class="stat-cell">
+      <div class="stat-val">€<span>343</span>bn</div>
+      <div class="stat-label">EU Member States defence expenditure 2024</div>
+      <div class="stat-sub">→ €381bn estimated 2025 (EDA, constant 2024 prices)</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">€<span>106</span>bn</div>
+      <div class="stat-label">EU defence investment 2024</div>
+      <div class="stat-sub">+42% vs 2023 · €130bn projected 2025</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">€<span>7.95</span>bn</div>
+      <div class="stat-label">European Defence Fund 2021–2027</div>
+      <div class="stat-sub">€2.7bn research · €5.3bn capability development</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">€<span>14.9</span>bn</div>
+      <div class="stat-label">EU Space Programme 2021–2027</div>
+      <div class="stat-sub">Copernicus €5.4bn · IRIS² €2.4bn (2023–2027)</div>
+    </div>
+  </div>
+
+  <!-- Why stratospheric is strategically relevant -->
+  <div class="subsec">Why Stratospheric Platforms Represent Strategic Sensing Infrastructure</div>
+
+  <p class="prose">
+    Our platforms operate in the stratosphere at typically 20–30 km altitude, engineered for persistent monitoring and rapid tasking. The stratosphere provides a distinct operational sweet spot between drones and satellites: close enough to deliver very high-resolution imagery and low latency, yet high enough to enable wide-area coverage and persistence above most weather and conventional air traffic.
+  </p>
+
+  <!-- Geometric horizon diagram -->
+  <div class="diag">
+    <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:0 auto">
+      <!-- Earth arc -->
+      <path d="M 80 180 Q 410 100 740 180" fill="none" stroke="rgba(52,208,122,0.25)" stroke-width="2"/>
+      <text x="410" y="196" font-family="DM Mono,monospace" font-size="8" fill="rgba(52,208,122,0.35)" text-anchor="middle">Earth surface (r = 6,371 km)</text>
+
+      <!-- Platform at 20km -->
+      <circle cx="260" cy="80" r="6" fill="var(--blue)" opacity="0.8"/>
+      <line x1="260" y1="86" x2="160" y2="178" stroke="rgba(61,155,255,0.3)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="260" y1="86" x2="360" y2="178" stroke="rgba(61,155,255,0.3)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="260" y="68" font-family="DM Mono,monospace" font-size="8.5" fill="var(--blue)" text-anchor="middle">20 km altitude</text>
+      <text x="260" y="58" font-family="Inter,sans-serif" font-size="8" fill="rgba(61,155,255,0.5)" text-anchor="middle">Horizon ~505 km</text>
+      <!-- Horizon brace -->
+      <line x1="162" y1="186" x2="358" y2="186" stroke="rgba(61,155,255,0.3)" stroke-width="1"/>
+      <text x="260" y="198" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(61,155,255,0.4)" text-anchor="middle">~505 km line-of-sight</text>
+
+      <!-- Platform at 30km -->
+      <circle cx="560" cy="50" r="6" fill="var(--cyan)" opacity="0.8"/>
+      <line x1="560" y1="56" x2="430" y2="178" stroke="rgba(0,200,224,0.3)" stroke-width="1" stroke-dasharray="5 4"/>
+      <line x1="560" y1="56" x2="692" y2="178" stroke="rgba(0,200,224,0.3)" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="560" y="37" font-family="DM Mono,monospace" font-size="8.5" fill="var(--cyan)" text-anchor="middle">30 km altitude</text>
+      <text x="560" y="27" font-family="Inter,sans-serif" font-size="8" fill="rgba(0,200,224,0.5)" text-anchor="middle">Horizon ~619 km</text>
+      <!-- Horizon brace -->
+      <line x1="432" y1="186" x2="690" y2="186" stroke="rgba(0,200,224,0.3)" stroke-width="1"/>
+
+      <!-- Drone reference -->
+      <circle cx="80" cy="168" r="4" fill="rgba(238,241,246,0.2)"/>
+      <text x="80" y="155" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.2)" text-anchor="middle">Drone</text>
+      <text x="80" y="145" font-family="Inter,sans-serif" font-size="7" fill="rgba(238,241,246,0.15)" text-anchor="middle">&lt;5 km horizon</text>
+
+      <!-- Satellite reference -->
+      <circle cx="740" cy="20" r="5" fill="rgba(240,160,32,0.4)"/>
+      <text x="740" y="10" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(240,160,32,0.5)" text-anchor="middle">Satellite</text>
+      <text x="780" y="22" font-family="Inter,sans-serif" font-size="7" fill="rgba(240,160,32,0.35)">400–600 km</text>
+      <text x="780" y="34" font-family="Inter,sans-serif" font-size="7" fill="rgba(240,160,32,0.25)">Fixed orbit</text>
+    </svg>
+    <div class="diag-caption">FIG 1 — Geometric horizon distance at stratospheric altitudes. A single platform at 20 km has a line-of-sight horizon of ~505 km; at 30 km ~619 km. A single stratospheric asset can serve "hundreds of kilometres" of footprint for surveillance or relay roles. Approximate calculation based on Earth radius 6,371 km.</div>
+  </div>
+
+  <!-- Sovereign context -->
+  <div class="subsec">Why European Sovereign Sensing Capacity Is Structurally Relevant</div>
+
+  <p class="prose">
+    European demand for sovereign sensing capacity is not a transient political theme — it is institutionalised through budgets, programmes, and capability roadmaps. The EU Space Strategy for Security and Defence explicitly frames space as a "strategic domain", notes increasing contestation, and calls for strengthening resilience and developing space-enabled services for security and defence. The Strategic Compass provides an actionable framework to 2030 with concrete capability delivery timelines.
+  </p>
+
+  <!-- Funding instruments -->
+  <div class="funding-band">
+    <div class="fb-cell">
+      <div class="fb-val" style="color:var(--blue)">€7.95bn</div>
+      <div class="fb-label">European Defence Fund 2021–2027</div>
+      <div class="fb-sub">Collaborative R&D + capability development · SME participation incentives</div>
+    </div>
+    <div class="fb-cell">
+      <div class="fb-val" style="color:var(--cyan)">€5.42bn</div>
+      <div class="fb-label">Copernicus (EU Space Programme)</div>
+      <div class="fb-sub">Including restricted data workflows for security-sensitive users</div>
+    </div>
+    <div class="fb-cell">
+      <div class="fb-val" style="color:var(--green)">€2.4bn</div>
+      <div class="fb-label">IRIS² EU contribution 2023–2027</div>
+      <div class="fb-sub">Secure connectivity · authorised users · security-critical missions</div>
+    </div>
+    <div class="fb-cell">
+      <div class="fb-val" style="color:var(--amber)">€684m</div>
+      <div class="fb-label">NATO ISR force ceilings 2024</div>
+      <div class="fb-sub">€264m NISRF + €420m AWACS · explicitly funded persistent ISR</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── §2  DUAL-USE POSITIONING ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Dual-Use Framework</div>
+  <h2 class="sec-title">Civil and defence applications share the same stack</h2>
+  <p class="sec-desc">Dual-use is not a marketing label — it is the natural operating mode of Earth Intelligence infrastructure</p>
+
+  <p class="prose">
+    Our technical stack is inherently dual-use because the platform physics, payload class, and data pipeline are identical across missions. The stratospheric persistence, high revisit, and wide-area coverage characteristics are the same whether the customer is an energy utility, a coast guard, or a national intelligence directorate. Only the assurance level, access controls, and retention policies differ — not the underlying infrastructure.
+  </p>
+
+  <div class="card-grid-2" style="margin-top:2rem">
+    <div class="g-card" style="border-top:2px solid var(--green)">
+      <span class="g-card-num">CIVIL USE CASES</span>
+      <div class="g-card-title">Infrastructure-grade monitoring for asset-intensive industries</div>
+      <div class="g-card-body">
+        Infrastructure monitoring, environmental assessment, precision agriculture, rapid mapping campaigns, and smart city operations. These missions generate high operational cadence, commercial datasets that scale CLEAR's training corpus, and compliance evidence that de-risks government procurement pathways.
+      </div>
+      <div class="g-card-stat"><em>Flywheel role:</em> civil missions build operational maturity, telemetry, and dataset depth that improve performance on higher-assurance deployments</div>
+    </div>
+    <div class="g-card" style="border-top:2px solid var(--blue)">
+      <span class="g-card-num">DEFENCE &amp; SECURITY USE CASES</span>
+      <div class="g-card-title">Sovereign persistent ISR and situational awareness services</div>
+      <div class="g-card-body">
+        Surveillance, border and maritime monitoring, critical infrastructure protection, communications-adjacent missions, and persistent ISR for military operations. These missions carry higher ACV, longer contract durations, and strategic supplier positioning — and are served by the same platform architecture with elevated assurance controls.
+      </div>
+      <div class="g-card-stat"><em>Sovereign advantage:</em> European company · in-country platforms · data custody · no foreign IP dependency</div>
+    </div>
+  </div>
+
+  <!-- Four risk mitigation benefits -->
+  <div class="subsec">Risk Mitigation Benefits of the Dual-Use Model</div>
+
+  <div class="card-grid-2" style="margin-top:1rem">
+    <div class="g-card">
+      <span class="g-card-num">BENEFIT 01</span>
+      <div class="g-card-title">Diversified demand across procurement cycles</div>
+      <div class="g-card-body">Civil and governmental procurement cycles are not correlated. If defence investment is rising but specific programmes are delayed, commercial contracts maintain ARR. Vice versa, commercial downturns are hedged by government budget stability. European defence spending is structurally increasing but remains cyclical at programme level — dual-use reduces concentration risk on any single budget line.</div>
+    </div>
+    <div class="g-card">
+      <span class="g-card-num">BENEFIT 02</span>
+      <div class="g-card-title">Platform utilisation and operational learning curves</div>
+      <div class="g-card-body">Persistent civil missions generate operational telemetry, dataset growth, and reliability improvements that <strong>improve readiness for higher-assurance deployments</strong> — including government missions. Each commercial flight hour adds to the operational baseline that defence customers are buying when they select Involve as a strategic supplier.</div>
+    </div>
+    <div class="g-card">
+      <span class="g-card-num">BENEFIT 03</span>
+      <div class="g-card-title">Compliance maturity through civil-scale operations</div>
+      <div class="g-card-body">Operating at scale in civil contexts forces robust aviation safety, data protection, and cybersecurity controls — which are prerequisites for government procurement pathways. <strong>Civil compliance is not a diluted version of defence compliance</strong>; it is the foundational layer that qualifies Involve for the next tier of assurance requirements without starting from scratch.</div>
+    </div>
+    <div class="g-card">
+      <span class="g-card-num">BENEFIT 04</span>
+      <div class="g-card-title">End-to-end capability aligned to institutional expectations</div>
+      <div class="g-card-body">Institutional actors — EU DGs, MoDs, NATO command structures — increasingly expect end-to-end capability with "space-enabled services" and secure dissemination. Involve's full-stack model (platform → data → CLEAR analytics) matches this requirement. Pure data vendors cannot deliver the analytics layer; pure analytics vendors cannot guarantee the data pipeline.</div>
+    </div>
+  </div>
+
+  <!-- Image placeholder -->
+  <div class="img-ph" style="height:200px;margin-top:2rem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <div class="img-ph-label">Dual-use mission context</div>
+    <div class="img-ph-hint">Platform deployment or imagery output showing a use case that bridges civil and defence — e.g. coastal / maritime monitoring, border region, or critical infrastructure corridor</div>
+  </div>
+
+</div>
+
+<!-- ─── §3  DEFENCE USE CASES ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Defence Use Cases</div>
+  <h2 class="sec-title">Seven mission domains — sensing and decision infrastructure, not weapon effects</h2>
+  <p class="sec-desc">In every case, Involve's role is to provide the persistent collection, processing, and analytics layer — not kinetic or weapon system integration</p>
+
+  <div class="usecase-grid">
+
+    <!-- ISR -->
+    <div class="uc-card" style="border-top:2px solid var(--blue)">
+      <div class="uc-header">
+        <div class="uc-title">ISR &amp; Persistent Surveillance</div>
+        <span class="badge badge-blue">Core domain</span>
+      </div>
+      <div class="uc-body">
+        Persistent ISR is a coverage problem, not a single-image problem. Decision makers need <strong>continuity, low latency, and the ability to retask rapidly</strong> when the situation evolves. Our Stratostats® architecture is explicitly designed for continuous, real-time data streams with high revisit at 20–30 km altitude, supported by autonomous wind-layer navigation via Neurostar®.<br><br>
+        NATO budgets and doctrine fund persistent ISR forces explicitly and emphasise a permanent joint ISR system combining NATO and national assets — exactly the gap that stratospheric persistence fills between satellite revisit schedules and drone endurance limits.
+      </div>
+      <div class="uc-why"><strong>Why stratosphere:</strong> Reduces observation gaps that satellite revisit cycles and drone endurance limits cannot close. Retaskable locally with low latency — continuous coverage over a defined theatre of interest.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Airspace authorisation and coordination · payload power and bandwidth limits · weather and seasonal wind patterns · secure command, control, and dissemination requirements</div>
+    </div>
+
+    <!-- Border monitoring -->
+    <div class="uc-card" style="border-top:2px solid var(--green)">
+      <div class="uc-header">
+        <div class="uc-title">Border Monitoring</div>
+        <span class="badge badge-green">Active pipeline</span>
+      </div>
+      <div class="uc-body">
+        Border monitoring requires persistent detection of changes and events, not only periodic mapping. Operational value is highest in remote areas lacking terrestrial sensors, areas requiring repeatable monitoring, and national contexts where <strong>sovereignty and secure dissemination</strong> matter most.<br><br>
+        Our pipeline includes border monitoring discussions and projects, including engagement with the <strong>Italian Air Force</strong> for national border monitoring applications. Continuous observation enables detection of patterns and anomalies over time — repeated routes, activity signatures — which sporadic satellite revisit cannot achieve.
+      </div>
+      <div class="uc-why"><strong>Why stratosphere:</strong> Satellites provide wide coverage but weak continuous local persistence; drones provide local inspection but limited multi-day broad-area persistence and are subject to endurance constraints.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Legal boundaries and privacy constraints in cross-border contexts · GDPR-aligned handling where imagery could include identifiable individuals · controlled access and data governance requirements</div>
+    </div>
+
+    <!-- Maritime -->
+    <div class="uc-card" style="border-top:2px solid var(--cyan)">
+      <div class="uc-header">
+        <div class="uc-title">Maritime Domain Awareness</div>
+        <span class="badge badge-cyan">Active pipeline</span>
+      </div>
+      <div class="uc-body">
+        Maritime awareness is a wide-area coverage challenge with a mix of strategic and operational needs: detection, classification, and monitoring of activity over large sea regions. Our commercial and government pipeline includes <strong>Mediterranean surveillance and maritime monitoring projects</strong>.<br><br>
+        Persistence increases probability of detection of time-sensitive events and supports pattern-of-life analysis over a maritime area — complementing satellites and surface sensors. A single platform at 30 km can provide line-of-sight horizon coverage of ~619 km over open water without the endurance and basing limitations of tactical drones.
+      </div>
+      <div class="uc-why"><strong>Why stratosphere:</strong> Satellites provide periodic SAR/optical coverage with cloud and revisit constraints; drones provide strong local inspection but limited continuous multi-hundred-kilometre coverage.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Launch and recovery logistics in maritime environments · jurisdictional airspace requirements · communications availability for sustained data backhaul over open ocean</div>
+    </div>
+
+    <!-- CIP -->
+    <div class="uc-card" style="border-top:2px solid var(--amber)">
+      <div class="uc-header">
+        <div class="uc-title">Critical Infrastructure Protection</div>
+        <span class="badge badge-amber">Commercial + defence</span>
+      </div>
+      <div class="uc-body">
+        Critical infrastructure protection is a monitoring and change detection problem: operators need <strong>early warning of anomalies, degradation, encroachments, and incidents</strong>. Our existing and pipeline activity includes infrastructure monitoring for pipelines, airports, roads, and critical infrastructure diligence with large industrial actors.<br><br>
+        Persistent imaging supports higher-frequency change detection than typical satellite scheduling and can reduce the latency between event occurrence and detection — enabling proactive intervention rather than post-incident response.
+      </div>
+      <div class="uc-why"><strong>Why stratosphere:</strong> Mid-layer advantage — higher persistence and coverage density than drones; lower latency and higher operational flexibility than satellites for a defined area of interest.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Sensitive commercial data and national security-relevant locations require data segregation, encryption, and controlled access — particularly for government-adjacent facilities</div>
+    </div>
+
+    <!-- Tactical augmentation -->
+    <div class="uc-card" style="border-top:2px solid var(--purple)">
+      <div class="uc-header">
+        <div class="uc-title">Tactical Augmentation of Satellite ISR</div>
+        <span class="badge badge-purple">CLEAR integration</span>
+      </div>
+      <div class="uc-body">
+        In modern ISR architectures, the problem is not "satellites or aircraft" but multi-layer integration. NATO's Joint ISR model explicitly incorporates diverse collection assets across domains and highlights the need for fusion and dissemination. Our CLEAR roadmap is designed to <strong>integrate stratospheric imagery with satellite imagery</strong> (Copernicus and commercial), creating a fused knowledge base for analytics and reporting.<br><br>
+        Stratospheric assets fill temporal gaps, provide local persistence during a crisis window, and support rapid retasking over a defined theatre — while satellites provide the baseline wide-area context that no single stratospheric platform can replicate.
+      </div>
+      <div class="uc-why"><strong>Why stratosphere:</strong> Fills temporal coverage gaps between satellite passes; enables rapid retasking over a defined theatre without waiting for the next orbital window.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Consistent georeferencing, processing pipeline governance, and licensing/security restrictions for sensitive or restricted EO datasets from third-party sources</div>
+    </div>
+
+    <!-- Comms relay + disaster -->
+    <div class="uc-card" style="border-top:2px solid var(--red)">
+      <div class="uc-header">
+        <div class="uc-title">Communications Relay, Disaster Response &amp; Rapid Monitoring</div>
+        <span class="badge badge-red">Adjacent capability</span>
+      </div>
+      <div class="uc-body">
+        High-altitude platforms are widely recognised as potential relay and resilient communications layers. The EU's GOVSATCOM and IRIS² programmes are explicitly designed to serve authorised users and security-critical missions. We support custom missions including <strong>telecom coverage in remote areas and private, secure communications solutions</strong> for government and corporate clients, subject to regulatory compliance and mission approvals.<br><br>
+        In disaster response, continuity of observation and communications in the first hours and days is often the binding constraint. Persistent platforms reduce reliance on repeated sorties or unpredictable satellite tasking windows.
+      </div>
+      <div class="uc-why"><strong>Why persistence matters:</strong> Disaster response requires continuous coverage during the critical first 72-hour window — persistent platforms eliminate the gaps that scheduled satellite passes and limited drone endurance create.</div>
+      <div class="uc-constraint"><strong>Constraints:</strong> Relay missions require spectrum coordination and regulatory approvals; disaster deployments require expedited but compliant aviation coordination and GDPR-aligned data governance</div>
+    </div>
+
+    <!-- Strategic monitoring -->
+    <div class="uc-card" style="border-top:2px solid rgba(238,241,246,0.2); grid-column:1/-1">
+      <div class="uc-header">
+        <div class="uc-title">Strategic Monitoring: Supply Chain Resilience &amp; Geopolitical Risk Detection</div>
+        <span class="badge badge-cyan">CLEAR-native</span>
+      </div>
+      <div class="uc-body" style="max-width:680px">
+        We treat strategic monitoring as a long-term downstream application of persistent EO and analytics. CLEAR is positioned to convert centimetre-level imagery into <strong>query-responsive intelligence</strong>, including automated reporting and multi-source integration for logistics nodes, energy corridors, and supply chain chokepoints. These use cases depend on robust governance and explainable analytics, because outputs may drive high-stakes decisions.
+      </div>
+      <div class="uc-constraint" style="max-width:680px"><strong>Heightened scrutiny:</strong> Strategic monitoring raises ethical questions and requires strong internal controls — appropriate use guarantees, lawful processing, access audit trails, and avoidance of misuse. These controls are engineered into CLEAR's access governance model, not added as afterthoughts.</div>
+    </div>
+
+  </div>
+
+  <!-- Image placeholder — defence imagery output -->
+  <div class="img-ph" style="height:220px;margin-top:0.5rem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    <div class="img-ph-label">ISR / surveillance imagery sample</div>
+    <div class="img-ph-hint">Aerial or stratospheric imagery showing a border corridor, coastline, or critical infrastructure site — suitable for non-classified illustration of ISR output capability</div>
+  </div>
+
+</div>
+
+<!-- ─── §4  COMPARISON TABLE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Platform Comparison</div>
+  <h2 class="sec-title">Stratospheric systems vs satellites vs drones</h2>
+  <p class="sec-desc">Six operational dimensions across three platform categories — where each wins and where trade-offs apply</p>
+
+  <div style="border:1px solid var(--border-med);overflow-x:auto;margin:2rem 0">
+    <table class="comp-tbl">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Stratospheric — Involve</th>
+          <th>Satellite EO</th>
+          <th>Drones / Tactical UAS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Persistence</td>
+          <td>Multi-day to multi-month goal for Stratostats®; v2 roadmap targets ~90 days average duration; platform designed for continuous station-keeping</td>
+          <td>Persistent presence in orbit, but time-on-target constrained by orbital mechanics and tasking queue — fixed revisit interval over any given point</td>
+          <td>Limited endurance per sortie (hours); requires rotation, basing, and logistics support for sustained coverage</td>
+        </tr>
+        <tr>
+          <td>Revisit over area of interest</td>
+          <td>Continuous or high-frequency over a defined theatre; rapid retasking with low latency — no wait for next orbital pass</td>
+          <td>Revisit depends on constellation size/orbit and tasking priorities; high-frequency tasking is expensive or requires large constellations</td>
+          <td>High revisit locally during sortie, but limited time and range; each sortie covers a constrained area</td>
+        </tr>
+        <tr>
+          <td>Coverage footprint</td>
+          <td>Wide-area footprint (hundreds of km class) at altitude — ~505 km horizon at 20 km, ~619 km at 30 km; localised sensing focus within that footprint</td>
+          <td>Wide area, global coverage building blocks; single pass covers large swath, but coverage density depends on constellation</td>
+          <td>Localised coverage; designed for tactical inspection, not broad-area persistent monitoring</td>
+        </tr>
+        <tr>
+          <td>Latency</td>
+          <td>Low latency for local collection and downlink — dependent on communications link quality and bandwidth; near-real-time feasible</td>
+          <td>Ranges from low to high depending on data delivery chain and tasking pipeline; non-direct tasking can add significant delay</td>
+          <td>Low latency when communications are available locally; limited by comms range and operator proximity</td>
+        </tr>
+        <tr>
+          <td>Regulatory constraints</td>
+          <td>Airspace authorisations, NOTAM/coordination, high-altitude balloon procedures; ICAO Annex 2 obligations for unmanned free balloons; no EU-level higher airspace regulation yet — national frameworks apply</td>
+          <td>Orbital licensing; imagery export restrictions vary by jurisdiction; space data policy constraints for sensitive data; generally established procurement pathways</td>
+          <td>UAS regulations (EASA/national frameworks), operational airspace restrictions, visual line-of-sight limitations; complex for cross-border operations</td>
+        </tr>
+        <tr>
+          <td>Data governance</td>
+          <td>Engineered for sovereign deployments and controlled dissemination; separated civil/government workloads; EU-region hosting with customer-controlled key management; aligned to GDPR and EUCI-adjacent controls</td>
+          <td>Increasingly security-sensitive delivery rules in EU context; Copernicus restricted data workflows and accredited user registries; licensing complexity for sensitive or classified applications</td>
+          <td>Typically tactical, local governance — still subject to privacy rules and proportionality requirements; limited sovereign infrastructure model for most commercial operators</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ─── §5  REGULATORY & COMPLIANCE ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Regulatory &amp; Compliance</div>
+  <h2 class="sec-title">Multi-layer compliance framework</h2>
+  <p class="sec-desc">Aviation · export controls · data protection · security governance — staged compliance build aligned to Series A scaling</p>
+
+  <p class="prose">
+    We operate under a multi-layer compliance model: aviation and airspace compliance for flight operations; export controls for controlled items and technical assistance; and data protection and security governance for downstream services. Our approach is institutional-grade and staged — building compliance infrastructure in advance of the procurement requirements that will demand it.
+  </p>
+
+  <!-- Compliance roadmap table -->
+  <div class="subsec">Compliance Roadmap — Series A Execution Window</div>
+
+  <div class="compliance-track" style="margin-top:1rem">
+    <div class="cr-row header">
+      <div class="cr-cell">Horizon</div>
+      <div class="cr-cell">Compliance build</div>
+      <div class="cr-cell">Practical deliverables</div>
+    </div>
+    <div class="cr-row">
+      <div class="cr-cell horizon">Immediate<span>0–6 months</span></div>
+      <div class="cr-cell"><strong>Export control governance baseline</strong></div>
+      <div class="cr-cell">Controlled item classification procedure; end-user/end-use screening; sanctions screening; internal training; recordkeeping aligned to EU export control definitions including electronic transfer (Regulation EU 2021/821)</div>
+    </div>
+    <div class="cr-row">
+      <div class="cr-cell horizon">Near-term<span>6–18 months</span></div>
+      <div class="cr-cell"><strong>Government procurement readiness</strong></div>
+      <div class="cr-cell">Security-by-design evidence pack; operational compliance SOPs; audited data handling procedures aligned to GDPR and EUCI-adjacent controls where relevant; structured export control governance, classification playbooks, end-user screening, and licensing workflows</div>
+    </div>
+    <div class="cr-row" style="border-bottom:none">
+      <div class="cr-cell horizon">Mid-term<span>18–36 months</span></div>
+      <div class="cr-cell"><strong>Multi-country scaling</strong></div>
+      <div class="cr-cell">Cross-border licence playbooks; country-specific aviation and security requirements mapping; deployment templates for sovereign hosting and controlled dissemination; clearance-ready operating model for programmes where security requirements expand</div>
+    </div>
+  </div>
+
+  <!-- Key compliance areas -->
+  <div class="card-grid-2" style="margin-top:2rem">
+
+    <div class="g-card" style="border-top:2px solid var(--red)">
+      <span class="g-card-num">EU DUAL-USE EXPORT CONTROL</span>
+      <div class="g-card-title">Regulation (EU) 2021/821 — four practical implications</div>
+      <div class="g-card-body">
+        Export control assessment is not optional at scale and not limited to hardware. It can apply to:
+        <ul style="margin-top:0.5rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:0.3rem">
+          <li><strong>Payload components</strong> meeting Annex I thresholds</li>
+          <li><strong>Encryption or high-performance processing</strong> components</li>
+          <li><strong>Technical assistance or software/technology transfer</strong> in cross-border contexts — including electronic transmission</li>
+          <li><strong>Cyber-surveillance items</strong> not listed in Annex I, requiring due diligence and notification</li>
+        </ul>
+        <br>We do not claim blanket non-control status — control thresholds depend on technical parameters of sensors, communications equipment, encryption, and end-use/end-user context.
+      </div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--amber)">
+      <span class="g-card-num">AIRSPACE &amp; AVIATION REGULATION</span>
+      <div class="g-card-title">Higher airspace operations — developing EU regulatory area</div>
+      <div class="g-card-body">
+        EASA explicitly recognises higher airspace operations (20–40 km) as an emerging domain with no EU-level regulation yet in place. Some Member States have developed national regulations. ICAO Annex 2 includes operator obligations for heavy unmanned free balloons, including reporting requirements before planned descent.<br><br>
+        We have embedded operational competence in authorisation workflows and maintain active monitoring of regulatory developments. This is a core operational competence, not an ancillary function — persistent stratospheric services cannot scale without <strong>repeatable regulatory pathways</strong>.
+      </div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--blue)">
+      <span class="g-card-num">GDPR &amp; DATA PROTECTION</span>
+      <div class="g-card-title">Personal data implications in urban, border, and disaster contexts</div>
+      <div class="g-card-body">
+        Even where sensing is infrastructure-focused, urban monitoring, border contexts, and disaster response over populated areas can implicate personal data if individuals are identifiable or combined datasets increase identifiability. Our baseline approach:
+        <ul style="margin-top:0.5rem;padding-left:1.1rem;display:flex;flex-direction:column;gap:0.3rem">
+          <li>Data minimisation aligned to mission objectives</li>
+          <li>Defined retention schedules and deletion policies</li>
+          <li>Role-based access, audit trails, controlled dissemination</li>
+          <li>Government-grade segregation and sovereign hosting on demand</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="g-card" style="border-top:2px solid var(--purple)">
+      <span class="g-card-num">SECURITY CLEARANCE PATHWAYS</span>
+      <div class="g-card-title">Building a clearance-ready operating model for EUCI-adjacent programmes</div>
+      <div class="g-card-body">
+        Access to EU classified information is governed through Commission Decision (EU, Euratom) 2015/444 on protecting EUCI. For national MoD programmes, practical pathways involve personnel security clearances for specific staff, facility and information security controls aligned to national frameworks, and contractual compliance evidence.<br><br>
+        We do not claim classified operations. Our objective is to build a <strong>clearance-ready operating model</strong> so that we can participate in programmes where security requirements expand over time — not to retroactively qualify after a contract is awarded.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-amber">
+    <strong>Defence procurement requirement:</strong> MoDs and security agencies commonly require evidence of security management and information assurance, supply chain integrity and continuity planning, controlled access processes, and contractual ability to operate within specific sovereign constraints. We approach this as a long-cycle enterprise procurement motion rather than a transactional sales motion — consistent with our transition from pilots to framework agreements.
+  </div>
+
+</div>
+
+<!-- ─── §6  SECURITY & DATA SOVEREIGNTY ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Security &amp; Data Sovereignty</div>
+  <h2 class="sec-title">Security model — commercial workloads and government workloads by design</h2>
+  <p class="sec-desc">Segregation at the infrastructure layer, not only the application layer — with a controlled escalation path in assurance levels</p>
+
+  <div class="card-grid-3" style="margin-top:2rem">
+    <div class="g-card" style="border-top:2px solid var(--blue)">
+      <span class="g-card-num">PRINCIPLE 01</span>
+      <div class="g-card-title">Segregation by design</div>
+      <div class="g-card-body">Commercial workloads and datasets are separated from government workloads and datasets at the <strong>infrastructure and access layers</strong>, not only at the application layer. Government deployments have isolated storage, separate encryption key chains, and independent audit trails from commercial customer data.</div>
+    </div>
+    <div class="g-card" style="border-top:2px solid var(--green)">
+      <span class="g-card-num">PRINCIPLE 02</span>
+      <div class="g-card-title">Least privilege and auditability</div>
+      <div class="g-card-body">Government deployments require institutional-grade audit trails and strict access controls. NATO doctrine explicitly emphasises information assurance in the context of intelligence sharing. RBAC, multi-factor authentication, compartmentalisation, and <strong>immutable audit logs</strong> are build-to-spec controls, not post-hoc add-ons.</div>
+    </div>
+    <div class="g-card" style="border-top:2px solid var(--amber)">
+      <span class="g-card-num">PRINCIPLE 03</span>
+      <div class="g-card-title">Sovereignty options, not a fixed hosting choice</div>
+      <div class="g-card-body">The EU Space Strategy for Security and Defence emphasises tailored delivery rules for security-sensitive services, including access control and controlled dissemination. Our architecture mirrors this: <strong>CLEAR is deployable in multiple sovereignty contexts</strong> — from commercial AWS/EU-region hosting to sovereign cloud providers to on-premise dedicated environments for sensitive deployments.</div>
+    </div>
+  </div>
+
+  <!-- CLEAR architecture -->
+  <div class="subsec">CLEAR Architecture — Security and Sovereignty Implications</div>
+
+  <p class="prose" style="margin-top:1rem">
+    CLEAR is defined internally as "Cloud-based LLM-enhanced Earth Analytics &amp; Reconnaissance" — a cloud-native workflow converting centimetre-level imagery into query-responsive intelligence with minimal latency. Key architectural implications for government deployments:
+  </p>
+
+  <div class="phase-list" style="margin-top:1.5rem">
+    <div class="phase-row">
+      <div class="phase-num" style="color:var(--blue)"><strong style="color:var(--blue)">Multi-source ingestion</strong></div>
+      <div class="phase-content">Integration of Involve's stratospheric imagery plus satellite imagery (Copernicus and commercial) and potentially other sensor feeds. Government deployments can be restricted to specific source combinations — for example, Copernicus restricted data workflows for accredited users, without exposure to commercial data pipelines.</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num" style="color:var(--green)"><strong style="color:var(--green)">Automated analytics</strong></div>
+      <div class="phase-content">Object detection, super-resolution, change detection, and report generation. Government-grade deployments include explainability requirements — analytics outputs must trace to source data and processing parameters to support decision accountability in high-stakes contexts.</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num" style="color:var(--amber)"><strong style="color:var(--amber)">Interface layer</strong></div>
+      <div class="phase-content">Natural language queries yielding answers with supporting maps and explanations. For government users, the interface layer can be deployed in isolated network environments — on-premise or sovereign-cloud — without dependence on public internet infrastructure for query processing or model inference.</div>
+    </div>
+    <div class="phase-row" style="border-bottom:none">
+      <div class="phase-num" style="color:var(--text-3)"><strong>Current status</strong>TRL 5 → 7</div>
+      <div class="phase-content">We treat CLEAR's current TRL 5 status and target TRL 7 as a roadmap commitment rather than a finished capability claim. The TRL 7 target is aligned to our EIC workplan, which includes dedicated work packages on data commercialisation and security/compliance investments for the cloud platform. Current AWS hosting is treated as a procurement variable, not a fixed technical decision — sovereign cloud migration is scoped as a mid-term capability.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>EU hosting strategy:</strong> We support EU-based hosting and sovereign options through EU-region hosting with customer-controlled key management, sovereign cloud providers and national frameworks where required, and on-premise or dedicated environments for sensitive deployments. This is consistent with EU institutional practice for restricting access to security-sensitive Copernicus data through segregated workflows and accredited user registries.
+  </div>
+
+</div>
+
+<!-- ─── §7  B2G STRATEGY ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">B2G Strategy</div>
+  <h2 class="sec-title">Public procurement pathway — from pilots to framework agreements</h2>
+  <p class="sec-desc">Phased approach: validation pilots → co-funded innovation → recurring multi-year framework supplier positioning</p>
+
+  <!-- Current traction -->
+  <div class="subsec">Current Traction and Pipeline</div>
+
+  <p class="prose" style="margin-top:1rem">
+    We already operate in a mixed portfolio of commercial and governmental engagements. The following examples are presented as evidence of procurement relevance and stakeholder pull — not as guaranteed revenue until contracted and fully executed.
+  </p>
+
+  <div class="pipeline-list" style="margin-top:1.5rem">
+    <div class="pl-row">
+      <div class="pl-label">MBDA Italy<span>Contracted</span></div>
+      <div class="pl-content">Contract for a stratospheric <strong>defence communications system</strong> — demonstrating Involve's ability to deliver government-grade hardware and integration capability to a Tier-1 European defence prime.</div>
+    </div>
+    <div class="pl-row">
+      <div class="pl-label">PNRM (Italian Armaments)<span>Contracted</span></div>
+      <div class="pl-content">Secured <strong>surveillance contract</strong> with the Italian National Armaments Directorate — a direct MoD procurement relationship establishing Involve as a qualified defence supplier under Italian procurement frameworks.</div>
+    </div>
+    <div class="pl-row">
+      <div class="pl-label">Elettronica S.p.A.<span>MoU under contracting</span></div>
+      <div class="pl-content">MoU for <strong>testing positional identification systems</strong> — technical collaboration with a major Italian defence electronics company, relevant to EW/SIGINT-adjacent stratospheric applications.</div>
+    </div>
+    <div class="pl-row" style="border-bottom:none">
+      <div class="pl-label">Danish MoD<span>Technical discussions</span></div>
+      <div class="pl-content">Technical discussions regarding <strong>Greenland monitoring</strong> — illustrating cross-border European defence interest in stratospheric sensing for remote/Arctic area monitoring where terrestrial and satellite coverage is limited.</div>
+    </div>
+  </div>
+
+  <!-- Procurement phases -->
+  <div class="subsec">Strategic Procurement Logic — Three Phases</div>
+
+  <div class="phase-list" style="margin-top:1rem">
+    <div class="phase-row">
+      <div class="phase-num" style="color:var(--text-3)"><strong style="color:var(--text-2)">Phase A</strong>Pilots &amp; PoCs</div>
+      <div class="phase-content">Pilots, feasibility studies, and proofs-of-concept to validate operational fit, airspace feasibility, and data workflows. We have executed <strong>30+ experimental commercial launches</strong> building operational credibility and data assets that are prerequisites for scalable service delivery. This track record is what enables government customers to de-risk procurement decisions.</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-num" style="color:var(--amber)"><strong style="color:var(--amber)">Phase B</strong>Co-funded innovation</div>
+      <div class="phase-content">Leverage European and national programmes co-funding development, qualification, and demonstrations — ESA innovation programmes, EDF collaborative projects, national defence innovation structures. <strong>Benchmark: EuroHAPS</strong> — Thales Alenia Space signed a €43M contract for the EDF-funded EuroHAPS demonstration project, coordinating 11 nations across complementary stratospheric ISR/communications demonstrators. This illustrates the scale and institutional seriousness of EU funding for the stratospheric domain.</div>
+    </div>
+    <div class="phase-row" style="border-bottom:none">
+      <div class="phase-num" style="color:var(--blue)"><strong style="color:var(--blue)">Phase C</strong>Framework agreements</div>
+      <div class="phase-content">Multi-year framework positions with MoDs, coast guards, civil protection agencies, and border agencies — as a strategic supplier of persistent sensing services and analytics under defined SLAs and assurance requirements. The EU's emerging defence simplification directive permits 10-year framework agreements, enabling the long-duration contracts that make stratospheric infrastructure economically viable for both sides. At this stage, Involve transitions from procurement participant to preferred-supplier infrastructure layer.</div>
+    </div>
+  </div>
+
+  <!-- Institutional programmes alignment -->
+  <div class="subsec">Institutional Programme Alignment</div>
+
+  <div class="card-grid-3" style="margin-top:1rem">
+    <div class="g-card">
+      <span class="g-card-num">EU SPACE STRATEGY — SECURITY &amp; DEFENCE</span>
+      <div class="g-card-title">Dual-use services and tailored delivery rules</div>
+      <div class="g-card-body">The Joint Communication explicitly states that "dual-use services provided by EU space programmes and by commercial entities… will be further developed" and references the need for tailored rules for security-sensitive delivery — priority access, access control, dissemination restrictions, anonymisation of requests. <strong>This policy language directly describes our positioning.</strong></div>
+    </div>
+    <div class="g-card">
+      <span class="g-card-num">GOVSATCOM AND IRIS²</span>
+      <div class="g-card-title">Secure connectivity expectations for authorised users</div>
+      <div class="g-card-body">GOVSATCOM and IRIS² address secure connectivity for authorised users and security-critical missions, shaping expectations for secure, assured service delivery. These programmes define the assurance and sovereignty standards that commercial providers must match to participate in sovereign-adjacent procurement — the standard we are building toward.</div>
+    </div>
+    <div class="g-card">
+      <span class="g-card-num">EUROPEAN DEFENCE FUND</span>
+      <div class="g-card-title">€7.953bn collaborative development vehicle</div>
+      <div class="g-card-body">EDF's financial envelope (2021–2027) and programme design — including collaborative development requirements and SME participation incentives — create structural support for European defence innovation. EDF is both a co-funding source for technology maturation and a signal of institutional support for the stratospheric domain, as demonstrated by EuroHAPS at €43M scale.</div>
+    </div>
+  </div>
+
+  <div class="callout callout-green">
+    <strong>Timeline realism:</strong> We explicitly recognise procurement lead times of 12–36 months for larger frameworks, airspace authorisation complexity across multiple jurisdictions, qualification and reliability requirements for persistent operations, and maturity requirements for secure analytics platforms. Our EIC-aligned implementation plan anticipates staged work packages — industrialisation, data commercialisation, constellation scaling — timed to match these institutional timelines, not run ahead of them.
+  </div>
+
+</div>
+
+<!-- ─── §8  COMPETITIVE CONTEXT ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Competitive Context</div>
+  <h2 class="sec-title">Compete, partner, and complement — across five competitor categories</h2>
+  <p class="sec-desc">Involve is positioned as a complementary infrastructure layer — partnering where scale and certification favour primes, competing where persistence economics and full-stack analytics differentiate</p>
+
+  <!-- Compete / partner / complement table -->
+  <div class="partner-tbl" style="margin-top:2rem">
+    <div class="pt-row header">
+      <div class="pt-cell">Mode</div>
+      <div class="pt-cell">Where it applies</div>
+      <div class="pt-cell">Why it is rational</div>
+    </div>
+    <div class="pt-row">
+      <div class="pt-cell mode" style="color:var(--red)">Compete</div>
+      <div class="pt-cell">Persistent regional monitoring services, rapid tasking, and <strong>full-stack delivery</strong> where customers want a turnkey layer — no systems integrator in the middle</div>
+      <div class="pt-cell">Differentiation through persistence economics, dual-platform architecture (Stratostats® + Stratorelay®), and CLEAR analytics roadmap — capabilities no pure satellite or pure analytics vendor can bundle in a single contract</div>
+    </div>
+    <div class="pt-row">
+      <div class="pt-cell mode" style="color:var(--amber)">Partner</div>
+      <div class="pt-cell">Prime-led <strong>C5ISR programmes</strong>, national frameworks requiring deep certification and systems integration — where primes own the programme and Involve provides a layer</div>
+      <div class="pt-cell">Primes own programme scale, security certifications, and MoD relationships; Involve provides a persistent sensing layer and proprietary datasets. Strategy is not to displace primes in these roles but to be the stratospheric data supplier inside their architectures</div>
+    </div>
+    <div class="pt-row" style="border-bottom:none">
+      <div class="pt-cell mode" style="color:var(--blue)">Complement</div>
+      <div class="pt-cell"><strong>Satellite ISR programmes</strong>, Copernicus-enabled workflows, NATO and EU "space-enabled services" ecosystem — where orbital coverage is the baseline and stratospheric persistence adds the temporal layer</div>
+      <div class="pt-cell">Stratospheric persistence fills temporal gaps and enhances taskability over a defined region; satellite provides wide-area context. CLEAR integrates both — creating a combined intelligence output that neither alone can generate. Position as an augmenter, not a replacement</div>
+    </div>
+  </div>
+
+  <!-- Competitor categories -->
+  <div class="subsec">Five Competitor Categories</div>
+
+  <div class="card-grid-2" style="margin-top:1rem">
+
+    <div class="g-card">
+      <span class="g-card-num">CATEGORY 01 — DEFENCE PRIMES</span>
+      <div class="g-card-title">Airbus D&amp;S, Thales, Leonardo, BAE Systems</div>
+      <div class="g-card-body">Primes dominate system-of-systems integration, programme management, and the MoD interface for major ISR, communications, and C2 programmes. Our strategy is not to displace primes — it is to <strong>provide a persistent sensing layer and analytics services that integrate into prime-led architectures</strong>. Relationship mode: partner where primes are prime contractor; compete where customers want a direct persistent sensing service without prime overhead.</div>
+    </div>
+
+    <div class="g-card">
+      <span class="g-card-num">CATEGORY 02 — SATELLITE ISR &amp; EO</span>
+      <div class="g-card-title">Maxar, Planet Labs, ICEYE, Capella Space</div>
+      <div class="g-card-body">Satellite EO providers offer global coverage and mature procurement pathways — strong for wide-area periodic coverage. They face structural constraints in continuous local persistence and can have significant cost for high-frequency tasking. Our position: <strong>augment satellites, not replace them</strong> — persistent local sensing plus faster retasking over a defined region, while integrating satellite context into CLEAR. Relationship mode: complement for programme-level integration; compete for persistent regional contracts.</div>
+    </div>
+
+    <div class="g-card">
+      <span class="g-card-num">CATEGORY 03 — HAPS &amp; STRATOSPHERIC</span>
+      <div class="g-card-title">Airbus Zephyr (solar fixed-wing), Near Space Labs (balloon-based)</div>
+      <div class="g-card-body">The HAPS domain includes solar pseudo-satellites, airships, and stratospheric balloons. EuroHAPS (€43M, 11-nation consortium) illustrates state investment in complementary platform types for ISR and communications. Our differentiation: <strong>full-stack platform + AI + analytics (CLEAR)</strong>, dual-platform architecture (heavy persistent + light rapid-deploy), and reusability emphasis for cost efficiency. Neither Zephyr nor Near Space Labs offers an integrated analytics layer.</div>
+    </div>
+
+    <div class="g-card">
+      <span class="g-card-num">CATEGORY 04 — AI DEFENCE PLATFORMS</span>
+      <div class="g-card-title">Palantir Technologies and niche spatial SaaS</div>
+      <div class="g-card-body">AI and analytics vendors can be competitors or partners depending on customer procurement architecture. Our approach: own vertical integration for our own data products while supporting integration APIs where government customers have existing analytics stacks. Key advantage vs Palantir-type platforms: Involve <strong>controls the primary data acquisition pipeline</strong> — not dependent on third-party data availability or licensing restrictions. Relationship mode: complement where customers have existing Palantir deployments; compete where integrated sensing-to-intelligence is the requirement.</div>
+    </div>
+
+  </div>
+
+  <!-- Image placeholder -->
+  <div class="img-ph" style="height:180px;margin-top:0.5rem">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+    <div class="img-ph-label">Competitive landscape / partnership context</div>
+    <div class="img-ph-hint">EuroHAPS consortium context, EU defence programme visual, or a diagram showing Involve's position within the NATO/EU ISR ecosystem</div>
+  </div>
+
+</div>
+
+<!-- ─── §9  RISK FACTORS ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Risk Register</div>
+  <h2 class="sec-title">Risk factors and mitigations</h2>
+  <p class="sec-desc">Risk disclosure is a core element of institutional readiness — dual-use infrastructure attracts scrutiny and must be managed with clear governance</p>
+
+  <div class="risk-grid">
+
+    <div class="risk-card">
+      <div class="risk-title">Regulatory risk <span class="badge badge-amber">Medium</span></div>
+      <div class="risk-body">Airspace regimes for higher-altitude operations are evolving. EASA explicitly recognises higher airspace operations as an emerging domain with no single EU-level regulation today, creating multi-jurisdictional complexity. Regulatory frameworks can shift, tighten, or create inconsistencies across Member States that affect mission authorisation timelines.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Embedded operational competence in authorisation workflows; active monitoring of regulatory developments as a core operational function, not an ancillary activity; progressive scaling with built-in authorisation lead times per jurisdiction</div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">Political &amp; procurement risk <span class="badge badge-amber">Medium</span></div>
+      <div class="risk-body">Defence and security procurement is exposed to budget reprioritisation, programme delays, and changing institutional requirements — even in a structurally growing spending environment. EU defence investment is rising, but procurement cycles remain long and sensitive to political shifts. Individual programmes can be delayed by 12–36+ months without advance notice.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Dual-use diversification reduces dependence on single programmes; phased procurement strategy with civil revenue providing baseline ARR during defence cycle delays; multiple national engagements reduce single-country concentration</div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">Export control &amp; cross-border delivery risk <span class="badge badge-red">Managed</span></div>
+      <div class="risk-body">Regulation (EU) 2021/821 can apply to hardware, software, technology transfer, and technical assistance — including electronic transmission. As Involve scales cross-border, the compliance surface area expands: payload components, encryption modules, technical training, and even software demonstrations can trigger licensing requirements in some jurisdictions.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Structured export control governance, per-component classification playbooks, end-user screening procedures, licensing where required; export control assessment embedded into product development and commercial processes from the outset</div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">Airspace constraints &amp; operational risk <span class="badge badge-blue">Low-Medium</span></div>
+      <div class="risk-body">Persistent deployments require repeatable authorisation approvals, safe ascent/descent procedures, and coordination obligations for unmanned free balloons — including descent reporting obligations under ICAO Annex 2. Obtaining authorisations in new jurisdictions can take 3–12 months and is not guaranteed in advance.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Conservative flight safety engineering; mission SOPs with redundancy planning; progressive geographic scaling that allows authorisation timelines to be built into business development planning; existing authorisation relationships in Italy as the scaling template</div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">Ethical scrutiny of dual-use technologies <span class="badge badge-amber">Medium</span></div>
+      <div class="risk-body">Persistent sensing capabilities can raise ethical questions regarding surveillance, misuse, and proportionality — amplified by AI-driven analytics and automated reporting features. As CLEAR's capabilities grow, so does the potential for misuse or reputational challenge from specific customer or use-case choices.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Use-case review processes; contractual constraints on application scope; governance controls (access control, audit logging, data retention limits); remaining within lawful and regulated end-use boundaries; explicit internal policy on prohibited use cases</div>
+    </div>
+
+    <div class="risk-card">
+      <div class="risk-title">CLEAR maturity risk <span class="badge badge-blue">Low-Medium</span></div>
+      <div class="risk-body">CLEAR is at TRL 5 today with a target of TRL 7 under the EIC-aligned workplan. Government procurement expectations for analytics platforms can exceed the current capability state, creating a gap between what can be contracted and what can be delivered on the timelines defence customers expect.</div>
+      <div class="risk-mitigation"><strong>Mitigation:</strong> Transparent TRL framing in all government discussions; staged capability claims that match the development roadmap; Series A funding directly targets CLEAR platform development and security compliance investment to close the gap ahead of major B2G procurement timelines</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── §10  LONG-TERM POSITIONING ─── -->
+<div class="sec">
+  <div class="sec-eyebrow">Long-Term Positioning</div>
+  <h2 class="sec-title">Four structural drivers of long-term defensibility</h2>
+  <p class="sec-desc">European Earth Intelligence infrastructure — positioned at the intersection of expanding security budgets, persistent ISR demand, dual-use resilience, and infrastructure-grade defensibility</p>
+
+  <div class="impl-band">
+
+    <div class="impl-row" style="border-top:2px solid var(--blue)">
+      <div class="impl-title">European security budgets are structurally expanding</div>
+      <div class="impl-body">
+        EU Member States' defence expenditure reached €343bn in 2024 (estimated €381bn in 2025). Defence investment reached €106bn in 2024 — up 42% vs 2023. The EDF (€7.953bn), EU Space Programme (€14.88bn), and IRIS² (€2.4bn) are multi-year committed funding instruments, not discretionary budgets. <strong>This is not a cycle; it is a structural reset of European security spending</strong> that will sustain procurement demand for persistent sensing infrastructure for at least the 2021–2030 planning horizon.
+      </div>
+    </div>
+
+    <div class="impl-row">
+      <div class="impl-title">Doctrine demands persistent, multi-domain ISR</div>
+      <div class="impl-body">
+        NATO's Joint ISR framework emphasises interoperability and the networking environment for secure ISR dissemination. NATO common-funded budget ceilings explicitly fund ISR forces (€264m NISRF, €420m AWACS for 2024). <strong>Institutional doctrine increasingly treats persistent multi-domain sensing as a baseline requirement</strong>, not an optional capability uplift — positioning Involve's stratospheric layer as a necessary complement to satellite and drone ISR, not a discretionary purchase.
+      </div>
+    </div>
+
+    <div class="impl-row">
+      <div class="impl-title">Dual-use is a resilience mechanism for the company</div>
+      <div class="impl-body">
+        Civil markets expand Involve's TAM, increase platform utilisation and dataset generation, and support a sustainable transition from pilots to recurring contracts. Commercial revenue provides the baseline ARR stability that allows defence procurement cycles (12–36+ months) to be managed without existential cash flow risk. <strong>The dual-use model is how infrastructure companies survive the long procurement timelines that would otherwise make defence-only models extremely capital-intensive.</strong>
+      </div>
+    </div>
+
+    <div class="impl-row" style="border-bottom:none">
+      <div class="impl-title">Infrastructure positioning is strategically defensible</div>
+      <div class="impl-body">
+        Infrastructure positioning supports partnerships with primes without creating competitive conflict; complements satellites without requiring orbital capital expenditure; and avoids the regulatory, ethical, and reputational pitfalls associated with developing weapon systems. <strong>This positioning is consistent with our Series A narrative and EIC-aligned roadmap</strong>: scalable stratospheric platforms plus a CLEAR analytics layer that converts data into decision outputs, with sovereign deployment options and institutional-grade governance — a European Earth Intelligence infrastructure provider, not a defence contractor.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-green" style="margin-top:2.5rem">
+    <strong>Series A investor framing:</strong> The defence and dual-use thesis is not a speculative overlay on a commercial business — it is the second revenue channel of a dual-track model that expands TAM, increases contract duration and ACV, and deepens switching costs through sovereign data custody. Every Series A-funded capability (fleet expansion, CLEAR platform maturation, compliance infrastructure) simultaneously serves civil and defence markets. The marginal cost of adding a second revenue channel to an existing infrastructure platform is the strongest possible argument for the investment.
+  </div>
+
+  <div class="ref-note">
+    Sources: NATO Joint ISR doctrine · EU Space Programme Regulation 2021/696 · EU Space Strategy for Security and Defence (Joint Communication) · EU Strategic Compass · European Defence Agency (Council EU, defence numbers) · European Defence Fund (EUR-Lex summary) · EUSPA about/GOVSATCOM · EASA Higher Airspace Operations · ICAO Annex 2 · GDPR Regulation 2016/679 · EU Dual-Use Regulation 2021/821 · Commission Decision 2015/444 (EUCI) · Directive 2009/81/EC (defence procurement) · Thales Alenia Space / EuroHAPS press release · ESA EO Commercial Days 2024 · EUSPA EO Market Report 2024. Full source list with footnote references [1–61] available in the source document.
+  </div>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div style="padding:2.5rem 0 0;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem">
+  <div style="display:flex;align-items:center;gap:1.2rem">
+    <img src="https://cdn.prod.website-files.com/671f5ec2f687d2f55fafe279/672a0ca51d9e5090193779ed_symbol.svg"
+         alt="" style="height:16px;opacity:0.3;filter:brightness(0) invert(1)"
+         onerror="this.style.display='none'">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Involve Space S.r.l. · IS-DR-DEF-01 · Defence &amp; Dual-Use · Version 1.0 · 25 Feb 2026
+    </span>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span style="font-family:var(--f-mono);font-size:0.6rem;color:var(--text-3)">
+      Related: GTM Strategy (IS-DR-COM-01) · HAPS Roadmap (IS-DR-04) · Financial Model (IS-DR-FIN-01)
+    </span>
+    <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);border:1px solid rgba(240,160,32,0.2);padding:0.22rem 0.65rem">CONFIDENTIAL</span>
+  </div>
+</div>
+
+</div><!-- /body -->
+</body>
+</html>
