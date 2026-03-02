@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import GlobalLayout from './components/layout/GlobalLayout';
 import { ThemeProvider } from './components/ThemeProvider';
 import InvestmentThesisPage from './pages/InvestmentThesisPage';
+import InvestorDeckPage from './pages/InvestorDeckPage';
+import OnePagerPage from './pages/OnePagerPage';
 import CLEARGeoAIPage from './pages/CLEARGeoAIPage';
 import TechnologyMasterDocumentPage from './pages/TechnologyMasterDocumentPage';
 import StratosphericPlatformArchitecturePage from './pages/StratosphericPlatformArchitecturePage';
@@ -40,6 +42,16 @@ function App() {
             <Route path="/dataroom/00_Executive_Overview/01_Investment_Thesis" element={
               <ProtectedRoute requiredAccess="partial">
                 <GlobalLayout><InvestmentThesisPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/00_Executive_Overview/02_Investor_Deck_Latest" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><InvestorDeckPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/00_Executive_Overview/03_One_Pager" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><OnePagerPage /></GlobalLayout>
               </ProtectedRoute>
             } />
             <Route path="/dataroom/01_Strategy_and_Market/01_Market_Overview_TAM_SAM_SOM" element={
