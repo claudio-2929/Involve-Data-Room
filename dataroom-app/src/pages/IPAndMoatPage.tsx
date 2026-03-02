@@ -203,7 +203,7 @@ export default function IPAndMoatPage() {
             <div className="max-w-[860px] mx-auto md:px-14 px-4 overflow-x-hidden">
                 {/* 07.01 IP PORTFOLIO OVERVIEW */}
                 <ContentBlock>
-                    <SectionHeader eyebrow="07.01 — IP Portfolio Overview" title={<>Intellectual Property<br />Master Ledger</>} desc="The comprehensive mapping of patents, trademarks, software copyrights, and trade secrets" />
+                    <SectionHeader eyebrow="07.01 — IP Portfolio Overview" title="Intellectual Property Master Ledger" desc="The comprehensive mapping of patents, trademarks, software copyrights, and trade secrets" />
 
                     <BodyText>
                         Involve Space's IP portfolio is designed to protect a vertically integrated model — spanning hardware systems, control software, branded products, and geospatial analytics. The core strategy relies on a combination of <strong>targeted patent filings</strong> for externally observable hardware innovations, and rigorous <strong>trade secret protection</strong> for the Neurostar and CLEAR AI stacks.
@@ -230,7 +230,7 @@ export default function IPAndMoatPage() {
 
                 {/* 07.02 PATENTS & TRADEMARKS */}
                 <ContentBlock>
-                    <SectionHeader eyebrow="07.02 — Patents & Trademarks" title={<>Patent Filings &<br />Trademark Portfolio</>} desc="Hardware patent strategy, filing rationale, and brand protection coverage" />
+                    <SectionHeader eyebrow="07.02 — Patents & Trademarks" title="Patent Filings & Trademark Portfolio" desc="Hardware patent strategy, filing rationale, and brand protection coverage" />
 
                     <BodyText>
                         Involve's patent strategy is deliberately <strong>selective and hardware-focused</strong>. Patent filings are reserved for innovations that are independently discoverable through flight operations, commercially observable, or which define physical mechanisms that competitors could reproduce without access to software. Software, AI algorithms, and operational methods are intentionally excluded from patent filings to preserve confidentiality.
@@ -369,7 +369,7 @@ export default function IPAndMoatPage() {
 
                 {/* 07.03 PROPRIETARY AI & ALGORITHMS */}
                 <ContentBlock>
-                    <SectionHeader eyebrow="07.03 — Proprietary AI & Algorithms" title={<>Neurostar Software &<br />Autonomous Control Stack</>} desc="The AI-driven software IP that makes stratospheric platforms commercially viable" />
+                    <SectionHeader eyebrow="07.03 — Proprietary AI & Algorithms" title="Neurostar Software & Autonomous Control Stack" desc="The AI-driven software IP that makes stratospheric platforms commercially viable" />
                     <BodyText>
                         Involve's most strategically valuable IP is not hardware — it is <strong>Neurostar</strong>, the proprietary AI software suite that converts passive, wind-drifting stratospheric balloons into actively positioned, commercially useful platforms. Without Neurostar, Involve's balloons are expensive weather balloons. With Neurostar, they are autonomous Earth observation infrastructure.
                     </BodyText>
@@ -476,7 +476,7 @@ export default function IPAndMoatPage() {
 
                 {/* 07.04 DATA OWNERSHIP & COMPOUNDING ADVANTAGE */}
                 <ContentBlock>
-                    <SectionHeader eyebrow="07.04 — Data Ownership & Compounding Advantage" title={<>Data Ownership &<br />Compounding Flywheel</>} desc="How proprietary data accumulation creates a self-reinforcing competitive advantage over time" />
+                    <SectionHeader eyebrow="07.04 — Data Ownership & Compounding Advantage" title="Data Ownership & Compounding Flywheel" desc="How proprietary data accumulation creates a self-reinforcing competitive advantage over time" />
                     <BodyText>
                         Involve owns <strong>100% of all data collected across all missions</strong>. Every flight generates unique, ultra-high-resolution stratospheric imagery that no other entity on Earth holds. This data asset has two compounding properties: it improves Involve's AI systems directly, and it creates a proprietary intelligence archive that cannot be purchased or replicated on any timeline by any competitor.
                     </BodyText>
@@ -560,7 +560,7 @@ export default function IPAndMoatPage() {
 
                 {/* 07.05 LONG-TERM DEFENSIBILITY */}
                 <ContentBlock>
-                    <SectionHeader eyebrow="07.05 — Long-Term Defensibility Strategy" title={<>Long-Term Competitive<br />Defensibility</>} desc="Why the moat grows stronger over time and why replication becomes harder, not easier" />
+                    <SectionHeader eyebrow="07.05 — Long-Term Defensibility Strategy" title="Long-Term Competitive Defensibility" desc="Why the moat grows stronger over time and why replication becomes harder, not easier" />
                     <BodyText>
                         Involve's competitive moat is multi-layered and compounding. Individual layers — IP protection, technical performance, data accumulation, operational know-how — each create friction against replication. Together, they create a <strong>structural defensibility position</strong> that strengthens as the company scales. This section maps each layer of the moat, its current strength, and its trajectory.
                     </BodyText>
