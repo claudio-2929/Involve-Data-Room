@@ -1,12 +1,27 @@
-import { Download, Bell, ExternalLink, Sun, Moon, LogOut, Settings } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Download, Bell, ExternalLink, Sun, Moon, LogOut, Settings, Search } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import SearchModal from '../ui/SearchModal';
 
 export default function TopNavBar() {
     const { theme, toggleTheme } = useTheme();
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                setIsSearchOpen(true);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     const handleLogout = () => {
         logout();
@@ -24,6 +39,20 @@ export default function TopNavBar() {
             </div>
 
             <div className="flex items-center gap-3 md:gap-5">
+                <button
+                    onClick={() => setIsSearchOpen(true)}
+                    className="flex items-center gap-2 text-involve-muted hover:text-involve-text transition-colors bg-involve-panel border border-involve-border rounded-md px-3 py-1.5 hover:border-involve-blue/40"
+                    title="Search Data Room"
+                >
+                    <Search size={16} />
+                    <span className="text-sm hidden lg:inline mr-2 tracking-wide font-light">Search...</span>
+                    <kbd className="hidden lg:inline-flex items-center justify-center rounded border border-involve-border bg-involve-bg px-1.5 font-mono text-[10px] font-medium text-involve-dim">
+                        <span className="text-[10px]">⌘</span>K
+                    </kbd>
+                </button>
+
+                <div className="h-6 w-px bg-involve-border hidden md:block"></div>
+
                 <button className="text-involve-muted hover:text-involve-blue transition-colors hidden md:block" title="Recent Updates">
                     <Bell size={18} />
                 </button>
@@ -71,6 +100,11 @@ export default function TopNavBar() {
                     </button>
                 </div>
             </div>
+
+            <SearchModal
+                isOpen={isSearchOpen}
+                onClose={() => setIsSearchOpen(false)}
+            />
         </header>
     );
 }

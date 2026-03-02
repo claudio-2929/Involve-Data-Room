@@ -11,6 +11,11 @@ export default function InvestorDeckPage() {
             fileName="Involve_Space_Investor_Deck_Latest.pdf"
         >
             <PageNavigation
+                prev={{
+                    title: "Investment Thesis",
+                    desc: "An in-depth writeup of why Involve Space represents a compelling investment opportunity.",
+                    path: "/dataroom/00_Executive_Overview/01_Investment_Thesis"
+                }}
                 next={{
                     title: "Executive One Pager",
                     desc: "A concise, high-level summary of the Involve Space value proposition.",
