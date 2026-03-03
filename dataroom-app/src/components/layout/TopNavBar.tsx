@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Bell, ExternalLink, Sun, Moon, LogOut, Settings, Search } from 'lucide-react';
+import { Bell, ExternalLink, Sun, Moon, LogOut, Settings, Search } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -65,15 +65,7 @@ export default function TopNavBar() {
                     {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
                 </button>
 
-                <div className="h-8 w-px bg-involve-border hidden md:block"></div>
 
-                <button
-                    onClick={() => window.print()}
-                    className="group flex items-center gap-2 text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-involve-panel border border-involve-border rounded-sm hover:border-involve-blue hover:shadow-[0_0_10px_rgba(61,155,255,0.1)] transition-all"
-                >
-                    <Download size={16} className="text-involve-muted group-hover:text-involve-blue transition-colors" />
-                    <span className="font-medium">Export PDF</span>
-                </button>
 
                 <a href="mailto:ir@involvespace.eu" className="group flex items-center gap-2 text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-involve-blue/10 text-involve-blue border border-involve-blue/30 rounded-sm hover:bg-involve-blue/20 transition-all">
                     <ExternalLink size={16} />

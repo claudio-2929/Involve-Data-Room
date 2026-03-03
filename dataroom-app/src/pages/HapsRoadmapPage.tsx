@@ -625,7 +625,7 @@ export default function HapsRoadmapPage() {
                 />
 
                 <RefNote>
-                    Full competitive landscape analysis — positioning against satellite EO (Maxar, Planet), HAPS startups (Sceye, SoftBank HAPSMobile), and drone-based alternatives — is in the <strong className="font-medium">Competitive Analysis</strong> document. TRL status detail and subsystem-level maturity assessment is in <strong className="font-medium">TRL Status (IS-DR-07)</strong>.
+                    Full competitive landscape analysis — positioning against satellite EO (Maxar, Planet), HAPS startups (Sceye, SoftBank HAPSMobile), and drone-based alternatives — is in the <strong className="font-medium">Competitive Analysis</strong> document.
                 </RefNote>
             </ContentBlock>
         </div>

@@ -8,8 +8,7 @@ export const sitemapData = [
             { title: "Investor Deck Latest", path: "/dataroom/00_Executive_Overview/02_Investor_Deck_Latest" },
             { title: "One Pager", path: "/dataroom/00_Executive_Overview/03_One_Pager" },
             { title: "Key Milestones 24-28", path: "/dataroom/00_Executive_Overview/04_Key_Milestones_2024_2028" },
-            { title: "Use of Proceeds 20M", path: "/dataroom/00_Executive_Overview/05_Use_of_Proceeds_20M" },
-            { title: "Company Fact Sheet", path: "/dataroom/00_Executive_Overview/06_Company_Fact_Sheet" },
+            { title: "Use of Proceeds 20M", path: "/dataroom/00_Executive_Overview/05_Use_of_Proceeds_20M" }
         ]
     },
     {
@@ -36,8 +35,7 @@ export const sitemapData = [
             { title: "Flight Control System", path: "/dataroom/02_Product_and_Technology/04_Neurostar_Flight_Control_System" },
             { title: "CLEAR GeoAI Layer", path: "/dataroom/02_Product_and_Technology/05_CLEAR_GeoAI_Infrastructure_Layer" },
             { title: "Data Architecture", path: "/dataroom/02_Product_and_Technology/06_Data_Architecture_and_AI_Pipeline" },
-            { title: "TRL Status", path: "/dataroom/02_Product_and_Technology/07_TRL_Status_and_Technology_Roadmap" },
-            { title: "Testing & Validation", path: "/dataroom/02_Product_and_Technology/08_Testing_and_Validation_Reports" },
+            { title: "Testing & Validation", path: "/dataroom/02_Product_and_Technology/08_Testing_and_Validation_Reports" }
         ]
     },
     {
