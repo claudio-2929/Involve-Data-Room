@@ -14,6 +14,10 @@ interface PdfViewerPageProps {
 export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fileName, children }: PdfViewerPageProps) {
     const [isDownloading, setIsDownloading] = useState(false);
 
+    // Ensure the PDF URL works with the base path, especially for GitHub Pages
+    const baseUrl = import.meta.env.BASE_URL;
+    const finalPdfUrl = pdfUrl.startsWith('/') ? `${baseUrl}${pdfUrl.slice(1)}` : pdfUrl;
+
     const handleDownload = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -21,7 +25,7 @@ export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fi
         setIsDownloading(true);
 
         try {
-            const response = await fetch(pdfUrl);
+            const response = await fetch(finalPdfUrl);
             const blob = await response.blob();
             const blobUrl = window.URL.createObjectURL(blob);
 
@@ -35,7 +39,7 @@ export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fi
         } catch (error) {
             console.error("Download failed", error);
             // Fallback
-            window.open(pdfUrl, '_blank');
+            window.open(finalPdfUrl, '_blank');
         } finally {
             setIsDownloading(false);
         }
@@ -69,7 +73,7 @@ export default function PdfViewerPage({ title, titleStrong, subtitle, pdfUrl, fi
 
                 <div className="w-full rounded-xl border border-involve-border overflow-hidden bg-involve-panel flex flex-col items-center justify-center relative min-h-[600px]">
                     <iframe
-                        src={`${pdfUrl}#toolbar=0`}
+                        src={`${finalPdfUrl}#toolbar=0`}
                         className="w-full h-[800px] border-none absolute inset-0 z-10"
                         title={title}
                     />

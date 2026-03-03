@@ -13,13 +13,14 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../ThemeProvider';
 
 function NavItem({ item, depth = 0 }: { item: any; depth?: number }) {
-    const [isOpen, setIsOpen] = useState(true);
     const location = useLocation();
     const hasChildren = item.children && item.children.length > 0;
 
     const isChildActive = hasChildren && item.children.some((child: any) =>
         location.pathname.includes(child.path)
     );
+
+    const [isOpen, setIsOpen] = useState(isChildActive);
 
     const paddingLeft = `${depth * 1 + 1}rem`;
 
@@ -97,9 +98,9 @@ export default function SidebarNav() {
             <div className="h-[52px] flex items-center px-4 border-b border-involve-border flex-shrink-0">
                 <div className="flex items-center mt-1">
                     {theme === 'dark' ? (
-                        <img src="/assets/logo-2.png" alt="Involve Space" className="h-5" />
+                        <img src={`${import.meta.env.BASE_URL}assets/logo-2.png`} alt="Involve Space" className="h-5" />
                     ) : (
-                        <img src="/assets/logo-1.png" alt="Involve Space" className="h-5" />
+                        <img src={`${import.meta.env.BASE_URL}assets/logo-1.png`} alt="Involve Space" className="h-5" />
                     )}
                 </div>
                 <span className="ml-2 font-mono text-[8px] text-involve-blue border border-involve-blue/30 bg-involve-blue/8 px-1.5 py-[2px] tracking-[0.1em] uppercase whitespace-nowrap self-center mt-0.5">
