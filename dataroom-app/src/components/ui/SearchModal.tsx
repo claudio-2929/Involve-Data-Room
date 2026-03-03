@@ -17,6 +17,20 @@ interface SearchResult {
     breadcrumbs: string[];
 }
 
+function HighlightMatch({ text, query }: { text: string; query: string }) {
+    if (!query || !text) return <>{text}</>;
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    return (
+        <>
+            {parts.map((part, i) =>
+                part.toLowerCase() === query.toLowerCase() ?
+                    <mark key={i} className="bg-involve-blue/20 text-involve-blue bg-transparent px-0.5 rounded font-medium">{part}</mark> :
+                    <span key={i}>{part}</span>
+            )}
+        </>
+    );
+}
+
 export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<SearchResult[]>([]);
@@ -117,16 +131,16 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-32 px-4 print:hidden">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-32 px-4">
             {/* Backdrop */}
             <div
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                className="fixed inset-0 bg-involve-bg/80 backdrop-blur-sm"
                 onClick={onClose}
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-2xl bg-involve-panel border border-involve-border rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                <div className="flex items-center px-4 border-b border-involve-border">
+            <div className="relative w-full max-w-2xl bg-involve-bg2 border border-involve-border rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="flex items-center px-4 border-b border-involve-border bg-involve-panel">
                     <Search size={20} className="text-involve-dim" />
                     <input
                         ref={inputRef}
@@ -179,12 +193,12 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                                 </div>
                                             )}
                                             <h4 className="text-involve-text font-medium group-hover:text-involve-blue transition-colors truncate">
-                                                {result.title}
+                                                <HighlightMatch text={result.title} query={query} />
                                             </h4>
                                             {result.description && (
-                                                <p className="text-sm text-involve-muted line-clamp-1 mt-0.5">
-                                                    {result.description}
-                                                </p>
+                                                <div className="text-sm text-involve-muted line-clamp-2 mt-0.5 whitespace-pre-wrap leading-relaxed">
+                                                    <HighlightMatch text={result.description} query={query} />
+                                                </div>
                                             )}
                                         </div>
                                     </button>

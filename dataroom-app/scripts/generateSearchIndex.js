@@ -12,8 +12,7 @@ function generateIndex() {
     const appTsx = fs.readFileSync(APP_TSX_PATH, 'utf-8');
 
     // Regex to find route paths and component names
-    // <Route path="/dataroom/..." element={ ... <MarketOverviewPage /> ... } />
-    const routeRegex = /<Route\s+path="([^"]+)"[\s\S]*?<([A-Z][A-Za-z0-9]+Page)\s*\/>/g;
+    const routeRegex = /<Route\s+path="([^"]+)"(?:(?!<Route)[\s\S])*?<([A-Z][A-Za-z0-9]+Page)\s*\/>/g;
 
     const indexData = {};
     let match;
@@ -32,27 +31,32 @@ function generateIndex() {
         if (fs.existsSync(componentPath)) {
             let content = fs.readFileSync(componentPath, 'utf-8');
 
-            // Very basic extraction of text content from TSX elements
-            // Remove import statements
-            content = content.replace(/^import\s+.*?(?:;|(?=\n\s*(?:export|function|const|let|var)))/gms, '');
+            let text = content.replace(/^import.*$/gm, '');
+            text = text.replace(/export default function.*$/gm, '');
 
-            // Remove function / export keywords
-            content = content.replace(/export\s+default\s+function\s+[a-zA-Z0-9_]+\s*\([^)]*\)\s*{/g, '');
+            let extractedWords = [];
 
-            // Strip out JSX tags
-            let text = content.replace(/<[^>]+>/g, ' ');
+            // Match text between > and <
+            const textNodes = text.matchAll(/>([^<{}]+)</g);
+            for (const tn of textNodes) {
+                if (tn[1].trim().length > 3) extractedWords.push(tn[1].trim());
+            }
 
-            // Clean up curly braces of code blocks / comments inside TSX like { /* ... */ }
-            text = text.replace(/\{\s*\/\*.*?\*\/\s*\}/g, ' ');
-            text = text.replace(/[{}]/g, ' ');
+            // Match text inside double quotes, single quotes, or backticks
+            // Using a simple regex to find string literals
+            const stringLits = text.matchAll(/(["'`])(.*?)\1/g);
+            for (const sl of stringLits) {
+                const str = sl[2].trim();
+                // Filter out obvious code/CSS strings by checking for spaces and min length
+                // Or if it's a known short text
+                if (str.length > 3 && str.includes(' ') && !str.includes('flex ') && !str.includes('bg-') && !str.includes('text-[#') && !str.includes('rgba(')) {
+                    extractedWords.push(str);
+                }
+            }
 
-            // Remove code syntax keywords like return, className, const, let
-            text = text.replace(/\b(return|className|const|let|var|function|interface|export)\b/g, ' ');
-
-            // Normalize whitespace
-            text = text.replace(/\s+/g, ' ').trim();
-
-            indexData[routePath] = text;
+            // Remove duplicates and join
+            const finalText = [...new Set(extractedWords)].join(' ').replace(/\s+/g, ' ');
+            indexData[routePath] = finalText;
         }
     }
 
