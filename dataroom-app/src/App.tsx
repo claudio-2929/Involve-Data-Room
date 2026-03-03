@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import GlobalLayout from './components/layout/GlobalLayout';
 import { ThemeProvider } from './components/ThemeProvider';
 import InvestmentThesisPage from './pages/InvestmentThesisPage';
