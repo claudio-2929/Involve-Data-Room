@@ -67,7 +67,7 @@ export default function TopNavBar() {
 
 
 
-                <a href="mailto:ir@involvespace.eu" className="group flex items-center gap-2 text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-involve-blue/10 text-involve-blue border border-involve-blue/30 rounded-sm hover:bg-involve-blue/20 transition-all">
+                <a href="mailto:claudio.p@involvespace.eu" className="group flex items-center gap-2 text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 bg-involve-blue/10 text-involve-blue border border-involve-blue/30 rounded-sm hover:bg-involve-blue/20 transition-all">
                     <ExternalLink size={16} />
                     <span className="font-medium hidden md:inline">Contact IR</span>
                     <span className="font-medium md:hidden">IR</span>

@@ -50,8 +50,11 @@ export default function LoginPage() {
             />
 
             <div className="relative z-10 w-full max-w-md mx-auto p-6">
-                <div className="text-center mb-10">
-                    <h1 className="font-mono text-xl tracking-[0.2em] font-semibold text-involve-text uppercase mb-2">INVOLVE</h1>
+                <div className="text-center mb-10 flex flex-col items-center">
+                    <div className="flex justify-center mb-5">
+                        <img src="/assets/logo-1.png" alt="Involve Space" className="h-8 block dark:hidden" />
+                        <img src="/assets/logo-2.png" alt="Involve Space" className="h-8 hidden dark:block" />
+                    </div>
                     <div className="inline-block border border-involve-blue/30 bg-involve-blue/10 px-3 py-1 font-mono text-[10px] tracking-widest text-involve-blue uppercase rounded-sm">
                         Secure Data Room
                     </div>
