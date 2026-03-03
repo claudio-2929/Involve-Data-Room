@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, X, FileText, ChevronRight } from 'lucide-react';
 import { sitemapData } from '../../data/sitemap';
 import { useAuth } from '../../contexts/AuthContext';
+import searchIndex from '../../data/searchIndex.json';
 
 interface SearchModalProps {
     isOpen: boolean;
@@ -70,11 +71,34 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         const flatResults = flattenNodes(sitemapData);
         const lowerQuery = query.toLowerCase();
 
-        const filtered = flatResults.filter(item =>
-            item.title.toLowerCase().includes(lowerQuery) ||
-            (item.description && item.description.toLowerCase().includes(lowerQuery)) ||
-            item.breadcrumbs.some(bc => bc.toLowerCase().includes(lowerQuery))
-        );
+        const filtered = flatResults.filter(item => {
+            const inTitle = item.title.toLowerCase().includes(lowerQuery);
+            const inDesc = item.description && item.description.toLowerCase().includes(lowerQuery);
+            const inBreadcrumbs = item.breadcrumbs.some(bc => bc.toLowerCase().includes(lowerQuery));
+
+            // Search within full text content if available
+            const content = (searchIndex as Record<string, string>)[item.path];
+            const inContent = content && content.toLowerCase().includes(lowerQuery);
+
+            return inTitle || inDesc || inBreadcrumbs || inContent;
+        });
+
+        filtered.forEach(item => {
+            const content = (searchIndex as Record<string, string>)[item.path];
+            if (content && !item.title.toLowerCase().includes(lowerQuery) && !item.description?.toLowerCase().includes(lowerQuery)) {
+                // Approximate context snippet
+                const lowerContent = content.toLowerCase();
+                const matchIndex = lowerContent.indexOf(lowerQuery);
+                if (matchIndex !== -1) {
+                    const snippetStart = Math.max(0, matchIndex - 40);
+                    const snippetEnd = Math.min(content.length, matchIndex + 40 + lowerQuery.length);
+                    let snippet = content.substring(snippetStart, snippetEnd);
+                    if (snippetStart > 0) snippet = '...' + snippet;
+                    if (snippetEnd < content.length) snippet = snippet + '...';
+                    item.description = `Matches: "${snippet}"`;
+                }
+            }
+        });
 
         setResults(filtered);
     }, [query, user]);

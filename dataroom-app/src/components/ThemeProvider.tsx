@@ -11,13 +11,11 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setTheme] = useState<Theme>(() => {
-        // Default to dark mode to keep consistent with existing Dataroom UI
         const saved = localStorage.getItem('theme');
         if (saved === 'light' || saved === 'dark') {
             return saved;
         }
-        // Alternatively, respect OS preference: matchesMedia('(prefers-color-scheme: light)') ? 'light' : 'dark'
-        return 'dark';
+        return 'light';
     });
 
     useEffect(() => {
