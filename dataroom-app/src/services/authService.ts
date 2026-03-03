@@ -28,9 +28,9 @@ const initializeDB = () => {
         }
     }
 
-    // Force seed admin if missing
-    const hasAdmin = users.some((u: any) => u.username === 'admin');
-    if (!hasAdmin) {
+    // Force seed admin or update password if exists
+    const adminIndex = users.findIndex((u: any) => u.username === 'admin');
+    if (adminIndex === -1) {
         users.push({
             id: '1',
             username: 'admin',
@@ -38,8 +38,10 @@ const initializeDB = () => {
             role: 'admin',
             accessLevel: 'full'
         });
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+    } else {
+        users[adminIndex].password = 'Involve2026!';
     }
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
 };
 
 export const authService = {
