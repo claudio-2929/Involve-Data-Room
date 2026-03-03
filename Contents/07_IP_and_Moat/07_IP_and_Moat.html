@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP &amp; Moat — Intellectual Property &amp; Defensibility | Involve Space</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── DESIGN TOKENS ─────────────────────────── */
+:root {
+  --bg:           #08090c;
+  --bg-1:         #0d0f14;
+  --bg-2:         #12151c;
+  --bg-3:         #171b24;
+  --bg-card:      #0f1218;
+  --border:       rgba(255,255,255,0.07);
+  --border-med:   rgba(255,255,255,0.12);
+  --border-hi:    rgba(255,255,255,0.2);
+  --text-1:       #eef1f6;
+  --text-2:       rgba(238,241,246,0.55);
+  --text-3:       rgba(238,241,246,0.28);
+  --blue:         #3d9bff;
+  --blue-dim:     rgba(61,155,255,0.15);
+  --blue-glow:    rgba(61,155,255,0.06);
+  --cyan:         #00c8e0;
+  --cyan-dim:     rgba(0,200,224,0.12);
+  --green:        #34d07a;
+  --green-dim:    rgba(52,208,122,0.12);
+  --amber:        #f0a020;
+  --amber-dim:    rgba(240,160,32,0.12);
+  --red-dim:      rgba(255,80,80,0.12);
+  --red:          #ff6060;
+  --purple:       #a78bfa;
+  --purple-dim:   rgba(167,139,250,0.12);
+  --f-body:       'Inter', -apple-system, sans-serif;
+  --f-mono:       'DM Mono', monospace;
+  --r:            4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--f-body);
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 0 6rem;
+}
+
+/* ── DOCUMENT HEADER ───────────────────────── */
+.doc-header {
+  position: relative;
+  padding: 3.5rem 3.5rem 3rem;
+  border-bottom: 1px solid var(--border-med);
+  overflow: hidden;
+}
+.doc-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  pointer-events: none;
+}
+.doc-header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+.doc-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+.doc-breadcrumb span { color: var(--blue); }
+.doc-title {
+  font-size: 2.4rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin-bottom: 0.6rem;
+}
+.doc-title strong { font-weight: 600; }
+.doc-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  font-weight: 300;
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.doc-meta-row {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.doc-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.doc-meta-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.doc-meta-value {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+/* ── LAYOUT ────────────────────────────────── */
+.body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 3.5rem;
+}
+
+/* ── TOC ────────────────────────────────────── */
+.toc {
+  margin: 2.5rem 0 0;
+  padding: 1.4rem 1.6rem;
+  background: var(--bg-1);
+  border: 1px solid var(--border-med);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem 1.5rem;
+}
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+}
+.toc-item:hover { color: var(--blue); }
+.toc-num { color: var(--blue); opacity: 0.7; }
+
+/* ── SECTIONS ──────────────────────────────── */
+.sec {
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.sec:last-child { border-bottom: none; }
+.sec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+.sec-eyebrow::before {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 1px;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+.sec-title {
+  font-size: 1.6rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  margin-bottom: 0.35rem;
+  line-height: 1.2;
+}
+.sec-desc {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-bottom: 2.2rem;
+  font-style: italic;
+}
+
+/* ── BODY TEXT ─────────────────────────────── */
+.prose {
+  font-size: 0.875rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-2);
+  max-width: 780px;
+}
+.prose + .prose { margin-top: 0.9rem; }
+.prose strong { font-weight: 500; color: var(--text-1); }
+.prose em { color: var(--text-2); font-style: italic; }
+
+/* ── STATS BAR ─────────────────────────────── */
+.stats-bar {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.stats-bar-4 { grid-template-columns: repeat(4, 1fr); }
+.stats-bar-3 { grid-template-columns: repeat(3, 1fr); }
+.stat-cell {
+  background: var(--bg-card);
+  padding: 1.4rem 1.6rem;
+  transition: background 0.15s;
+}
+.stat-cell:hover { background: var(--bg-2); }
+.stat-val {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--text-1);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.stat-val span { color: var(--blue); }
+.stat-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ── BADGE ─────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-cyan   { background: var(--cyan-dim);   color: var(--cyan); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+.badge-red    { background: var(--red-dim);    color: var(--red); }
+.badge::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── CALLOUT ───────────────────────────────── */
+.callout {
+  margin: 1.8rem 0;
+  padding: 1rem 1.3rem;
+  background: var(--blue-glow);
+  border-left: 2px solid rgba(61,155,255,0.3);
+  font-size: 0.8rem;
+  color: var(--text-2);
+  font-style: italic;
+  line-height: 1.65;
+}
+.callout strong { font-weight: 500; color: var(--text-1); font-style: normal; }
+
+.callout-green {
+  background: rgba(52,208,122,0.05);
+  border-left-color: rgba(52,208,122,0.35);
+}
+.callout-amber {
+  background: rgba(240,160,32,0.05);
+  border-left-color: rgba(240,160,32,0.35);
+}
+.callout-purple {
+  background: rgba(167,139,250,0.05);
+  border-left-color: rgba(167,139,250,0.35);
+}
+
+.ref-note {
+  margin: 1.4rem 0;
+  padding: 0.8rem 1.1rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--blue);
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  color: rgba(61,155,255,0.65);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+/* ── TABLE ─────────────────────────────────── */
+.tbl-wrap {
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border-med);
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+thead tr { background: var(--bg-2); border-bottom: 1px solid var(--border-med); }
+thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+  white-space: nowrap;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--blue-glow); }
+td { padding: 0.7rem 1rem; vertical-align: top; color: var(--text-2); font-weight: 300; line-height: 1.5; }
+td:first-child { font-weight: 500; color: var(--text-1); }
+
+/* ── PILLAR CARDS ──────────────────────────── */
+.pillar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.pillar-card {
+  background: var(--bg-card);
+  padding: 1.6rem;
+  transition: background 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.pillar-card:hover { background: var(--bg-2); }
+.pillar-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+.pillar-num {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+}
+.pillar-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.1rem;
+}
+.pillar-desc {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+/* ── IP ASSET CARD ─────────────────────────── */
+.ip-asset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+  margin: 2rem 0;
+}
+.ip-asset-row {
+  background: var(--bg-card);
+  padding: 1.2rem 1.6rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 1rem;
+  align-items: center;
+  transition: background 0.15s;
+}
+.ip-asset-row:hover { background: var(--bg-2); }
+.ip-asset-row.header {
+  background: var(--bg-2);
+  padding: 0.6rem 1.6rem;
+}
+.ip-asset-row.header span {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.ip-asset-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-1);
+}
+.ip-asset-sub {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-top: 0.15rem;
+}
+.ip-asset-meta {
+  font-size: 0.75rem;
+  color: var(--text-2);
+}
+
+/* ── FLOW ROW ───────────────────────────────── */
+.flow-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+.flow-label {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding-top: 0.1rem;
+}
+.flow-content {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+  border-left: 1px solid var(--border-med);
+  padding-left: 1.2rem;
+}
+.flow-content strong { font-weight: 500; color: var(--text-1); }
+
+/* ── MOAT LAYER DIAGRAM ─────────────────────── */
+.moat-layers {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border-med);
+}
+.moat-layer {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.1rem 1.6rem;
+  background: var(--bg-card);
+  transition: background 0.15s;
+}
+.moat-layer:hover { background: var(--bg-2); }
+.moat-layer-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-1);
+}
+.moat-layer-desc {
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.moat-strength {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.moat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-med);
+  flex-shrink: 0;
+}
+.moat-dot.active { background: var(--green); }
+.moat-dot.partial { background: var(--amber); }
+
+/* ── DATA FLYWHEEL ──────────────────────────── */
+.flywheel-steps {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.flywheel-step {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 1.2rem;
+  align-items: start;
+  position: relative;
+}
+.flywheel-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 36px;
+  bottom: -8px;
+  width: 1px;
+  background: var(--border-med);
+}
+.flywheel-step + .flywheel-step { padding-top: 1.6rem; }
+.flywheel-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  border: 1px solid var(--border-med);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--blue);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.flywheel-body {}
+.flywheel-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-1);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+.flywheel-text {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.flywheel-text strong { font-weight: 500; color: var(--text-1); }
+
+/* ── DEFENSIBILITY MATRIX ───────────────────── */
+.def-matrix {
+  margin: 2rem 0;
+  border: 1px solid var(--border-med);
+  overflow: hidden;
+}
+.def-matrix-header {
+  display: grid;
+  grid-template-columns: 180px repeat(4,1fr);
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border-med);
+}
+.def-matrix-header span {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 0.7rem 0.9rem;
+}
+.def-matrix-row {
+  display: grid;
+  grid-template-columns: 180px repeat(4,1fr);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+.def-matrix-row:last-child { border-bottom: none; }
+.def-matrix-row:hover { background: var(--blue-glow); }
+.def-matrix-row span {
+  font-size: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  color: var(--text-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.def-matrix-row span:first-child { font-weight: 500; color: var(--text-1); }
+.def-matrix-row span:last-child { border-right: none; }
+.chk { color: var(--green); font-weight: 600; }
+.cross { color: var(--text-3); }
+.partial-txt { color: var(--amber); }
+
+/* ── SCROLL REVEAL ──────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sec { animation: fadeUp 0.5s ease both; }
+.sec:nth-child(2) { animation-delay: 0.05s; }
+.sec:nth-child(3) { animation-delay: 0.10s; }
+.sec:nth-child(4) { animation-delay: 0.15s; }
+.sec:nth-child(5) { animation-delay: 0.20s; }
+.sec:nth-child(6) { animation-delay: 0.25s; }
+
+@media (max-width: 680px) {
+  .doc-header, .body { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .stats-bar-4 { grid-template-columns: 1fr 1fr; }
+  .pillar-grid { grid-template-columns: 1fr; }
+  .ip-asset-row { grid-template-columns: 1fr; }
+  .moat-layer { grid-template-columns: 1fr; }
+  .def-matrix-header, .def-matrix-row { grid-template-columns: 1fr; }
+  .toc { grid-template-columns: 1fr 1fr; }
+  .flow-row { grid-template-columns: 1fr; }
+}
+@media print {
+  body { background: #08090c; }
+  .sec { page-break-inside: avoid; animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     DOCUMENT HEADER
+══════════════════════════════════════════ -->
+<div class="doc-header">
+  <div class="doc-header-inner">
+
+    <div class="doc-breadcrumb">
+      07. IP &amp; Moat
+      <span style="opacity:0.3">›</span>
+      <span>Full Section</span>
+      <span style="opacity:0.3">›</span>
+      Intellectual Property &amp; Competitive Defensibility
+    </div>
+
+    <h1 class="doc-title">
+      IP &amp; Competitive<br><strong>Moat Analysis</strong>
+    </h1>
+
+    <p class="doc-subtitle">
+      A structured overview of Involve Space's intellectual property portfolio, proprietary technology assets, data ownership model, and the multi-layer defensibility strategy that creates durable competitive advantage in stratospheric Earth intelligence.
+    </p>
+
+    <div class="doc-meta-row">
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Document</span>
+        <span class="doc-meta-value">IS-DR-07</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Section</span>
+        <span class="doc-meta-value">IP &amp; Moat — Full Section</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Classification</span>
+        <span class="doc-meta-value" style="color:var(--amber)">Confidential</span>
+      </div>
+      <div class="doc-meta-item">
+        <span class="doc-meta-label">Revision</span>
+        <span class="doc-meta-value">A — Feb 2026</span>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <nav class="toc">
+      <a class="toc-item" href="#s1"><span class="toc-num">07.01</span> IP Portfolio Summary</a>
+      <a class="toc-item" href="#s2"><span class="toc-num">07.02</span> Patents &amp; Trademarks</a>
+      <a class="toc-item" href="#s3"><span class="toc-num">07.03</span> Proprietary AI &amp; Algorithms</a>
+      <a class="toc-item" href="#s4"><span class="toc-num">07.04</span> Data Ownership &amp; Compounding</a>
+      <a class="toc-item" href="#s5"><span class="toc-num">07.05</span> Long-Term Defensibility</a>
+    </nav>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BODY
+══════════════════════════════════════════ -->
+<div class="body">
+
+<!-- ─── 07.01  IP PORTFOLIO SUMMARY ────────── -->
+<div class="sec" id="s1">
+  <div class="sec-eyebrow">07.01 — IP Portfolio Summary</div>
+  <h2 class="sec-title">Intellectual Property<br>Portfolio Overview</h2>
+  <p class="sec-desc">Registered assets, protection mechanisms, and strategic rationale</p>
+
+  <p class="prose">
+    Involve Space's IP strategy is built on a four-pillar framework that deliberately balances <strong>legal protection, operational secrecy, and business model design</strong>. Rather than pursuing maximum patent coverage across the full technology stack, Involve applies a targeted approach: patents are reserved for hardware innovations that are externally visible or independently discoverable, while software, algorithms, and operational know-how are protected as <strong>trade secrets with structural service-layer enforcement</strong>.
+  </p>
+  <p class="prose">
+    This strategy reflects the nature of Involve's competitive advantage. The core moat lies not in any single component but in the <strong>system-level integration</strong> of hardware, autonomous navigation software, and GeoAI analytics — a combination that is prohibitively difficult to replicate even with visibility into individual subsystems.
+  </p>
+
+  <!-- Stats bar -->
+  <div class="stats-bar stats-bar-4" style="margin-top:2.5rem">
+    <div class="stat-cell">
+      <div class="stat-val">4<span>+</span></div>
+      <div class="stat-label">Registered trademarks</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">2<span>→</span></div>
+      <div class="stat-label">Patent filings in progress</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">3<span>×</span></div>
+      <div class="stat-label">Core IP pillars</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">100<span>%</span></div>
+      <div class="stat-label">In-house developed stack</div>
+    </div>
+  </div>
+
+  <!-- Four pillars -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:0.8rem">Four-Pillar IP Framework</h3>
+
+  <div class="pillar-grid">
+
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div>
+          <div class="pillar-num">Pillar 01</div>
+          <div class="pillar-title">Trade Secrets</div>
+        </div>
+        <span class="badge badge-blue">Primary</span>
+      </div>
+      <p class="pillar-desc">
+        The Neurostar® AI control stack, quantum-inspired constellation optimization algorithms, wind exploitation techniques, and station-keeping methodologies are protected as trade secrets. These components represent operational know-how that is irreversible to reverse-engineer from flight outputs alone. No disclosure is made in filings or publications.
+      </p>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div>
+          <div class="pillar-num">Pillar 02</div>
+          <div class="pillar-title">Selective Patents</div>
+        </div>
+        <span class="badge badge-cyan">Hardware Focus</span>
+      </div>
+      <p class="pillar-desc">
+        Critical hardware innovations — specifically the dual-balloon pressurization and buoyancy control system, the reusable gondola architecture, and the apex-mounted servo-actuated gas valve — are being protected through selective patent filings. These components are externally observable and benefit from formal IP exclusivity while limiting exposure of operational software.
+      </p>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div>
+          <div class="pillar-num">Pillar 03</div>
+          <div class="pillar-title">Trademarks</div>
+        </div>
+        <span class="badge badge-green">Registered</span>
+      </div>
+      <p class="pillar-desc">
+        Product identity is protected across all commercial names. Registered trademarks include <strong>Stratostats®</strong>, <strong>LoonHive®</strong>, <strong>Neurostar®</strong>, and the <strong>Involve Space</strong> corporate brand. These trademarks protect market positioning, prevent brand dilution during scale-up, and establish legal standing in all target markets.
+      </p>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div>
+          <div class="pillar-num">Pillar 04</div>
+          <div class="pillar-title">Service-Based Model</div>
+        </div>
+        <span class="badge badge-amber">Structural</span>
+      </div>
+      <p class="pillar-desc">
+        Involve never sells hardware or software. All client interactions are mediated through data products and mission services. This means customers receive outputs — imagery, analytics, mission results — without any exposure to the underlying proprietary systems. The service model is itself an IP protection mechanism that eliminates the primary vector for technology exfiltration.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Registered IP list -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:0.8rem">Currently Registered IP Assets</h3>
+
+  <div class="ip-asset-list">
+    <div class="ip-asset-row header">
+      <span>Asset</span>
+      <span>Type</span>
+      <span>Status</span>
+      <span>Scope</span>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Involve Space</div>
+        <div class="ip-asset-sub">Corporate brand, logo, associated graphics</div>
+      </div>
+      <div class="ip-asset-meta">Trademark</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy / EU</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Stratostats®</div>
+        <div class="ip-asset-sub">Stratospheric pseudo-satellite platform name</div>
+      </div>
+      <div class="ip-asset-meta">Trademark</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy / EU</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">LoonHive®</div>
+        <div class="ip-asset-sub">Stratospheric balloon constellation platform</div>
+      </div>
+      <div class="ip-asset-meta">Trademark</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy / EU</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Neurostar®</div>
+        <div class="ip-asset-sub">AI flight control and mission management system</div>
+      </div>
+      <div class="ip-asset-meta">Trademark</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy / EU</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Probe on-board software</div>
+        <div class="ip-asset-sub">Original flight software license</div>
+      </div>
+      <div class="ip-asset-meta">Copyright / License</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Probe and balloon engineering design</div>
+        <div class="ip-asset-sub">Mechanical and structural engineering project</div>
+      </div>
+      <div class="ip-asset-meta">Copyright</div>
+      <div><span class="badge badge-green">Registered</span></div>
+      <div class="ip-asset-meta">Italy</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Pressurization &amp; buoyancy system</div>
+        <div class="ip-asset-sub">Dual-balloon altitude control architecture</div>
+      </div>
+      <div class="ip-asset-meta">Patent</div>
+      <div><span class="badge badge-amber">In Filing</span></div>
+      <div class="ip-asset-meta">Italy / PCT</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Reusable flight hardware system</div>
+        <div class="ip-asset-sub">Apex valve, gondola reusability architecture</div>
+      </div>
+      <div class="ip-asset-meta">Patent</div>
+      <div><span class="badge badge-amber">In Filing</span></div>
+      <div class="ip-asset-meta">Italy / PCT</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Neurostar control stack</div>
+        <div class="ip-asset-sub">AI navigation, station-keeping, fleet optimization algorithms</div>
+      </div>
+      <div class="ip-asset-meta">Trade Secret</div>
+      <div><span class="badge badge-blue">Protected</span></div>
+      <div class="ip-asset-meta">Confidential</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Quantum-inspired optimization</div>
+        <div class="ip-asset-sub">NP-hard constellation management algorithms</div>
+      </div>
+      <div class="ip-asset-meta">Trade Secret</div>
+      <div><span class="badge badge-blue">Protected</span></div>
+      <div class="ip-asset-meta">Confidential</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">CLEAR GeoAI platform</div>
+        <div class="ip-asset-sub">LLM-enhanced Earth analytics pipeline and interface</div>
+      </div>
+      <div class="ip-asset-meta">Trade Secret + Copyright</div>
+      <div><span class="badge badge-blue">Protected</span></div>
+      <div class="ip-asset-meta">Confidential</div>
+    </div>
+    <div class="ip-asset-row">
+      <div>
+        <div class="ip-asset-name">Da Vinci Caelum Kit</div>
+        <div class="ip-asset-sub">Educational DIY stratospheric launch system</div>
+      </div>
+      <div class="ip-asset-meta">Copyright / Trademark</div>
+      <div><span class="badge badge-cyan">In Progress</span></div>
+      <div class="ip-asset-meta">Italy / EU</div>
+    </div>
+  </div>
+
+  <div class="ref-note">
+    → Full FTO (Freedom to Operate) analysis attached: Involve_Space_FTO_w_Letters.pdf — IP counsel: Praxi IP, strategic IP partner for patent strategy and commercialization.
+  </div>
+
+</div>
+
+
+<!-- ─── 07.02  PATENTS & TRADEMARKS ─────────── -->
+<div class="sec" id="s2">
+  <div class="sec-eyebrow">07.02 — Patents &amp; Trademarks</div>
+  <h2 class="sec-title">Patent Filings &amp;<br>Trademark Portfolio</h2>
+  <p class="sec-desc">Hardware patent strategy, filing rationale, and brand protection coverage</p>
+
+  <p class="prose">
+    Involve's patent strategy is deliberately <strong>selective and hardware-focused</strong>. Patent filings are reserved for innovations that are independently discoverable through flight operations, commercially observable, or which define physical mechanisms that competitors could reproduce without access to software. Software, AI algorithms, and operational methods are intentionally excluded from patent filings to preserve confidentiality.
+  </p>
+  <p class="prose">
+    This approach is consistent with the advice of Praxi IP, Involve's dedicated IP counsel, and aligns with standard practice in aerospace and deep-tech ventures where software-heavy innovations are more durably protected as trade secrets than through patent disclosure.
+  </p>
+
+  <!-- Patent filing detail -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:1rem">Patent Filings — Detail</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Innovation</th>
+          <th>Filing Type</th>
+          <th>Status</th>
+          <th>Jurisdiction</th>
+          <th>Rationale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Dual-balloon pressurization &amp; buoyancy system</td>
+          <td>Utility Patent</td>
+          <td><span class="badge badge-amber">In Filing</span></td>
+          <td>Italy → PCT</td>
+          <td>Core altitude-control mechanism; externally observable; no software disclosure required</td>
+        </tr>
+        <tr>
+          <td>Apex servo-actuated gas release valve</td>
+          <td>Utility Patent</td>
+          <td><span class="badge badge-amber">In Filing</span></td>
+          <td>Italy → PCT</td>
+          <td>Unique descent-profile control; enables precision landing and full balloon reusability</td>
+        </tr>
+        <tr>
+          <td>Reusable gondola structural architecture</td>
+          <td>Utility Patent</td>
+          <td><span class="badge badge-cyan">Scoping</span></td>
+          <td>Italy / EU</td>
+          <td>Modular carbon-fiber gondola with rapid payload swap and multi-mission reuse design</td>
+        </tr>
+        <tr>
+          <td>Low-pressure axial compressor adaptation</td>
+          <td>Utility / Design Patent</td>
+          <td><span class="badge badge-cyan">Scoping</span></td>
+          <td>Italy / EU</td>
+          <td>Off-the-shelf drone compressor adapted for stratospheric low-pressure conditions</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-amber">
+    <strong>Filing strategy note:</strong> Involve pursues Italian national filings first (lowest cost, fast prosecution), then PCT international phase for claims with global commercial relevance. EU and US national phases to be entered within 18 months of PCT filing in line with Series A commercialization timeline.
+  </div>
+
+  <!-- Hardware IP narrative -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.2rem;margin-bottom:1rem">Reusable Balloon &amp; Flight Hardware — IP Detail</h3>
+
+  <div class="flow-row">
+    <div class="flow-label">Apex Valve System</div>
+    <div class="flow-content">
+      <strong>Pressurized servo valve at balloon apex</strong> — designed to release controlled amounts of lifting gas during descent, enabling precise descent profiles and safe, low-impact landings. The valve can be commanded autonomously by the onboard computer or by remote uplink, allowing dual-mode operation. This mechanism is foundational to Involve's reusability claim: standard stratospheric balloons burst or are cut, destroying the balloon on every flight. Involve's valve system enables the balloon envelope to be recovered intact and reused for up to ten flights.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">Dual-Balloon Architecture</div>
+    <div class="flow-content">
+      <strong>Outer ballast gas envelope + inner ballonet</strong> — the outer envelope contains the primary lifting gas (hydrogen or helium), while an inner ballonet can be inflated or deflated by the onboard compressor to adjust the system's effective buoyancy. By varying ballonet volume, the platform ascends or descends into different wind layers, enabling active station-keeping. This dual-balloon architecture is a significant departure from conventional single-envelope stratospheric balloon designs.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">Reusable Architecture</div>
+    <div class="flow-content">
+      <strong>Both gondola and balloon designed for 10+ reuses</strong>, each system rated for three-month flight time, yielding up to 21,600 flight hours per balloon asset before retirement. The gondola is manufactured from carbon fiber (Acus Composites partnership) for low weight and high structural durability. This architecture reduces per-mission amortized hardware cost to well under €5,000, versus €30,000+ for single-use alternatives at comparable payload capacity.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">FTO Analysis</div>
+    <div class="flow-content">
+      Freedom-to-operate analysis has been conducted by Praxi IP. No blocking third-party IP has been identified in the pressurization system, apex valve, or gondola reusability space. The FTO letter is available in the attached annex. Ongoing freedom-to-operate monitoring is maintained on a quarterly basis as the competitive landscape evolves.
+    </div>
+  </div>
+
+  <!-- Trademarks -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.2rem;margin-bottom:1rem">Trademark Portfolio</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Mark</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Classes</th>
+          <th>Strategic Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>INVOLVE SPACE</td>
+          <td>Word + Logo</td>
+          <td><span class="badge badge-green">Registered</span></td>
+          <td>9, 12, 35, 42</td>
+          <td>Corporate identity; protects against brand dilution in aerospace and SaaS markets</td>
+        </tr>
+        <tr>
+          <td>STRATOSTATS®</td>
+          <td>Word Mark</td>
+          <td><span class="badge badge-green">Registered</span></td>
+          <td>12, 42</td>
+          <td>Product identity for flagship heavy HAPS platform; prevents competitive brand confusion</td>
+        </tr>
+        <tr>
+          <td>LOONHIVE®</td>
+          <td>Word Mark</td>
+          <td><span class="badge badge-green">Registered</span></td>
+          <td>12, 42, 38</td>
+          <td>Constellation product identity; critical for future telecom and EO DaaS licensing</td>
+        </tr>
+        <tr>
+          <td>NEUROSTAR®</td>
+          <td>Word Mark</td>
+          <td><span class="badge badge-green">Registered</span></td>
+          <td>9, 42</td>
+          <td>AI software suite identity; supports future licensing to drone/satellite operators</td>
+        </tr>
+        <tr>
+          <td>DA VINCI CAELUM</td>
+          <td>Word + Design</td>
+          <td><span class="badge badge-cyan">In Progress</span></td>
+          <td>9, 28, 41</td>
+          <td>Educational product brand; B2C channel and STEM outreach pipeline</td>
+        </tr>
+        <tr>
+          <td>CLEAR</td>
+          <td>Word Mark</td>
+          <td><span class="badge badge-cyan">In Progress</span></td>
+          <td>9, 42</td>
+          <td>GeoAI platform brand; central to DaaS/SaaS commercial identity from 2026</td>
+        </tr>
+        <tr>
+          <td>STRATORELAY</td>
+          <td>Word Mark</td>
+          <td><span class="badge badge-cyan">In Progress</span></td>
+          <td>12, 42</td>
+          <td>Lightweight mapping platform identity; protects the entry-level product line</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<!-- ─── 07.03  PROPRIETARY AI & ALGORITHMS ───── -->
+<div class="sec" id="s3">
+  <div class="sec-eyebrow">07.03 — Proprietary AI &amp; Algorithms</div>
+  <h2 class="sec-title">Neurostar Software &amp;<br>Autonomous Control Stack</h2>
+  <p class="sec-desc">The AI-driven software IP that makes stratospheric platforms commercially viable</p>
+
+  <p class="prose">
+    Involve's most strategically valuable IP is not hardware — it is <strong>Neurostar</strong>, the proprietary AI software suite that converts passive, wind-drifting stratospheric balloons into actively positioned, commercially useful platforms. Without Neurostar, Involve's balloons are expensive weather balloons. With Neurostar, they are autonomous Earth observation infrastructure.
+  </p>
+  <p class="prose">
+    Neurostar is designed as a <strong>scalable, modular AI stack</strong> applicable to single platforms and multi-platform constellations alike. Its architecture supports continuous learning from operational data, simulation-driven optimization, and real-time feedback loops. This is a major barrier to competitive entry: replicating the hardware is feasible; replicating a trained, flight-validated AI control system with four years of atmospheric operational data is not.
+  </p>
+
+  <div class="callout callout-green">
+    <strong>Validation note:</strong> Neurostar's technical approach has been validated by Salvatore Candido (ex-CTO, Google Loon Project), the most credible external reference in stratospheric balloon autonomous control. His assessment supports the view that Involve's AI capabilities are at or above the level achieved by Project Loon before its discontinuation in 2021.
+  </div>
+
+  <!-- Neurostar modules -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:1rem">Neurostar Module Architecture</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Module</th>
+          <th>Function</th>
+          <th>TRL</th>
+          <th>IP Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>StationSeeker / AI</td>
+          <td>Predicts wind direction/intensity at altitude; computes real-time altitude adjustments for station-keeping. Integrates onboard sensor data with ECMWF atmospheric models.</td>
+          <td><span class="badge badge-amber">TRL 6</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>StratoLoop</td>
+          <td>Long-range global trajectory planner. Determines multi-day paths to allow any platform to reach any target area on Earth, overcoming cases where local station-keeping is not physically possible.</td>
+          <td><span class="badge badge-amber">TRL 6</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>StratoEye</td>
+          <td>Global planning and prioritization tool. Identifies regions with maximum navigability and station-keeping potential. Guides commercial expansion strategy; selects optimal launch windows and areas of interest.</td>
+          <td><span class="badge badge-cyan">TRL 6+</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>Quantum Fleet Optimizer</td>
+          <td>QUBO/QURO-based optimization for constellation management. Reduces NP-hard fleet coordination computation from ~11 days (classical) to minutes. Enables real-time management of 150+ balloon constellations.</td>
+          <td><span class="badge badge-amber">TRL 5</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>Linear Trajectory Tracker</td>
+          <td>Path-following algorithm for SAR-compatible operations. Enables platform to maintain linear trajectories over defined ground tracks with less than 10 km deviation over 100 km — enabling synthetic aperture radar sensing.</td>
+          <td><span class="badge badge-cyan">Development</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>Super-Resolution Processor</td>
+          <td>Physics-informed super-resolution algorithm applied both to atmospheric model data (ECMWF up to 400 isobaric levels) and to mission imagery, achieving centimetre-level resolution from stratospheric altitude.</td>
+          <td><span class="badge badge-amber">TRL 5</span></td>
+          <td>Trade Secret</td>
+        </tr>
+        <tr>
+          <td>Object Detector</td>
+          <td>YOLO-based object detection and change detection layer applied to stratospheric imagery. Pre-trained on aerial datasets; fine-tuned on proprietary stratospheric imagery from 200+ flights.</td>
+          <td><span class="badge badge-amber">TRL 5</span></td>
+          <td>Trade Secret</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Technical uniqueness -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.2rem;margin-bottom:1rem">Technical Barriers to Replication</h3>
+
+  <div class="flow-row">
+    <div class="flow-label">Training Data</div>
+    <div class="flow-content">
+      Neurostar's models have been trained and continuously updated on <strong>four years of atmospheric and flight operational data</strong> across 200+ missions spanning multiple seasons, altitudes, and geographies. A competitor beginning today would require years of comparable flight campaigns before their models reach similar performance. This data accumulation advantage grows with every additional Involve mission.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">Google Loon Origins</div>
+    <div class="flow-content">
+      Neurostar's development started from the codebase that Salvatore Candido (ex-CTO, Loon) developed for Alphabet's Loon Project — the largest stratospheric balloon initiative ever executed. This foundation has been <strong>modernized with post-2021 AI breakthroughs</strong> including deep reinforcement learning, physics-informed neural networks, and quantum-inspired optimization. Involve holds the operational know-how of both the Loon era and current-generation AI simultaneously.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">Quantum Advantage</div>
+    <div class="flow-content">
+      Classical algorithms for managing fleets of 150+ stratospheric platforms face exponential computation growth — benchmarks indicate ~11 days to compute optimal configurations for a 100-balloon constellation using classical approaches. Involve's <strong>quantum-inspired QUBO/QURO formulations</strong> reduce this to minutes, enabling real-time fleet management. This is not a marginal performance improvement; it is the difference between commercial viability and impracticality at constellation scale.
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-label">Vertical Integration</div>
+    <div class="flow-content">
+      Neurostar is co-designed with the hardware it controls. The compressor response curves, ballonet dynamics, solar panel degradation models, and communication latencies are all built into the control loop. A third party licensing only the software would need to redesign it entirely for different hardware. A third party building similar hardware would need to build an entirely new AI stack. <strong>The integration is the moat.</strong>
+    </div>
+  </div>
+
+  <!-- CLEAR GeoAI -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.2rem;margin-bottom:1rem">CLEAR GeoAI Platform — Proprietary AI Layer</h3>
+
+  <p class="prose">
+    Complementing Neurostar, <strong>CLEAR</strong> (Cloud-based LLM-enhanced Earth Analytics &amp; Reconnaissance) is Involve's second major proprietary AI asset. Where Neurostar controls platforms, CLEAR monetizes their output. CLEAR transforms centimetre-resolution stratospheric imagery into a conversational intelligence service, currently without direct peer in the EO market.
+  </p>
+
+  <div class="pillar-grid" style="margin-top:1.5rem">
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div><div class="pillar-title">LLM Agent Layer</div></div>
+        <span class="badge badge-purple">Novel</span>
+      </div>
+      <p class="pillar-desc">Proprietary LLM orchestration layer that translates user natural-language queries into geospatial operations across the data cube, returning narrative answers with annotated map overlays and numerical KPIs. No competitor offers an out-of-the-box equivalent.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div><div class="pillar-title">Geospatial Data Cube</div></div>
+        <span class="badge badge-cyan">Proprietary</span>
+      </div>
+      <p class="pillar-desc">Multi-source fusion architecture combining Involve stratospheric imagery with Copernicus/satellite data, meteorological feeds, and open socio-economic datasets. Continuously updated per operational area. Depth grows with every flight — no competitor can replicate without equivalent flight history.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div><div class="pillar-title">Semantic Segmentation</div></div>
+        <span class="badge badge-blue">AI</span>
+      </div>
+      <p class="pillar-desc">Object/anomaly detection and semantic land-use segmentation pipeline fine-tuned on proprietary stratospheric-altitude imagery. Performs significantly better on HAPS imagery than models trained on satellite or aerial datasets due to unique geometry and resolution profile.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-card-header">
+        <div><div class="pillar-title">Spatiotemporal Forecasting</div></div>
+        <span class="badge badge-amber">Predictive</span>
+      </div>
+      <p class="pillar-desc">Forecasting networks that project future states (traffic evolution, flood exposure, construction change) from time-series of stratospheric observations. Enables CLEAR to deliver not just current state but near-future intelligence — a capability beyond any current commercial EO analytics product.</p>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ─── 07.04  DATA OWNERSHIP & COMPOUNDING ──── -->
+<div class="sec" id="s4">
+  <div class="sec-eyebrow">07.04 — Data Ownership &amp; Compounding Advantage</div>
+  <h2 class="sec-title">Data Ownership &amp;<br>Compounding Flywheel</h2>
+  <p class="sec-desc">How proprietary data accumulation creates a self-reinforcing competitive advantage over time</p>
+
+  <p class="prose">
+    Involve owns <strong>100% of all data collected across all missions</strong>. Every flight generates unique, ultra-high-resolution stratospheric imagery that no other entity on Earth holds. This data asset has two compounding properties: it improves Involve's AI systems directly, and it creates a proprietary intelligence archive that cannot be purchased or replicated on any timeline by any competitor.
+  </p>
+  <p class="prose">
+    The transition to a DaaS model in 2026 transforms this data accumulation from an operational byproduct into the primary revenue driver. The same dataset is sold multiple times across different customers and sectors — infrastructure operators, insurers, municipalities, defence agencies — at margins exceeding 90%. The <strong>data flywheel</strong> means that each new flight simultaneously generates revenue, improves AI model performance, and deepens the proprietary intelligence archive.
+  </p>
+
+  <!-- Flywheel diagram -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:1rem">The Involve Data Flywheel</h3>
+
+  <div class="flywheel-steps">
+    <div class="flywheel-step">
+      <div class="flywheel-icon">01</div>
+      <div class="flywheel-body">
+        <div class="flywheel-title">Proprietary Flight Operations</div>
+        <div class="flywheel-text">Involve deploys Stratorelay and Stratostats platforms over target areas. Each flight generates <strong>ultra-high-resolution optical imagery (5–10 cm/pixel)</strong>, sensor telemetry, atmospheric profiling data, and operational performance logs that no competitor can obtain.</div>
+      </div>
+    </div>
+    <div class="flywheel-step">
+      <div class="flywheel-icon">02</div>
+      <div class="flywheel-body">
+        <div class="flywheel-title">AI Model Improvement</div>
+        <div class="flywheel-text">Flight data feeds back into continuous training pipelines for Neurostar (navigation performance, atmospheric model calibration) and CLEAR (object detection fine-tuning, geospatial segmentation, LLM context enrichment). <strong>Every mission makes the AI systems more accurate.</strong></div>
+      </div>
+    </div>
+    <div class="flywheel-step">
+      <div class="flywheel-icon">03</div>
+      <div class="flywheel-body">
+        <div class="flywheel-title">Better Products at Lower Cost</div>
+        <div class="flywheel-text">Improved AI models enable more efficient station-keeping (less energy, fewer launches per coverage unit), higher-quality analytics output from CLEAR, and more accurate mission planning. <strong>Unit economics improve non-linearly</strong> as the model stack matures — target cost per km² drops from €0.6 toward ~€0.3 by 2028.</div>
+      </div>
+    </div>
+    <div class="flywheel-step">
+      <div class="flywheel-icon">04</div>
+      <div class="flywheel-body">
+        <div class="flywheel-title">Multi-Tenant Data Monetization</div>
+        <div class="flywheel-text">The proprietary data archive is sold simultaneously to multiple customers across different vertical applications — the same km² of Milan imagery serves an insurance company, a municipality, and a logistics firm. <strong>The marginal cost of an additional data customer approaches zero</strong>, driving gross margins above 90% at scale.</div>
+      </div>
+    </div>
+    <div class="flywheel-step">
+      <div class="flywheel-icon">05</div>
+      <div class="flywheel-body">
+        <div class="flywheel-title">Widening Intelligence Gap</div>
+        <div class="flywheel-text">The data archive's temporal depth creates an intelligence layer that competitors cannot instantly replicate regardless of capital. <strong>A new entrant today would require 4+ years of continuous flight operations</strong> to match Involve's historical data coverage before achieving equivalent AI model performance. This gap widens with every passing month.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data ownership terms -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.5rem;margin-bottom:1rem">Data Ownership &amp; Licensing Model</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data Category</th>
+          <th>Ownership</th>
+          <th>Usage Rights to Client</th>
+          <th>Involve Retains</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Custom Mission Imagery</td>
+          <td>Involve Space</td>
+          <td>Non-exclusive licence for defined use case and geography</td>
+          <td>Full archive, re-licensing rights, AI training rights</td>
+        </tr>
+        <tr>
+          <td>DaaS Subscription Data</td>
+          <td>Involve Space</td>
+          <td>Access licence during subscription period; no perpetual rights</td>
+          <td>Full ownership; data monetized across multiple concurrent subscribers</td>
+        </tr>
+        <tr>
+          <td>CLEAR Analytics Outputs</td>
+          <td>Involve Space</td>
+          <td>Derivative outputs (maps, KPIs, reports) belong to client</td>
+          <td>Underlying raw data, model weights, pipeline logic</td>
+        </tr>
+        <tr>
+          <td>Defence / Classified Missions</td>
+          <td>Negotiated</td>
+          <td>Exclusive licence possible; priced at premium</td>
+          <td>Hardware, software, operational IP; data transferred by agreement</td>
+        </tr>
+        <tr>
+          <td>AI Training Data</td>
+          <td>Involve Space</td>
+          <td>No client rights</td>
+          <td>All flight telemetry, sensor data, atmospheric profiles — never disclosed</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-purple">
+    <strong>Data sovereignty by design:</strong> All CLEAR platform data is processed and stored on EU-compliant cloud infrastructure (AWS EU regions), with GDPR-compliant data handling and data residency guarantees. For defence and institutional clients requiring data sovereignty, on-premise deployment options are available from 2027. The architecture is designed to meet EU data protection frameworks and NATO STANAG compatibility requirements.
+  </div>
+
+  <!-- Compounding value estimate -->
+  <div class="stats-bar stats-bar-3" style="margin-top:2rem">
+    <div class="stat-cell">
+      <div class="stat-val">200<span>+</span></div>
+      <div class="stat-label">Flights in proprietary archive</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">€0.6<span>/km²</span></div>
+      <div class="stat-label">Data production cost</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-val">90<span>%+</span></div>
+      <div class="stat-label">Gross margin — DaaS at scale</div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ─── 07.05  LONG-TERM DEFENSIBILITY ──────── -->
+<div class="sec" id="s5">
+  <div class="sec-eyebrow">07.05 — Long-Term Defensibility Strategy</div>
+  <h2 class="sec-title">Long-Term Competitive<br>Defensibility</h2>
+  <p class="sec-desc">Why the moat grows stronger over time and why replication becomes harder, not easier</p>
+
+  <p class="prose">
+    Involve's competitive moat is multi-layered and compounding. Individual layers — IP protection, technical performance, data accumulation, operational know-how — each create friction against replication. Together, they create a <strong>structural defensibility position</strong> that strengthens as the company scales. This section maps each layer of the moat, its current strength, and its trajectory.
+  </p>
+
+  <!-- Moat layers -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2rem;margin-bottom:0.8rem">Moat Layer Map — Current &amp; Trajectory</h3>
+
+  <div class="moat-layers">
+    <div class="moat-layer" style="background:var(--bg-2);border-bottom:1px solid var(--border-med)">
+      <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3)">Layer</span>
+      <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3)">Description</span>
+      <span style="font-family:var(--f-mono);font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3)">Strength (Now → 2028)</span>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Proprietary AI stack</div>
+      <div class="moat-layer-desc">Neurostar trained on 4+ years of flight data; quantum fleet optimizer; CLEAR LLM analytics. Replication requires years of flight campaigns and independent R&D investment estimated at €10M+.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Proprietary data archive</div>
+      <div class="moat-layer-desc">200+ flights of centimetre-resolution stratospheric imagery with unique temporal depth. Grows non-linearly as constellation scales. Oldest archives become reference baselines for change detection — increasingly irreplaceable.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot partial"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Hardware reusability IP</div>
+      <div class="moat-layer-desc">Patented pressurization, apex valve, and gondola architecture reducing per-mission cost to &lt;€7,300. No competitor has demonstrated comparable balloon reusability beyond a single flight.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot partial"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Google Loon lineage</div>
+      <div class="moat-layer-desc">Board members and advisors include ex-CEO (Westgarth), ex-CTO (Candido), ex-Program Manager (Lucero), and ex-Balloon Manufacturing Manager (Bergmann) of Google Loon — the only comparable stratospheric balloon program ever executed. This institutional knowledge is non-transferable.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Regulatory expertise &amp; relationships</div>
+      <div class="moat-layer-desc">HAPS airspace regulation is unique, complex, and jurisdiction-specific. Involve is recognized as a European expert in stratospheric balloon regulation, with established relationships with ENAC, EASA, and national authorization offices. Regulatory navigation capability cannot be purchased.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot partial"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Registered trademarks &amp; brand equity</div>
+      <div class="moat-layer-desc">All major product names registered. LarioSpace event creates annual brand reinforcement across the European aerospace ecosystem. Growing public launch visibility (200+ missions) builds institutional trust.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot partial"></div><div class="moat-dot partial"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Customer lock-in (DaaS model)</div>
+      <div class="moat-layer-desc">Subscription customers integrate CLEAR into their decision workflows (insurance underwriting, municipal planning, infrastructure maintenance). Switching costs increase over time as historical baselines and CLEAR's sector-specific fine-tuning become embedded in client operations.</div>
+      <div class="moat-strength">
+        <div class="moat-dot partial"></div><div class="moat-dot partial"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div>
+      </div>
+    </div>
+
+    <div class="moat-layer">
+      <div class="moat-layer-label">Defence contract depth</div>
+      <div class="moat-layer-desc">€2M MoD contract establishes classified operational credibility and creates contractual barriers: classified operations require security clearances, data sovereignty frameworks, and established trust relationships that no new entrant can replicate commercially.</div>
+      <div class="moat-strength">
+        <div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot active"></div><div class="moat-dot partial"></div><div class="moat-dot partial"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Competitive comparison matrix -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.5rem;margin-bottom:0.8rem">Competitive Defensibility Matrix</h3>
+  <p class="prose" style="margin-bottom:1.5rem">How Involve compares to key competitor categories across defensibility dimensions.</p>
+
+  <div class="def-matrix">
+    <div class="def-matrix-header">
+      <span>Dimension</span>
+      <span>Involve</span>
+      <span>Satellite EO</span>
+      <span>Other HAPS</span>
+      <span>EO Analytics</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Reusable hardware IP</span>
+      <span class="chk">✓ Yes</span>
+      <span class="cross">– N/A</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">– N/A</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Proprietary AI navigation</span>
+      <span class="chk">✓ Yes</span>
+      <span class="cross">– N/A</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">– N/A</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Quantum-optimized constellation</span>
+      <span class="chk">✓ Yes</span>
+      <span class="partial-txt">~ Partial</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">– N/A</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Proprietary imagery archive</span>
+      <span class="chk">✓ Yes</span>
+      <span class="chk">✓ Yes</span>
+      <span class="cross">✗ No</span>
+      <span class="partial-txt">~ Partial</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Conversational GeoAI platform</span>
+      <span class="chk">✓ CLEAR</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">✗ No</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Multi-source data fusion</span>
+      <span class="chk">✓ Yes</span>
+      <span class="partial-txt">~ Partial</span>
+      <span class="cross">✗ No</span>
+      <span class="partial-txt">~ Partial</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Registered product trademarks</span>
+      <span class="chk">✓ Yes</span>
+      <span class="chk">✓ Yes</span>
+      <span class="partial-txt">~ Partial</span>
+      <span class="chk">✓ Yes</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Google Loon advisory team</span>
+      <span class="chk">✓ Unique</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">✗ No</span>
+      <span class="cross">✗ No</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Active HAPS regulatory expertise</span>
+      <span class="chk">✓ Yes</span>
+      <span class="cross">– N/A</span>
+      <span class="partial-txt">~ Partial</span>
+      <span class="cross">– N/A</span>
+    </div>
+    <div class="def-matrix-row">
+      <span>Real-time defence-cleared ops</span>
+      <span class="chk">✓ Active</span>
+      <span class="chk">✓ Yes</span>
+      <span class="cross">✗ No</span>
+      <span class="partial-txt">~ Partial</span>
+    </div>
+  </div>
+
+  <!-- Future IP roadmap -->
+  <h3 style="font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--f-mono);margin-top:2.5rem;margin-bottom:1rem">IP Expansion Roadmap — 2026–2029</h3>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Horizon</th>
+          <th>IP Action</th>
+          <th>Rationale</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2026 Q1–Q2</td>
+          <td>Complete PCT filing for pressurization system &amp; apex valve</td>
+          <td>International phase enables EU/US enforcement ahead of market entry in those regions</td>
+          <td><span class="badge badge-red">High</span></td>
+        </tr>
+        <tr>
+          <td>2026 Q3</td>
+          <td>Register CLEAR trademark across EU + US</td>
+          <td>DaaS platform launch; brand protection in primary commercial markets</td>
+          <td><span class="badge badge-red">High</span></td>
+        </tr>
+        <tr>
+          <td>2026–2027</td>
+          <td>Patent scope expansion — inter-platform communication architecture</td>
+          <td>LoonHive constellation rollout; inter-platform RF protocol is independently observable and patentable</td>
+          <td><span class="badge badge-amber">Medium</span></td>
+        </tr>
+        <tr>
+          <td>2027</td>
+          <td>Explore Neurostar licensing programme</td>
+          <td>Potential recurring revenue stream from drone operators, satellite constellation managers; each licence reinforces Neurostar as industry standard</td>
+          <td><span class="badge badge-amber">Medium</span></td>
+        </tr>
+        <tr>
+          <td>2027–2028</td>
+          <td>Patent SAR trajectory-tracking algorithm (if novel claim supported)</td>
+          <td>Linear path-following for SAR opens defence/dual-use segment; patent strengthens exclusivity in SAR-capable HAPS</td>
+          <td><span class="badge badge-cyan">Contingent</span></td>
+        </tr>
+        <tr>
+          <td>2028–2029</td>
+          <td>Expand CLEAR data copyright to cover GeoAI knowledge graph</td>
+          <td">Compiled geospatial knowledge graph is a copyrightable database; formal protection strengthens DaaS licensing terms</td>
+          <td><span class="badge badge-cyan">Contingent</span></td>
+        </tr>
+        <tr>
+          <td>Ongoing</td>
+          <td>Quarterly FTO monitoring &amp; landscape watch</td>
+          <td>HAPS and GeoAI competitive landscape is evolving rapidly; ongoing monitoring prevents freedom-to-operate surprises</td>
+          <td><span class="badge badge-blue">Continuous</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-green">
+    <strong>Long-term strategic view:</strong> Involve's IP advantage is not a static snapshot — it is a compounding system. More flights → better AI → cheaper operations → more customers → more flights. More customers → richer data archive → stronger CLEAR intelligence → deeper customer lock-in. The moat widens with every passing quarter of operation. The Series A funding accelerates this flywheel from a slow start to escape velocity. By the time a well-funded competitor could theoretically replicate Involve's hardware and initiate AI training, Involve will have 4–6 additional years of proprietary operational data, a fully deployed LoonHive constellation, and an embedded customer base whose workflows depend on CLEAR. The window for effective competitive entry is narrowing.
+  </div>
+
+  <div class="ref-note">
+    → Cross-reference: 07.02 Patents &amp; Trademarks · 07.03 Proprietary AI &amp; Algorithms · 02.04 Neurostar Flight Control System · 02.05 CLEAR GeoAI Infrastructure Layer · 01.02 Investor Deck — Competitive Positioning
+  </div>
+
+</div>
+
+</div><!-- /.body -->
+</body>
+</html>
