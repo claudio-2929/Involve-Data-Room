@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import type { AccessLevel } from '../../services/authService';
 
@@ -12,11 +11,10 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({
     children,
-    allowedRoles,
-    requiredAccess
+    // allowedRoles, // Keeping signature intact for future use
+    // requiredAccess
 }: ProtectedRouteProps) {
-    const { user, isLoading } = useAuth();
-    const location = useLocation();
+    const { isLoading } = useAuth();
     const [isRenderReady, setIsRenderReady] = useState(false);
 
     useEffect(() => {
@@ -34,6 +32,11 @@ export default function ProtectedRoute({
         );
     }
 
+    // Temporarily disable auth layer per user request (Mar 2026)
+    // We return children immediately to grant full access to everyone.
+    return <>{children}</>;
+
+    /*
     // 1. Check if logged in at all
     if (!user) {
         // Redirect to login page and save the intended location
@@ -50,6 +53,5 @@ export default function ProtectedRoute({
         // A partial user tried to access a full route -> redirect back to safe start
         return <Navigate to="/dataroom/00_Executive_Overview/01_Investment_Thesis" replace />;
     }
-
-    return <>{children}</>;
+    */
 }
