@@ -22,71 +22,71 @@ export default function StrategicRoadmapPage() {
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Phase 1 — Revenue &amp; CLEAR Launch (2026)</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In the first phase we validate the Earth Intelligence model and launch the CLEAR platform <strong>MVP</strong>. We deploy our inaugural stratospheric sensing assets and begin contracting initial missions. <strong>Key milestones:</strong><br />
-- <strong>Technology:</strong> Operate first flights of Involve’s stratospheric platforms (Stratostats, Stratorelays) with our Neurostar autonomous navigation. Conduct initial remote sensing experiments (e.g. StratoSAR radar missions). Launch the CLEAR MVP – a cloud-based GeoAI engine with basic imagery ingestion and analytics.<br />
-- <strong>Commercial traction:</strong> Secure ESA InCubed StratoSAR project (~€1.5M) and Italian Ministry of Defence contract (~€2M) for persistent surveillance missions. Perform pilot monitoring projects with ENEL (energy infrastructure) and ELT Group (critical communications), and an MBDA defence trial. These missions generate our first revenues and validate our value proposition.<br />
-- <strong>Data strategy:</strong> Begin building our data pipeline by fusing HAPS-collected imagery with public and commercial satellite data. For example, we will leverage the EU’s Copernicus archive (65+ PB of open geospatial data[4]) to augment our proprietary dataset. These combined data streams feed into CLEAR’s AI models for initial training.<br />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In the first phase we validate the Earth Intelligence model and launch the CLEAR platform <strong>MVP</strong>. We deploy our inaugural stratospheric sensing assets and begin contracting initial missions. <strong>Key milestones:</strong><br/>
+- <strong>Technology:</strong> Operate first flights of Involve’s stratospheric platforms (Stratostats, Stratorelays) with our Neurostar autonomous navigation. Conduct initial remote sensing experiments (e.g. StratoSAR radar missions). Launch the CLEAR MVP – a cloud-based GeoAI engine with basic imagery ingestion and analytics.<br/>
+- <strong>Commercial traction:</strong> Secure ESA InCubed StratoSAR project (~€1.5M) and Italian Ministry of Defence contract (~€2M) for persistent surveillance missions. Perform pilot monitoring projects with ENEL (energy infrastructure) and ELT Group (critical communications), and an MBDA defence trial. These missions generate our first revenues and validate our value proposition.<br/>
+- <strong>Data strategy:</strong> Begin building our data pipeline by fusing HAPS-collected imagery with public and commercial satellite data. For example, we will leverage the EU’s Copernicus archive (65+ PB of open geospatial data[4]) to augment our proprietary dataset. These combined data streams feed into CLEAR’s AI models for initial training.<br/>
 - <strong>Outcome:</strong> Validate the end-to-end sensing platform and AI pipeline. Achieve first mission revenues. Establish operational cloud workflows and data ingestion pipelines. CLEAR’s MVP is active, demonstrating geospatial query and basic analytics to early customers.</p>
 
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Phase 2 — Search Intelligence at Scale (2027–2028)</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In Phase 2 we <strong>scale</strong> both our sensing network and the CLEAR intelligence platform. We transition to enterprise-grade systems and develop recurring subscriptions. <strong>Key milestones:</strong><br />
-- <strong>Technology expansion:</strong> Grow the Stratostat/Stratorelay fleet (more long-endurance balloons) to increase coverage and data volume. Enhance CLEAR to enterprise readiness: expand cloud infrastructure, integrate third-party data streams (additional satellites, UAV imagery, radar), and refine analytics. Deploy advanced GeoAI features such as automated anomaly detection.<br />
-- <strong>Platform capabilities:</strong> Launch the full CLEAR enterprise platform with a natural-language query interface and monitoring dashboards. Users can ask conversational geospatial-intelligence questions. Implement predictive alerting (e.g. automatically flagging infrastructure faults or unusual patterns). These capabilities match the industry’s rising demand for automated interpretation and pattern recognition[5].<br />
-- <strong>Commercial growth:</strong> Ramp up sales in defence and critical‑infrastructure markets. Convert initial pilots into paid contracts. Sign recurring CLEAR subscriptions for defence agencies and energy utilities. Begin pilots in adjacent industries (insurance risk assessment, logistics visibility) that benefit from predictive geospatial analytics.<br />
-- <strong>Data flywheel:</strong> Ingest data at scale from expanding missions and sensors. Each new stream improves CLEAR’s AI models, increasing the platform’s value. This self-reinforcing data loop is the engine of our growth.<br />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In Phase 2 we <strong>scale</strong> both our sensing network and the CLEAR intelligence platform. We transition to enterprise-grade systems and develop recurring subscriptions. <strong>Key milestones:</strong><br/>
+- <strong>Technology expansion:</strong> Grow the Stratostat/Stratorelay fleet (more long-endurance balloons) to increase coverage and data volume. Enhance CLEAR to enterprise readiness: expand cloud infrastructure, integrate third-party data streams (additional satellites, UAV imagery, radar), and refine analytics. Deploy advanced GeoAI features such as automated anomaly detection.<br/>
+- <strong>Platform capabilities:</strong> Launch the full CLEAR enterprise platform with a natural-language query interface and monitoring dashboards. Users can ask conversational geospatial-intelligence questions. Implement predictive alerting (e.g. automatically flagging infrastructure faults or unusual patterns). These capabilities match the industry’s rising demand for automated interpretation and pattern recognition[5].<br/>
+- <strong>Commercial growth:</strong> Ramp up sales in defence and critical‑infrastructure markets. Convert initial pilots into paid contracts. Sign recurring CLEAR subscriptions for defence agencies and energy utilities. Begin pilots in adjacent industries (insurance risk assessment, logistics visibility) that benefit from predictive geospatial analytics.<br/>
+- <strong>Data flywheel:</strong> Ingest data at scale from expanding missions and sensors. Each new stream improves CLEAR’s AI models, increasing the platform’s value. This self-reinforcing data loop is the engine of our growth.<br/>
 - <strong>Outcome:</strong> CLEAR becomes the core intelligence interface for our clients. We achieve the first significant recurring SaaS revenue. The HAPS fleet operates routinely and the quality of our intelligence continually improves with more data.</p>
 
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Phase 3 — Fleet &amp; Data Dominance (2028–2029)</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Phase 3 is about achieving <strong>true persistence and scale</strong>. We deploy a large constellation of high-altitude platforms and leverage the data flywheel to its fullest. <strong>Key milestones:</strong><br />
-- <strong>Technology:</strong> Launch the <i>LoonHive</i> constellation – a network of dozens of balloons providing continuous coverage over key regions. Establish a persistent stratospheric sensing network for regional real-time monitoring. These HAPS can hover over areas indefinitely, unlike LEO satellites which only revisit intermittently[6].<br />
-- <strong>Data accumulation:</strong> Our fleet now generates high-cadence, multi-sensor data streams. We expand our data warehouse and high-throughput pipelines to store and fuse these streams. Proprietary balloon and partner satellite data accumulate rapidly, enabling training of advanced AI models (e.g. deep learning for change detection, dynamic forecasting).<br />
-- <strong>Commercial evolution:</strong> Transition to Data-as-a-Service. Offer subscription access to live data feeds and intelligence alerts (“Intelligence-as-a-Service”). Establish multi-year defence and security contracts requiring persistent monitoring. Package our AI insights for environmental and infrastructure surveillance clients as ongoing services.<br />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Phase 3 is about achieving <strong>true persistence and scale</strong>. We deploy a large constellation of high-altitude platforms and leverage the data flywheel to its fullest. <strong>Key milestones:</strong><br/>
+- <strong>Technology:</strong> Launch the <i>LoonHive</i> constellation – a network of dozens of balloons providing continuous coverage over key regions. Establish a persistent stratospheric sensing network for regional real-time monitoring. These HAPS can hover over areas indefinitely, unlike LEO satellites which only revisit intermittently[6].<br/>
+- <strong>Data accumulation:</strong> Our fleet now generates high-cadence, multi-sensor data streams. We expand our data warehouse and high-throughput pipelines to store and fuse these streams. Proprietary balloon and partner satellite data accumulate rapidly, enabling training of advanced AI models (e.g. deep learning for change detection, dynamic forecasting).<br/>
+- <strong>Commercial evolution:</strong> Transition to Data-as-a-Service. Offer subscription access to live data feeds and intelligence alerts (“Intelligence-as-a-Service”). Establish multi-year defence and security contracts requiring persistent monitoring. Package our AI insights for environmental and infrastructure surveillance clients as ongoing services.<br/>
 - <strong>Outcome:</strong> Involve becomes a major geospatial intelligence provider. Our persistent monitoring capability serves the booming surveillance/security segment[7]. CLEAR’s models, fed by unique proprietary data, deliver superior insights. Multi-year recurring revenue dominates our business.</p>
 
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Phase 4 — Multi-Domain Data Acquisition (2029–2030)</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">With stratospheric dominance in place, Phase 4 expands to a full <strong>multi-domain sensing architecture</strong>. Involve integrates satellite and drone capabilities to offer end-to-end Earth observation services. <strong>Key milestones:</strong><br />
-- <strong>Technology integration:</strong> Acquire or partner with satellite operators (optical and radar constellations) and expand our drone fleet. Integrate these new layers with our balloons. We thus own a vertically integrated sensing stack spanning ground, air, and space.<br />
-- <strong>Unified data infrastructure:</strong> Develop a unified Earth Intelligence data platform. Implement large-scale fusion of multi-domain data (satellite imagery, balloon sensor data, UAV mapping, IoT networks). This enables cross-modal analytics (e.g. correlating SAR and optical imagery, or combining geospatial data with weather sensors).<br />
-- <strong>Global services:</strong> Launch global monitoring offerings (border &amp; maritime surveillance, climate/environment tracking) using the combined sensor network. Enter new enterprise markets: supply-chain risk analytics, precision agriculture, disaster management. CLEAR now serves defence, commercial, and public-sector users worldwide.<br />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">With stratospheric dominance in place, Phase 4 expands to a full <strong>multi-domain sensing architecture</strong>. Involve integrates satellite and drone capabilities to offer end-to-end Earth observation services. <strong>Key milestones:</strong><br/>
+- <strong>Technology integration:</strong> Acquire or partner with satellite operators (optical and radar constellations) and expand our drone fleet. Integrate these new layers with our balloons. We thus own a vertically integrated sensing stack spanning ground, air, and space.<br/>
+- <strong>Unified data infrastructure:</strong> Develop a unified Earth Intelligence data platform. Implement large-scale fusion of multi-domain data (satellite imagery, balloon sensor data, UAV mapping, IoT networks). This enables cross-modal analytics (e.g. correlating SAR and optical imagery, or combining geospatial data with weather sensors).<br/>
+- <strong>Global services:</strong> Launch global monitoring offerings (border &amp; maritime surveillance, climate/environment tracking) using the combined sensor network. Enter new enterprise markets: supply-chain risk analytics, precision agriculture, disaster management. CLEAR now serves defence, commercial, and public-sector users worldwide.<br/>
 - <strong>Outcome:</strong> Involve controls multiple sensing layers and delivers seamlessly integrated intelligence. Our customers get a unified view of Earth data. Involve becomes synonymous with comprehensive Earth Intelligence across Europe and beyond.</p>
 
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Phase 5 — Sovereign Earth Intelligence (2030+)</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The final phase establishes Involve as the cornerstone of Europe’s geospatial sovereignty. We deliver a fully European Earth Intelligence operating system – the strategic infrastructure underpinning defence, security and resilience. <strong>Key milestones:</strong><br />
-- <strong>Platform vision:</strong> By 2030, CLEAR and our sensor network constitute a continental-scale OS for geospatial data: always-on global monitoring with instant AI-driven insights. Users can query the platform (“Show me changes in critical sites this week”) and receive predictive alerts in real time.<br />
-- <strong>Full-spectrum capabilities:</strong> The system leverages every sensing domain. Persistent multi-sensor data (optical, radar, RF) flow into our AI cloud in real time. On-board edge processing minimises latency. Crucially, all infrastructure is European-controlled, satisfying sovereignty requirements[1].<br />
-- <strong>Strategic asset:</strong> Involve’s platform becomes Europe’s analogue to Palantir for geo-intelligence: a sovereign, vertically-integrated sensor-to-AI system. It serves EU/NATO defence and national governments with guaranteed access, while also bolstering Europe’s economic resilience (energy grids, communications, finance). This system is the backbone of Europe’s situational awareness and decision-making.<br />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The final phase establishes Involve as the cornerstone of Europe’s geospatial sovereignty. We deliver a fully European Earth Intelligence operating system – the strategic infrastructure underpinning defence, security and resilience. <strong>Key milestones:</strong><br/>
+- <strong>Platform vision:</strong> By 2030, CLEAR and our sensor network constitute a continental-scale OS for geospatial data: always-on global monitoring with instant AI-driven insights. Users can query the platform (“Show me changes in critical sites this week”) and receive predictive alerts in real time.<br/>
+- <strong>Full-spectrum capabilities:</strong> The system leverages every sensing domain. Persistent multi-sensor data (optical, radar, RF) flow into our AI cloud in real time. On-board edge processing minimises latency. Crucially, all infrastructure is European-controlled, satisfying sovereignty requirements[1].<br/>
+- <strong>Strategic asset:</strong> Involve’s platform becomes Europe’s analogue to Palantir for geo-intelligence: a sovereign, vertically-integrated sensor-to-AI system. It serves EU/NATO defence and national governments with guaranteed access, while also bolstering Europe’s economic resilience (energy grids, communications, finance). This system is the backbone of Europe’s situational awareness and decision-making.<br/>
 - <strong>Outcome:</strong> Establishment of a pan-European Earth Intelligence capability. Tens of millions of euros in annual contracts across governments and industry. A leadership position in the growing GeoAI sector and a critical infrastructure asset for Europe.</p>
 
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Strategic Logic of the Roadmap</h2>
 
 <ul className="list-disc pl-6 mb-6 text-involve-muted">
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Data Flywheel:</strong> Each phase accelerates our data cycle. More sensing missions ⇒ more proprietary data ⇒ better AI models ⇒ more valuable services ⇒ more customers. This creates a self-reinforcing growth engine.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Vertical Integration:</strong> We own the full sensing stack (balloons, satellites, drones), so we are not reliant on third-party data. This addresses Europe’s current fragmentation[1] and gives us a durable competitive advantage and higher margins.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Platform Evolution:</strong> CLEAR evolves continuously: from an analytics tool to a full intelligence OS. With each phase we add new data sources and AI features, deepening customer lock-in and enabling new use cases.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Market Expansion:</strong> We build sequentially. Phases 1–2 target defence and critical infrastructure (fast-pay, high-value customers). Success there unlocks broader civil markets (insurance, logistics, environment). Phase 5’s sovereign framing opens large institutional budgets. This stepwise expansion maximises our addressable market.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Data Flywheel:</strong> Each phase accelerates our data cycle. More sensing missions ⇒ more proprietary data ⇒ better AI models ⇒ more valuable services ⇒ more customers. This creates a self-reinforcing growth engine.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Vertical Integration:</strong> We own the full sensing stack (balloons, satellites, drones), so we are not reliant on third-party data. This addresses Europe’s current fragmentation[1] and gives us a durable competitive advantage and higher margins.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Platform Evolution:</strong> CLEAR evolves continuously: from an analytics tool to a full intelligence OS. With each phase we add new data sources and AI features, deepening customer lock-in and enabling new use cases.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Market Expansion:</strong> We build sequentially. Phases 1–2 target defence and critical infrastructure (fast-pay, high-value customers). Success there unlocks broader civil markets (insurance, logistics, environment). Phase 5’s sovereign framing opens large institutional budgets. This stepwise expansion maximises our addressable market.</li>
 </ul>
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Investor Takeaways</h2>
 
 <ul className="list-disc pl-6 mb-6 text-involve-muted">
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Massive Market:</strong> Earth Intelligence is a multi-hundred-billion-dollar opportunity. The global GeoAI market is expected to grow from ~$37 billion in 2025 to ~$62.9 billion by 2030[8]. Europe’s geospatial analytics segment alone is ~$30 billion (2025) and climbing ~10% annually[9]. Involve targets multiple high-value segments (defence ISR, infrastructure monitoring, environmental intelligence) each worth many billions.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>AI-Driven Shift:</strong> The industry is moving from raw EO data to AI-powered intelligence[10][5]. Automated geospatial analytics (pattern recognition, predictive insights) are in huge demand, and GeoAI platforms are the fastest-growing subsegment[5]. CLEAR is well-positioned to ride this trend.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Unique Competitive Position:</strong> Most players focus on a single layer (satellite data, analytics software, etc.). Europe’s system is currently fragmented[1]. Involve’s fully integrated approach – owning sensors <i>and</i> AI – is unique. This gives a strong moat as Europe builds its sovereign intelligence infrastructure.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Scalable Model:</strong> Our dual revenue streams combine high-margin mission fees with recurring SaaS subscriptions. As CLEAR scales to larger customers, recurring revenue will drive the business, while mission contracts provide up-front cash. This mix supports rapid growth with strong margins.</li>
-  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Proven Traction:</strong> Involve has de-risked key elements. We have secured €1.5 M in ESA funding and a €2 M defence contract, plus pilots with ENEL, MBDA and ELT. These validate our technology and market fit. The roadmap maps a clear path from these foundations to a global Earth Intelligence leader.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Massive Market:</strong> Earth Intelligence is a multi-hundred-billion-dollar opportunity. The global GeoAI market is expected to grow from ~$37 billion in 2025 to ~$62.9 billion by 2030[8]. Europe’s geospatial analytics segment alone is ~$30 billion (2025) and climbing ~10% annually[9]. Involve targets multiple high-value segments (defence ISR, infrastructure monitoring, environmental intelligence) each worth many billions.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>AI-Driven Shift:</strong> The industry is moving from raw EO data to AI-powered intelligence[10][5]. Automated geospatial analytics (pattern recognition, predictive insights) are in huge demand, and GeoAI platforms are the fastest-growing subsegment[5]. CLEAR is well-positioned to ride this trend.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Unique Competitive Position:</strong> Most players focus on a single layer (satellite data, analytics software, etc.). Europe’s system is currently fragmented[1]. Involve’s fully integrated approach – owning sensors <i>and</i> AI – is unique. This gives a strong moat as Europe builds its sovereign intelligence infrastructure.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Scalable Model:</strong> Our dual revenue streams combine high-margin mission fees with recurring SaaS subscriptions. As CLEAR scales to larger customers, recurring revenue will drive the business, while mission contracts provide up-front cash. This mix supports rapid growth with strong margins.</li>
+<li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Proven Traction:</strong> Involve has de-risked key elements. We have secured €1.5 M in ESA funding and a €2 M defence contract, plus pilots with ENEL, MBDA and ELT. These validate our technology and market fit. The roadmap maps a clear path from these foundations to a global Earth Intelligence leader.</li>
 </ul>
 
       <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">This roadmap lays out a credible, step-by-step progression from Involve’s current stage to a continent-spanning Earth Intelligence platform, underlining how our unique assets and vision create venture-scale value.</p>
@@ -95,35 +95,17 @@ export default function StrategicRoadmapPage() {
       <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Sources:</strong> Market and technology trends are supported by industry research[1][8][4] and public news[3], as noted above. The cited analyses illustrate the massive GeoAI market and Europe’s strategic focus on sovereign intelligence infrastructure, which underpin Involve’s strategy.</p>
 
 
-
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[1] [2] Building a European Geospatial Intelligence Capability: Mapping Initiatives, Identifying Gaps, and Outlining Strategic Options</p>
-
-
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.iris-france.org/wp-content/uploads/2026/01/ARES_2026_01_122_European_Spatial_Intelligence_PolicyPaper.pdf</p>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2"><br/></h2>
 
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[3] Europe unites to build sovereign cloud and AI infrastructure to stop reliance on US | Euronews</p>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.euronews.com/next/2026/03/03/europe-unites-to-build-sovereign-cloud-and-ai-infrastructure-to-stop-reliance-on-us</p>
 
 
-      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[4] [9] Europe Geospatial Analytics Market Size, Share, 2034</h2>
 
 
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.marketdataforecast.com/market-reports/europe-geospatial-analytics-market</p>
 
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[5] [7] [8] [10] Geospatial Intelligence Market worth $62.88 billion by 2030</p>
-
-
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.marketsandmarkets.com/PressReleases/geospatial-intelligence.asp</p>
-
-
-      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[6] High-Altitude Platform Systems - Joint Air Power Competence Centre</h2>
-
-
-      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.japcc.org/articles/high-altitude-platform-systems/</p>
 
 
             </div>
