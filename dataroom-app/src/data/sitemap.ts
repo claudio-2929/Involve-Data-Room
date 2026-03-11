@@ -22,6 +22,7 @@ export const sitemapData = [
             { title: "Pricing & Revenue", path: "/dataroom/01_Strategy_and_Market/04_Pricing_Strategy_and_Revenue_Model" },
             { title: "GTM Strategy", path: "/dataroom/01_Strategy_and_Market/05_GTM_Strategy_Civil_and_Defence" },
             { title: "Strategic Roadmap", path: "/dataroom/01_Strategy_and_Market/06_Strategic_Roadmap_2025_2030" },
+            { title: "Strategic Value", path: "/dataroom/01_Strategy_and_Market/07_Strategic_Value_and_Exit_Scenarios" },
         ]
     },
     {

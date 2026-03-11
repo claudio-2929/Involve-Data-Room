@@ -1,460 +1,193 @@
-import { DocHeader, SectionHeader, BodyText, ContentBlock, SectionDivider } from '../components/ui/core';
-import { NextSectionCard } from '../components/shared/NavigationHelpers';
-
-// ── Shared primitives ────────────────────────────────────────────────────────
-
-function Badge({ color, children }: { color: 'blue' | 'green' | 'amber' | 'cyan' | 'purple'; children: React.ReactNode }) {
-    const styles = {
-        blue: 'bg-involve-blue/14 text-involve-blue',
-        green: 'bg-involve-green/12 text-involve-green',
-        amber: 'bg-involve-amber/12 text-involve-amber',
-        cyan: 'bg-involve-cyan/12 text-involve-cyan',
-        purple: 'bg-[rgba(167,139,250,0.12)] text-[#a78bfa]',
-    };
-    return (
-        <span className={`inline-flex items-center gap-1 font-mono text-[10px] font-medium tracking-[0.1em] px-2 py-0.5 rounded-sm whitespace-nowrap before:content-[''] before:block before:w-1.5 before:h-1.5 before:rounded-full before:bg-current ${styles[color]}`}>
-            {children}
-        </span>
-    );
-}
-
-function Callout({ children, variant = 'default' }: { children: React.ReactNode; variant?: 'default' | 'green' | 'amber' }) {
-    const border = variant === 'green' ? 'border-l-involve-green bg-involve-green/8' : variant === 'amber' ? 'border-l-involve-amber bg-involve-amber/8' : 'border-l-involve-blue/30 bg-involve-blue/6';
-    return (
-        <div className={`my-7 px-5 py-4 border-l-2 ${border} text-sm font-light text-involve-muted italic leading-relaxed`}>
-            {children}
-        </div>
-    );
-}
-
-function RefNote({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="my-6 px-4 py-3 bg-involve-panel border border-involve-border border-l-2 border-l-involve-blue font-mono text-[11px] text-involve-blue/65 leading-relaxed">
-            {children}
-        </div>
-    );
-}
-
-function StatsBar({ stats }: { stats: { val: string; valSuffix?: string; label: string; sub: string }[] }) {
-    return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-involve-border border border-involve-border my-8">
-            {stats.map((s, i) => (
-                <div key={i} className="bg-involve-panel p-6 hover:bg-involve-bg transition-colors">
-                    <div className="text-[1.8rem] font-semibold tracking-[-0.04em] text-involve-text leading-none mb-1">
-                        {s.val}<span className="text-involve-blue">{s.valSuffix}</span>
-                    </div>
-                    <div className="font-mono text-[10px] tracking-[0.1em] uppercase text-involve-dim leading-snug">{s.label}</div>
-                    <div className="text-[11px] text-involve-dim mt-1">{s.sub}</div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Evolution Track ──────────────────────────────────────────────────────────
-
-function EvoTrack() {
-    const stages = [
-        {
-            era: 'EO 1.0 · Pre-2010s', label: 'Data Collection', labelColor: 'text-involve-muted',
-            sub: 'Government imagery · coarse coverage · long latency', borderColor: 'border-t-involve-border',
-            desc: 'Governments and early satellite firms provided imagery with limited resolution and revisit schedules measured in days or weeks. Analysis required specialist GIS teams and significant post-processing time. Outputs were static reports, not operational decisions.',
-            traits: ['Government-dominated supply', 'Weeks-long delivery cycles', 'Specialist GIS expertise required', 'Static output formats'],
-        },
-        {
-            era: 'EO 2.0 · 2010s', label: 'Sensor Proliferation', labelColor: 'text-involve-amber',
-            sub: 'Micro-satellite constellations · analytics startups · data overload', borderColor: 'border-t-involve-amber',
-            desc: 'Planet, ICEYE, and dozens of startups drove resolution up and revisit times down. Simultaneously, analytics companies emerged to apply computer vision and statistical methods to the resulting imagery. The result: more data than anyone could process, and a proliferation of disconnected tools.',
-            traits: ['Commercial constellations scale', 'Standalone analytics tools', 'WEF: 2 exabytes by 2032', 'Data bottleneck emerges'],
-        },
-        {
-            era: 'EO 3.0 · Now', label: 'Intelligence Infrastructure', labelColor: 'text-involve-blue',
-            sub: 'Continuous AI-fused intelligence · always-on services · decision layer', borderColor: 'border-t-involve-blue',
-            desc: 'Constant data streams from space, stratosphere, and ground are integrated with AI to support immediate decisions. The ICEYE–Esri model reframes geospatial intelligence as an infrastructure subscription — not a report, but a continuous geo-streaming layer users embed into operational workflows.',
-            traits: ['Multi-domain sensor fusion', 'Always-on intelligence streams', 'Agentic AI orchestration', 'Embedded in operations'],
-        },
-    ];
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-involve-border border border-involve-border my-8">
-            {stages.map((s, i) => (
-                <div key={i} className={`bg-involve-panel p-7 flex flex-col border-t-2 ${s.borderColor} hover:bg-involve-bg transition-colors`}>
-                    <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">{s.era}</div>
-                    <div className={`text-[1.1rem] font-semibold tracking-tight mb-1 ${s.labelColor}`}>{s.label}</div>
-                    <div className="text-[12px] font-light text-involve-dim italic mb-4">{s.sub}</div>
-                    <div className="text-[12.5px] font-light text-involve-muted leading-relaxed flex-1 mb-4">{s.desc}</div>
-                    <div className="flex flex-col gap-1.5">
-                        {s.traits.map((t, j) => (
-                            <div key={j} className="flex items-center gap-2 text-[12px] text-involve-dim">
-                                <span className="font-mono text-[10px] text-involve-dim">—</span>{t}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Card Grid ────────────────────────────────────────────────────────────────
-
-function CardGrid3({ cards }: { cards: { num: string; title: string; body: React.ReactNode; stat: string; borderColor?: string; numColor?: string }[] }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-involve-border border border-involve-border my-8">
-            {cards.map((c, i) => (
-                <div key={i} className={`bg-involve-panel p-6 flex flex-col hover:bg-involve-bg transition-colors border-t-2 ${c.borderColor ?? 'border-t-involve-border'}`}>
-                    <span className={`font-mono text-[10px] tracking-[0.15em] uppercase mb-2 ${c.numColor ?? 'text-involve-blue'}`}>{c.num}</span>
-                    <div className="text-[13.5px] font-semibold text-involve-text mb-2 leading-tight">{c.title}</div>
-                    <div className="text-[12px] font-light text-involve-muted leading-relaxed flex-1">{c.body}</div>
-                    <div className="mt-4 pt-3 border-t border-involve-border font-mono text-[10px] text-involve-dim leading-relaxed">{c.stat}</div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function CardGrid2({ cards }: { cards: { num: string; title: string; body: React.ReactNode; stat: string; borderColor?: string }[] }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border my-8">
-            {cards.map((c, i) => (
-                <div key={i} className={`bg-involve-panel p-6 flex flex-col hover:bg-involve-bg transition-colors border-t-2 ${c.borderColor ?? 'border-t-involve-border'}`}>
-                    <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-blue mb-2">{c.num}</span>
-                    <div className="text-[13.5px] font-semibold text-involve-text mb-2 leading-tight">{c.title}</div>
-                    <div className="text-[12px] font-light text-involve-muted leading-relaxed flex-1">{c.body}</div>
-                    <div className="mt-4 pt-3 border-t border-involve-border font-mono text-[10px] text-involve-dim leading-relaxed">{c.stat}</div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Capability Stack ─────────────────────────────────────────────────────────
-
-function CapabilityStack() {
-    const rows = [
-        { label: 'Classical GIS', sublabel: 'Deterministic', labelColor: 'text-involve-dim', content: 'Structured geodata storage, overlay queries, static map output. Human analyst interprets results. No learning, no multi-modal fusion. Output: maps and reports.' },
-        { label: 'EO Analytics', sublabel: 'Statistical', labelColor: 'text-involve-amber', content: 'Classical computer vision on satellite imagery — change detection, NDVI, object classification using hand-engineered features. Faster than manual GIS but still single-source, periodic, and requires human review.' },
-        { label: 'GeoAI', sublabel: 'Multi-modal ML', labelColor: 'text-involve-blue', content: 'Deep learning on multi-modal inputs (imagery, SAR, LiDAR, IoT, weather). Spatially-explicit models — location-aware architecture. Foundation models compress vast archives. High-accuracy classification without per-task training. Probabilistic outputs with uncertainty quantification.' },
-        { label: 'Agentic GeoAI', sublabel: 'Orchestration', labelColor: 'text-involve-green', content: 'AI agents that autonomously task sensors, route intelligence requests, fuse outputs across domains, and trigger operational responses. The system decides which sensor to use, when to acquire data, and how to deliver insight. CLEAR is designed for this layer: agentic decoupling across multi-modal vision agents, with natural language interfaces and automated reporting.' },
-    ];
-    return (
-        <div className="flex flex-col gap-px bg-involve-border border border-involve-border my-8">
-            <div className="bg-involve-bg px-4 py-2 font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim border-b border-involve-border">GeoAI Capability Progression</div>
-            {rows.map((r, i) => (
-                <div key={i} className="grid bg-involve-panel hover:bg-involve-bg transition-colors" style={{ gridTemplateColumns: '180px 1fr' }}>
-                    <div className="px-5 py-5 font-mono text-[11px] tracking-[0.1em] uppercase flex flex-col justify-center border-r border-involve-border leading-snug">
-                        <span className={`text-[13px] font-semibold font-sans tracking-normal mb-0.5 ${r.labelColor}`}>{r.label}</span>
-                        <span className="text-involve-dim text-[10px]">{r.sublabel}</span>
-                    </div>
-                    <div className="px-5 py-5 text-[12.5px] font-light text-involve-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: r.content.replace('Spatially-explicit models', '<strong class="font-medium text-involve-text">Spatially-explicit models</strong>').replace('autonomously task sensors', '<strong class="font-medium text-involve-text">autonomously task sensors</strong>') }} />
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Domain Grid ──────────────────────────────────────────────────────────────
-
-function DomainGrid() {
-    const domains = [
-        { color: 'bg-involve-blue', label: 'Sovereignty & Strategic Autonomy', title: 'Nations want independent access to Earth data', body: "Europe's Copernicus Sentinel constellations and the proposed EU Governmental EO Service explicitly aim for autonomy in weather, environment, and security data. NATO's JADC2 and US Space Force modernization both depend on integrated geospatial ISR. Governments view geospatial infrastructure as critical to sovereignty — building their own capabilities rather than depending on foreign providers. This creates a structural demand pull for sovereign-controlled, domestic sensing infrastructure." },
-        { color: 'bg-involve-amber', label: 'Climate Risk Exposure', title: 'Climate change is now a systemic economic risk', body: 'WEF ranks failure to mitigate climate change among the top near-term global threats. Businesses and regulators demand quantifiable climate analytics. Continuous Earth monitoring feeds adaptation: tracking ice melt, deforestation, flood extents, and urban heat islands. Companies like Satelligence have noted that embedding "Earth Intelligence" into supply-chain decisions is no longer optional — it is central to risk management.' },
-        { color: 'bg-involve-green', label: 'Energy Transition', title: 'Renewables and smart grids depend on geospatial data', body: 'Solar irradiance mapping, land-use analysis for wind farms, grid stability monitoring, and vegetation management along transmission corridors all require persistent, AI-enhanced Earth data. The US DOE explicitly calls out satellite imagery and AI/ML analytics for enhanced vegetation management as operational requirements — not future-state experiments.' },
-        { color: 'bg-[#a78bfa]', label: 'Defence Modernisation', title: 'Real-time ISR now extends beyond satellites', body: "Current conflicts have highlighted the need for real-time situational awareness at operational tempo. ISR now extends beyond orbital satellites to high-altitude platforms and UAVs, fusing multiple domains. IRIS-France notes that Western militaries are rapidly integrating space and stratospheric sensors for persistent, AI-driven data fusion. The stratospheric layer specifically fills the gap between drones (short-range, weather-limited) and satellites (fixed orbit, coarse revisit) — with both persistence and re-taskability." },
-    ];
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border my-8">
-            {domains.map((d, i) => (
-                <div key={i} className="bg-involve-panel p-6 hover:bg-involve-bg transition-colors">
-                    <div className="flex items-center gap-2 mb-3">
-                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${d.color}`} />
-                        <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim">{d.label}</div>
-                    </div>
-                    <div className="text-[14px] font-semibold text-involve-text mb-2">{d.title}</div>
-                    <div className="text-[12px] font-light text-involve-muted leading-relaxed">{d.body}</div>
-                </div>
-            ))}
-            {/* Supply Chain — full width */}
-            <div className="bg-involve-blue/4 p-6 hover:bg-involve-bg transition-colors md:col-span-2">
-                <div className="flex items-center gap-2 mb-3">
-                    <div className="w-2 h-2 rounded-full flex-shrink-0 bg-involve-cyan" />
-                    <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim">Supply Chain Resilience</div>
-                </div>
-                <div className="text-[14px] font-semibold text-involve-cyan mb-2">Global supply chains embed Earth Intelligence into logistics and insurance</div>
-                <div className="text-[12px] font-light text-involve-muted leading-relaxed max-w-2xl">Firms use satellite analytics to monitor shipping routes, ports, factories, and commodity landscapes for risk — crop failures, fires, flooding, sanctions enforcement. This embeds Earth Intelligence directly into financial risk models and supply-chain operations platforms. The industry direction is clear: <strong className="font-medium text-involve-text">geospatial, AI, IoT, and cloud are converging into new "digital infrastructures"</strong> that businesses pay for on subscription, just as they pay for cloud compute and networking today.</div>
-            </div>
-        </div>
-    );
-}
-
-// ── Competitor Table ─────────────────────────────────────────────────────────
-
-function CompTable() {
-    const rows = [
-        { group: 'Satellite Operators', name: 'Planet Labs, Maxar, ICEYE, BlackSky', detail: 'Own: satellite constellations, basic analytics dashboards, government distribution relationships. Lack: persistence over a single area (orbit-constrained revisit), re-taskability within hours, low-cost deployment, and an integrated AI intelligence layer.', gap: <Badge color="blue">Persistence + AI layer</Badge> },
-        { group: 'EO Analytics Firms — Software-first, Data-light', name: 'Orbital Insight, Descartes Labs, Capella Insight, Upstream Tech', detail: 'Own: AI models, domain analytics, customer relationships in specific verticals. Lack: hardware — they purchase third-party imagery and are therefore dependent on external data providers for quality, cadence, and availability.', gap: <Badge color="green">Hardware independence</Badge> },
-        { group: 'Defence Integrators and Primes', name: 'Lockheed Martin, Thales, BAE Systems', detail: 'Own: defence distribution, program management depth, classified infrastructure access. Lack: entrepreneurial speed, commercial infrastructure pricing, proprietary AI layer. Programmes are classified, slow to procure, and not available commercially.', gap: <Badge color="amber">Agility + dual-use commercial</Badge> },
-        { group: 'AI-first SaaS / Intelligence Platforms', name: 'Palantir, Anduril, niche spatial SaaS', detail: 'Own: data platform infrastructure, government integration, AI orchestration frameworks. Lack: control over data acquisition — they ingest whatever is available. Their data quality depends on third-party supply.', gap: <Badge color="purple">Proprietary data pipeline</Badge> },
-    ];
-
-    return (
-        <div className="flex flex-col gap-px bg-involve-border border border-involve-border my-8">
-            {/* Header */}
-            <div className="grid bg-involve-bg border-b border-involve-border" style={{ gridTemplateColumns: '200px 1fr 160px' }}>
-                {['Competitor type', 'What they own · What they lack', "Involve's gap vs them"].map((h, i) => (
-                    <div key={i} className="px-4 py-3 font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim border-r border-involve-border last:border-r-0">{h}</div>
-                ))}
-            </div>
-            {rows.map((r, ri) => (
-                <>
-                    {/* Group subheader */}
-                    <div key={`g${ri}`} className="px-4 py-2 font-mono text-[10px] tracking-[0.1em] uppercase text-involve-dim bg-involve-bg border-b border-involve-border">{r.group}</div>
-                    <div key={`r${ri}`} className="grid bg-involve-panel hover:bg-involve-bg transition-colors" style={{ gridTemplateColumns: '200px 1fr 160px' }}>
-                        <div className="px-4 py-4 text-[13px] font-medium text-involve-text border-r border-involve-border leading-snug">{r.name}</div>
-                        <div className="px-4 py-4 text-[12px] font-light text-involve-muted border-r border-involve-border leading-relaxed">{r.detail}</div>
-                        <div className="px-4 py-4">{r.gap}</div>
-                    </div>
-                </>
-            ))}
-            {/* Involve row */}
-            <div className="px-4 py-2 font-mono text-[10px] tracking-[0.1em] uppercase text-involve-dim bg-involve-blue/4 border-y border-involve-blue/20">Involve Space — Full-Stack Earth Intelligence</div>
-            <div className="grid bg-involve-blue/4" style={{ gridTemplateColumns: '200px 1fr 160px' }}>
-                <div className="px-4 py-4 text-[13px] font-medium text-involve-blue border-r border-involve-border">Involve Space</div>
-                <div className="px-4 py-4 text-[12px] font-light text-involve-muted border-r border-involve-border leading-relaxed"><strong className="font-medium text-involve-text">Owns all three layers:</strong> stratospheric sensing hardware (Stratostats® + Stratorelay®), autonomous navigation and data infrastructure (Neurostar®), and AI-native GeoAI platform (CLEAR). Persistent stratospheric coverage cannot be replicated by satellite operators. Proprietary data pipeline cannot be matched by analytics-only firms. <strong className="font-medium text-involve-text">No single competitor covers this spectrum in the stratospheric domain.</strong></div>
-                <div className="px-4 py-4"><Badge color="green">Integrated infrastructure</Badge></div>
-            </div>
-        </div>
-    );
-}
-
-// ── Implications Band ────────────────────────────────────────────────────────
-
-function ImplBand() {
-    const rows = [
-        { title: 'Owning sensing + AI yields leverage', body: 'Control over the full stack — from data capture to intelligence delivery — creates <strong>high switching costs</strong>: customers relying on Involve\'s data loop cannot easily substitute only a part without losing either persistence or the integrated insight. It also multiplies value: each additional sensor or data source strengthens models, which increases demand for more data. In technology M&A, companies securing "strategic control of data" and convergence of hardware and software have been most competitive.', borderTop: true },
-        { title: 'Infrastructure logic enhances defensibility', body: 'Infrastructure platforms benefit from scale and network effects. Every new user that depends on Involve\'s intelligence layer deepens its moat. As more civil and defence actors integrate Involve\'s data into operations, Involve can leverage that scale to improve models, negotiate data partnerships, and standardise APIs. Infrastructure players also enjoy <strong>more stable, recurring subscription revenue</strong> than one-off data or analytics sales.' },
-        { title: 'Category creation — "Earth Intelligence Infrastructure" — is achievable', body: '"Geospatial intelligence" was historically military jargon. "Earth observation" is too broad. But "Earth Intelligence Infrastructure" is emerging as a distinct category. By articulating itself as an infrastructure provider, <strong>Involve can claim category leadership</strong> rather than a position in an existing contested market.' },
-        { title: 'Dual-use and sovereignty — a structural procurement advantage', body: "Involve's technology serves both commercial and national-security needs, appealing to a wider set of stakeholders. In contexts where <strong>strategic data sovereignty is a procurement criterion</strong> — increasingly the case across Europe and NATO — having a domestic provider and non-satellite sensing modality is a decisive advantage." },
-    ];
-    return (
-        <div className="flex flex-col gap-px bg-involve-border border border-involve-border my-8">
-            {rows.map((r, i) => (
-                <div key={i} className={`grid bg-involve-panel hover:bg-involve-bg transition-colors ${i === 0 ? 'border-t-2 border-involve-blue' : ''}`} style={{ gridTemplateColumns: '260px 1fr' }}>
-                    <div className="px-5 py-5 text-[14px] font-semibold text-involve-text leading-snug border-r border-involve-border flex items-start">{r.title}</div>
-                    <div className="px-5 py-5 text-[12.5px] font-light text-involve-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: r.body }} />
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Split 2 ──────────────────────────────────────────────────────────────────
-
-function SatVsHAPS() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border my-8">
-            <div className="bg-involve-panel p-6">
-                <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">Orbiting Satellites</div>
-                <div className="text-[14px] font-semibold text-involve-text mb-3">Global reach, fixed revisit schedule</div>
-                <div className="text-[12px] font-light text-involve-muted leading-relaxed mb-4">Traditional EO uses orbiting satellites for global snapshots — high resolution at high launch cost, but episodic: coverage is tied to the orbital period. A satellite photographs your area of interest on a schedule. It cannot loiter. It cannot be rapidly retasked to a new region without waiting for the next orbital window. Re-launch after a failure is a $100M+ event.</div>
-                <ul className="flex flex-col gap-1.5">
-                    {['Global coverage but sparse temporal density', 'Fixed revisit intervals — orbital mechanics determine coverage', 'High launch and replacement cost', 'Cannot loiter over a specific target'].map((item, i) => (
-                        <li key={i} className="text-[12px] font-light text-involve-muted">• {item}</li>
-                    ))}
-                </ul>
-            </div>
-            <div className="bg-involve-blue/4 p-6 border-t-2 border-involve-blue">
-                <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">Stratospheric Platforms (HAPS)</div>
-                <div className="text-[14px] font-semibold text-involve-blue mb-3">Regional persistence, rapid re-deployment, reusable</div>
-                <div className="text-[12px] font-light text-involve-muted leading-relaxed mb-4">Stratospheric platforms loiter over an area for days or weeks at a fraction of satellite cost. Airbus Zephyr flew <strong className="font-medium text-involve-text">64 days continuously</strong>. Involve's Stratostats® v2 targets 90+ days. Unlike a satellite, a platform can be recovered, refurbished, and re-deployed. Real-time intelligence requires continuous monitoring — HAPS provides the "standing watch" that orbital mechanics prevents.</div>
-                <ul className="flex flex-col gap-1.5">
-                    {['Persistent coverage over target area — not scheduled revisit', 'Rapidly retasked — re-deploy within 48 hours', 'Reusable hardware — recovery and refurbishment cycle', 'Lower regulatory burden than orbital launches'].map((item, i) => (
-                        <li key={i} className="text-[12px] font-medium text-involve-blue">• {item}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
-}
-
-function FullStackRows() {
-    const rows = [
-        { layer: 'Hardware Layer', sublabel: 'Data ownership', color: 'text-involve-amber', borderColor: 'border-t-involve-amber', content: "Controlling the sensing hardware means owning the raw data pipeline. Many competitors outsource satellites or rely on commercial data providers. Involve's <strong>independence on hardware yields proprietary data</strong> — an advantage for unique coverage density, operational stealth (dual-use), and guaranteed availability without third-party dependency. Stratostats® and Stratorelay® are the hardware layer; no external provider can replicate Involve's persistent stratospheric data stream." },
-        { layer: 'Data & Orchestration', sublabel: 'Fusion layer', color: 'text-involve-blue', borderColor: '', content: 'Beyond hardware, one must manage, tag, index, and fuse data across sources. Involve\'s data infrastructure ingests multiple sensor feeds (EO, SAR, multispectral, IoT) into a unified system. The <strong>orchestration capability</strong> — deciding which sensor to task, when to acquire, and how to align outputs — is itself a competitive edge. This is the layer that enables multi-tenancy: multiple customers consuming the same persistent data stream, multiplying margin without multiplying cost.' },
-        { layer: 'Intelligence (AI) Layer', sublabel: 'CLEAR platform', color: 'text-involve-green', borderColor: '', content: "Converting data to intelligence requires AI models and domain-specific workflows. A pure hardware firm delivers imagery; a pure software firm needs to license data from someone else. Involve's integrated model delivers both — enabling <strong>tighter innovation loops</strong>. CLEAR's agentic architecture (prompt router, vision agents, standardizer) processes data from all Involve platforms into structured intelligence output: annotated maps, sector reports, quantitative alerts, and API streams." },
-    ];
-    return (
-        <div className="flex flex-col gap-px bg-involve-border border border-involve-border my-4">
-            {rows.map((r, i) => (
-                <div key={i} className={`grid bg-involve-panel hover:bg-involve-bg transition-colors ${r.borderColor ? `border-t-2 ${r.borderColor}` : ''}`} style={{ gridTemplateColumns: '180px 1fr' }}>
-                    <div className="px-5 py-5 font-mono text-[11px] tracking-[0.1em] uppercase flex flex-col justify-center border-r border-involve-border leading-snug">
-                        <span className={`text-[13px] font-semibold font-sans tracking-normal mb-0.5 ${r.color}`}>{r.layer}</span>
-                        <span className="text-involve-dim text-[10px]">{r.sublabel}</span>
-                    </div>
-                    <div className="px-5 py-5 text-[12.5px] font-light text-involve-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: r.content }} />
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Main Page ─────────────────────────────────────────────────────────────────
+import { DocHeader } from '../components/ui/core';
 
 export default function GeoAIPositioningPage() {
     return (
         <div className="animate-in fade-in duration-500 w-full max-w-5xl mx-auto pb-20">
             <DocHeader
-                breadcrumb={<>01. Strategy &amp; Market <span className="opacity-30 mx-1">›</span> <span className="text-involve-blue">GeoAI &amp; Earth Intelligence Positioning</span></>}
-                title="GeoAI & Earth Intelligence"
-                titleStrong="Strategic Category Positioning"
-                subtitle="How the Earth Intelligence category is forming, why it is becoming foundational infrastructure, and where Involve Space sits within it. Covers the EO-to-Intelligence evolution, GeoAI definition, hardware–AI convergence thesis, multidomain fusion, competitive landscape framing, and the strategic implications of vertical integration."
-                meta={[
-                    { label: 'Document', value: 'IS-DR-MKT-02' },
-                    { label: 'Type', value: 'Strategic positioning · Category analysis' },
-                    { label: 'Audience', value: 'Investor · Partner · Strategic' },
-                    { label: 'Revision', value: 'A — Feb 2026' },
-                ]}
+                breadcrumb={<>01. Strategy & Market <span className="opacity-30 mx-1">›</span> <span className="text-involve-blue">From Earth Observation to Earth Intelligence</span></>}
+                title="From Earth Observation to Earth Intelligence"
+                subtitle="Source document converted to data room format."
             />
+            
+            <div className="mt-8 text-involve-text">
+                
 
-            {/* §1 Executive Overview */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Executive Overview" title="Earth Intelligence: from data product to foundational infrastructure" desc="AI is not a tool layered on top of Earth Observation — it is the catalyst transforming geospatial data into decision-ready intelligence" />
-                <BodyText>GeoAI and "Earth Intelligence" mark a structural shift beyond traditional Earth Observation. Rather than simply collecting imagery (EO 1.0) or running standalone analytics (EO 2.0), the industry is converging on an integrated intelligence layer: <strong className="text-involve-text font-medium">continuous, multi-source sensing fused with advanced AI to deliver real-time insights</strong>. In this paradigm, AI is the catalyst that transforms vast geospatial data into decisions.</BodyText>
-                <BodyText>Involve Space sits at the nexus of this transformation: persistent stratospheric sensor fleets coupled with a GeoAI orchestration layer (CLEAR). By <strong className="text-involve-text font-medium">controlling both sensing hardware and the AI-driven intelligence layer end-to-end</strong>, Involve aligns with the emerging model of Earth Intelligence as foundational infrastructure — akin to cloud computing or energy networks. Most players in this space focus on only one piece of the stack. Involve's vertical integration is the structural differentiator.</BodyText>
 
-                {/* Positioning summary */}
-                <div className="border border-involve-blue/20 bg-involve-blue/4 p-8 my-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[
-                        { label: 'Category position', val: 'Earth Intelligence Infrastructure', valColor: 'text-involve-blue', desc: "Not a satellite operator. Not an analytics vendor. The first vertically-integrated stratospheric sensing + GeoAI platform." },
-                        { label: 'Stack ownership', val: 'Sensing → Data → AI → Intelligence', valColor: 'text-involve-text', desc: 'Every layer controlled in-house: platforms, Neurostar® navigation, CLEAR GeoAI, and data infrastructure.' },
-                        { label: 'Market timing', val: 'Category formation window open', valColor: 'text-involve-green', desc: 'Resembles early cloud: sensors are cheaper, AI is powerful enough, end-users have demand and budget simultaneously.' },
-                    ].map((item, i) => (
-                        <div key={i}>
-                            <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-involve-dim mb-1">{item.label}</div>
-                            <div className={`text-[15px] font-semibold mb-1 ${item.valColor}`}>{item.val}</div>
-                            <div className="text-[12px] font-light text-involve-muted leading-relaxed">{item.desc}</div>
-                        </div>
-                    ))}
-                </div>
-            </ContentBlock>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We have observed a fundamental transformation in the geospatial industry. For decades, <strong>Earth Observation (EO)</strong> was synonymous with satellites taking pictures of the planet and analysts poring over imagery. Today, the emphasis is shifting from raw image collection toward automated intelligence. Commercial EO data are flooding in – over 1,170 EO satellites are in orbit (more than half launched since 2019) generating <strong>hundreds of terabytes per day</strong>[1]. This tsunami of data “vastly outweighs the ability to analyze it” with traditional methods[1]. In short, <strong>we have more eyes on Earth than ever, but analysis capacity is strained</strong>.</p>
 
-            <SectionDivider />
 
-            {/* §2 Industry Evolution */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Industry Evolution" title="From EO 1.0 to Intelligence Infrastructure" desc="Three stages of Earth Observation evolution — and three industry pressures driving the transition to EO 3.0" />
-                <EvoTrack />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Consequently, stakeholders now demand <i>answers</i> rather than pictures. In other words, we see a shift from “imagery collection” to <strong>operational intelligence</strong>. Where once users looked for raw imagery or simple maps, they now expect decision-ready information – trends, alerts, risk scores – delivered as insights. This evolution is aptly termed <strong>Earth Intelligence</strong>: an end-to-end system that collects geospatial data across domains and converts it into actionable understanding. As Gartner notes, “Earth Intelligence is centred around the collection and analysis of geospatial data and deriving insights using earth observation technologies”[2].</p>
 
-                <CardGrid3 cards={[
-                    { num: 'PRESSURE 01', title: 'Sensor proliferation and data overload', body: 'Satellite constellations and HAPS generate petabytes of imagery. Without AI, "actionable insights" become almost impossible — there is simply too much data for manual analysis to handle.', stat: '2 exabytes of satellite data projected by 2032 (WEF) — the data bottleneck is the constraint, not data availability', borderColor: 'border-t-involve-border/40' },
-                    { num: 'PRESSURE 02', title: 'Real-time decision requirements', body: <>Climate disasters, infrastructure failures, and military events unfold in hours. Users now expect geospatial intelligence as an <strong>"always-on" service</strong> — analogous to subscribing to an insurance policy that provides immediate risk awareness rather than periodic assessments.</>, stat: 'Operational standard: continuous geo-streaming embedded directly into GIS and decision tools', borderColor: 'border-t-involve-amber' },
-                    { num: 'PRESSURE 03', title: 'Geopolitical and environmental instability', body: <>Climate volatility and great-power competition raise the stakes. Military and policy planners now see space-based ISR as <strong>essential infrastructure</strong>. Europe explicitly calls for EO to be treated as strategic infrastructure for climate resilience, disaster response, and security.</>, stat: '$2.718tn global military expenditure in 2024 — steepest increase since at least 1988 (SIPRI)', borderColor: 'border-t-[#ff6060]/40' },
-                ]} />
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">This shift has been predicted by industry analysts. For example, McKinsey highlights a coming wave of “Real-Time Earth Intelligence,” driven by an explosion of new satellites, sensors, and AI processing[3]. According to McKinsey, up to 70,000 new satellites will enter service, enabling near-real-time monitoring of climate events, supply chains, and disasters[3]. In essence, the metric of value is moving from “how many images can we collect” to “how quickly and accurately can we turn data into insight.”</p>
 
-            {/* §3 Defining GeoAI */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Technology Definition" title="What GeoAI is — and what it is not" desc="GeoAI goes beyond traditional GIS and classical EO analytics — it applies deep learning to multi-modal geospatial inputs with spatially-explicit models" />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border mb-8">
-                    <div className="bg-involve-panel p-6">
-                        <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">Traditional GIS</div>
-                        <div className="text-[14px] font-semibold text-involve-text mb-3">Deterministic overlays on structured geodata</div>
-                        <div className="text-[12px] font-light text-involve-muted leading-relaxed">GIS (Geographic Information Systems) are platforms for storing, managing, and visualizing structured geodata using deterministic overlays and queries. Classical EO analytics apply computer vision or statistical methods to imagery. <strong className="font-medium text-involve-text">Outputs are static and require human interpretation</strong> to translate into decisions.</div>
-                    </div>
-                    <div className="bg-involve-bg p-6 border-t-2 border-involve-blue">
-                        <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">GeoAI</div>
-                        <div className="text-[14px] font-semibold text-involve-text mb-3">Machine learning on multi-modal spatial inputs</div>
-                        <div className="text-[12px] font-light text-involve-muted leading-relaxed">GeoAI uses machine learning and deep learning to extract, classify, and detect patterns from multi-modal geospatial inputs: images, LiDAR, IoT sensors, and even text. It encompasses <strong className="font-medium text-involve-text">"spatially explicit" AI models</strong> tailored to geography — models that factor in location, shape, and proximity for tasks like object detection, pattern recognition, and spatiotemporal forecasting.</div>
-                    </div>
-                </div>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Traditional EO systems are simply not built for this new paradigm. Satellites have fixed orbits (yielding revisit times of hours or days) and limited tasking flexibility. Sensors may capture large areas periodically but cannot continuously monitor an evolving situation. Weather also interferes: optical satellites cannot see through clouds, and high revisit SAR constellations are still growing. As a result, real-time situational awareness has remained elusive. We believe the answer lies in integrating <strong>persistent, multi-domain sensing with advanced analytics</strong>. By combining satellites with agile platforms in the stratosphere, in the air, and on the ground – and by layering them atop an AI-native analytics engine – we are <strong>redefining the architecture of Earth observation</strong>.</p>
 
-                <BodyText>The rise of <strong className="text-involve-text font-medium">geospatial foundation models</strong> is amplifying GeoAI's potential. Just as large language models embed text semantics, emerging geospatial foundation models embed visual and spatial context, compressing vast imagery archives into compact representations. IBM's Prithvi-EO series enables processing of decades of satellite data via "earth embeddings" — mapping forests, floods, and infrastructure with high accuracy.</BodyText>
-                <BodyText>The most advanced GeoAI systems balance predictive performance with interpretability. In parallel, <strong className="text-involve-text font-medium">agentic systems</strong> are emerging — AI agents that autonomously task sensors, dispatch platforms to detected events, and orchestrate multi-modal pipelines. Involve's CLEAR platform is architected exactly for this role: a cloud-based GeoAI orchestration layer that ingests multi-source feeds, applies foundation-model analytics, and coordinates platform re-tasking.</BodyText>
-                <CapabilityStack />
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In this emerging model, raw EO data (images, signals, measurements) are only the inputs. The output is <i>intelligence</i>: maps annotated with events, predictive models of asset status, and even plain-language summaries of what is happening and why. Intelligence becomes the product. As Space Capital’s analysis of Muon Space puts it, we are moving toward “a new generation of intelligent, adaptable orbital systems built for resilience” – systems where “data from the ground up flows into design and back again” for continuous improvement[4]. In short, the industry is evolving from collecting pictures of Earth toward <strong>enabling continuous, data-driven understanding of Earth</strong>.</p>
 
-            {/* §4 Earth Intelligence as Infrastructure */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Structural Framework" title="Earth Intelligence as foundational infrastructure" desc="Five macro drivers are making geospatial AI a ubiquitous platform — on par with cloud and energy networks" />
-                <BodyText>"Earth Intelligence" refers to treating geospatial data and AI as core infrastructure — not a discretionary analytics service, but a <strong className="text-involve-text font-medium">foundational decision-support layer</strong> embedded in operations. The EU Space Conference declared that space assets (satellite navigation, EO, communications) are strategic infrastructure vital for climate monitoring, disaster response, security, and economic resilience.</BodyText>
-                <DomainGrid />
-            </ContentBlock>
 
-            <SectionDivider />
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">GeoAI as the Computational Layer of Earth Intelligence</h2>
 
-            {/* §5 Hardware + AI Convergence */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Strategic Thesis" title="Convergence of hardware and AI — why owning the full stack matters" desc="McKinsey observes that the most competitive technology acquirers target 'strategic control of data, AI models, and computing efficiency' — this maps directly to Involve's architecture" />
-                <BodyText>In technology industries, leaders strive for end-to-end control of the stack. McKinsey's analysis of technology M&amp;A finds that recent targets are structured around "strategic control of data, access to AI models, and computing efficiency" — and predicts convergence of hardware, cloud, and model layers to secure performance and IP. In the GeoAI context, controlling the sensor layer, the data processing layer, and the intelligence layer creates a compounding moat: each additional data source strengthens models, which in turn increases demand for more data.</BodyText>
-                <SatVsHAPS />
-                <div className="mt-6 mb-2 font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim">Involve Space — Full Stack Control</div>
-                <FullStackRows />
-                <Callout variant="green"><strong className="text-involve-text font-medium not-italic">The moat mechanism:</strong> Vertical integration across sensing, data, and AI creates defensibility in two directions. First, new customers face switching costs because Involve controls both input (unique persistent data with no open-access equivalent) and output (tailored, domain-specific intelligence). Second, the data flywheel compounds: each mission generates labelled data that improves models, which delivers better intelligence, which attracts more customers, which funds more missions.</Callout>
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Central to this evolution is <strong>GeoAI</strong> – the application of AI techniques to geospatial data. In practical terms, GeoAI is the <strong>computational engine</strong> that transforms raw Earth data into knowledge. We define GeoAI as the fusion of machine learning and spatial data science: it applies algorithms (from computer vision to natural language processing) to imagery, sensor readings, GIS layers, signals, and even text, in order to detect changes, classify objects, reason about context, and predict outcomes. Esri aptly describes GeoAI as AI “fused with geospatial data, science, and technology to accelerate real-world understanding”[5]. In practice, GeoAI automates tasks like object detection in satellite images, multi-sensor data fusion, anomaly spotting, and change detection over time – all at machine speed.</p>
 
-            {/* §6 Multidomain Intelligence */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Future Architecture" title="Multidomain intelligence evolution" desc="Earth Intelligence will not be siloed by altitude or sector — it blends space, stratosphere, aerial, and ground sensing across civil and defence domains" />
-                <BodyText>The future of Earth Intelligence is inherently multi-domain. It blends space, stratospheric, aerial, and ground sensing — and it serves both civil and defence simultaneously. Currently, EO and ISR systems have been somewhat siloed: civil satellites for weather and mapping, military satellites for reconnaissance, drones for local tasks. GeoAI demands fusion across these silos.</BodyText>
-                <CardGrid2 cards={[
-                    { num: 'DOMAIN 01 — STRATOSPHERE', title: 'The persistence layer that satellites cannot provide', body: <>High-altitude drones and balloons serve both commercial (telecom, environmental) and military (ISR, communications relay) missions. This domain provides <strong>persistent monitoring without the diplomatic complications of satellite overflight</strong> and without the range limitations of conventional aircraft. Involve operates in this domain by design — and has the only commercial HAPS platform with demonstrated station-keeping TRL 9.</>, stat: 'Involve position: Stratostats® TRL 9 · 200+ flights · only commercial HAPS with persistent station-keeping at this maturity level', borderColor: 'border-t-involve-blue' },
-                    { num: 'DOMAIN 02 — SATELLITE', title: 'Complementary global coverage layer', body: <>New constellations — optical, radar (SAR), hyperspectral — will complement stratospheric data, not replace it. A forest cover analysis might use daily UAV scans plus weekly satellite imagery plus continuous HAPS data. <strong>GeoAI's role is fusion</strong>: ingesting all three into a unified model that resolves the temporal and spatial gaps each source alone cannot fill.</>, stat: 'CLEAR role: Ingests Copernicus, commercial satellite, IoT feeds alongside Involve platform data — single intelligence output regardless of source', borderColor: 'border-t-involve-amber' },
-                    { num: 'DOMAIN 03 — GROUND / IOT', title: 'In-situ context that remote sensing alone cannot provide', body: <>Sensors on the ground — weather stations, seismographs, traffic cameras, industrial IoT — add the physical context that aerial imagery cannot directly measure. Future GeoAI platforms will correlate in-situ signals with aerial data. <strong>CLEAR's architecture is designed to be domain-agnostic</strong>, accepting any structured sensor feed alongside platform imagery.</>, stat: 'CLEAR architecture: Multi-source fusion — agentic decoupling allows any sensor type to be added as a new vision agent module', borderColor: 'border-t-involve-green' },
-                    { num: 'DOMAIN 04 — CIVIL–DEFENCE CONVERGENCE', title: 'Dual-use by design — same algorithms, different frontends', body: <>The same geospatial AI platforms are used for climate resilience and national security. Mapping wildfire risk and mapping battlefield terrain both use similar algorithms on multispectral imagery. Involve's platform is dual-use by design. <strong>The same CLEAR layer can feed different frontends</strong> for different customer types.</>, stat: 'Involve dual-use: MoD contract for defence ISR · commercial EO mapping · IOD rideshare · agricultural intelligence — same platform, different customers', borderColor: 'border-t-[#a78bfa]/60' },
-                ]} />
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The impact is profound. As Deloitte observes, AI can <strong>answer complex questions with EO data</strong>, enabling us to turn “vast reams of raw measurements into actionable insights”[6]. In other words, we no longer need humans to wade through gigabytes of imagery; GeoAI models can generate intelligence directly. Crucially, the latest GeoAI tools are becoming user-friendly. Intuitive interfaces (often conversational or GIS-based) allow non-expert users to query geospatial databases and receive plain-language answers[6]. This democratisation of EO means that decision-makers – whether in government, industry or defense – can extract value without needing PhD-level analysts.</p>
 
-            {/* §7 Competitive Landscape */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Competitive Landscape" title="Structural positioning across the competitor landscape" desc="Involve occupies a category position that no existing player covers — not because it is better at one layer, but because it controls all three" />
-                <BodyText>The competitive landscape for Earth Intelligence is organised around players who own one or two layers of the sensing-to-intelligence stack. <strong className="text-involve-text font-medium">No pure competitor covers the entire spectrum with the same sensor modality</strong> (stratosphere) and an integrated AI platform. Understanding where each competitor type sits explains why Involve's vertical integration is structurally differentiated, not just technically distinct.</BodyText>
-                <CompTable />
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">GeoAI is also accelerating the pace of innovation. By automating spatial analytics, organizations are already “revolutionizing how they turn data into information”[7]. GeoAI reveals intricate patterns in data that grows exponentially – for example spotting early signs of deforestation, tracking the spread of wildfires, or forecasting traffic bottlenecks from multi-modal inputs. Because geospatial data inherently has context (coordinates, sensor type, timestamp), GeoAI models can embed this context into predictions. In effect, GeoAI is becoming the <strong>“brain”</strong> of the Earth Intelligence stack, capable of reasoning across imagery, signals, and IoT measurements to generate maps, alerts, and forecasts.</p>
 
-            {/* §8 Why This Moment Matters */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Market Timing" title="Why this moment matters — five timing indicators" desc="Sensors are cheaper, AI is powerful enough, and end-users have both demand and budget — a rare alignment that mirrors the early days of cloud infrastructure" />
-                <StatsBar stats={[
-                    { val: '$12.1', valSuffix: 'bn', label: 'Satellite data services 2024', sub: '→ $29.6bn by 2030 · 16.3% CAGR' },
-                    { val: '25', valSuffix: '%', label: 'HAPS market CAGR (2026–2031)', sub: '→ $4.3bn by 2031 (Mordor Intelligence)' },
-                    { val: '$470', valSuffix: 'M', label: 'GeoAI solutions by 2030', sub: '25% CAGR · from sub-$100M base today' },
-                    { val: '$2.7', valSuffix: 'tn', label: 'Global military spend 2024', sub: '+9.4% YoY · steepest increase since 1988' },
-                ]} />
-                <CardGrid3 cards={[
-                    { num: 'INDICATOR 01', title: 'Surging geospatial markets across all segments', body: 'Satellite data services are growing at 16.3% CAGR. The defence/security segment is already ~25% of this market. High-growth niches — climate monitoring, 5G relay, HAPS telecommunications — are compounding growth. GeoAI solutions specifically are forecast at 25% CAGR, reflecting AI\'s penetration of the geospatial workflow.', stat: 'Defence share: ~25% of satellite data services market today — and defence spend is accelerating', borderColor: 'border-t-involve-green' },
-                    { num: 'INDICATOR 02', title: 'Pent-up demand from commercial digitisation', body: 'Smart-city initiatives, digital twins, precision agriculture, and industrial asset monitoring all require continuous remote sensing. As companies digitise physical assets — pipelines, mines, farms, transmission corridors — they demand always-on monitoring. This is latent demand that existing technology could not previously serve economically.', stat: 'Digital twins: $21bn (2025) → $150bn (2030) at 47.9% CAGR — all require persistent EO updates', borderColor: 'border-t-involve-blue' },
-                    { num: 'INDICATOR 03', title: 'Defence procurement at record pace and openness to commercial', body: <>Global military budgets at $2.718tn — the highest ever recorded. Procurement is opening to commercial: NRO's "largest-ever" decade-long EOCL commercial imagery contracts prove governments will buy commercial at scale when it improves resilience.</>, stat: 'MoD entry: Involve\'s €2M Italian MoD contract is the template — replicable across NATO procurement vehicles', borderColor: 'border-t-involve-amber' },
-                    { num: 'INDICATOR 04', title: 'Climate and nature mandates creating regulatory demand', body: <>International commitments (Paris Agreement, Global Stocktake) and emerging regulations require enhanced monitoring of emissions, land-use, and hazards. COP29 and the UN explicitly recognised EO and AI systems as critical for resilience. <strong>Corporates must report what they previously only needed to estimate.</strong></>, stat: 'Emerging compliance: CSRD, TNFD, SFDR all create mandatory monitoring obligations for large corporates', borderColor: 'border-t-involve-green/50' },
-                    { num: 'INDICATOR 05', title: 'AI adoption in geospatial workflows is accelerating', body: 'Platform providers (Esri, Google Earth Engine) are embedding ML features and integrating with enterprise data stacks. The GEO/OECD AI for Earth initiative shows that organisations now expect GeoAI capabilities as first-class features — not specialised add-ons. Spatial analytics are becoming standard capabilities in data platforms, not optional extensions.', stat: 'Platform signal: Esri + ICEYE integration embeds continuous SAR directly into ArcGIS operations workflows', borderColor: 'border-t-[#a78bfa]/60' },
-                    { num: 'TIMING SYNTHESIS', title: 'The cloud parallel — a rare confluence window', body: <>Taken together, these trends imply a rare alignment: <strong>sensors are cheaper and more available, AI is powerful enough to use them, and end-users have both demand and budget simultaneously</strong>. In broad strokes, this resembles the early days of cloud computing — large unmet demand meeting new enabling technology. This confluence creates a window where a new category — Earth Intelligence — can be shaped by an early leader.</>, stat: 'Window thesis: Category leaders in infrastructure technology tend to be defined in the first 3–5 years of formation — before the category becomes contested by incumbents', borderColor: 'border-t-involve-cyan', numColor: 'text-involve-cyan' },
-                ]} />
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We see GeoAI as the rising computational layer of modern Earth intelligence systems. It handles the heavy lifting of data fusion and interpretation, allowing the rest of the stack (sensors and users) to simply plug in. Leading platforms already exemplify this: for instance, some vendors offer GeoAI that can interpret a satellite image, compare it with historical data, and generate a natural-language report on what changed and why. In our CLEAR platform, we leverage these advances to integrate satellite, stratosphere, sensor, and socio-economic data into unified analyses. The trend is clear: as data volumes explode, <strong>GeoAI becomes indispensable</strong>, moving from pilot projects into enterprise-grade operations.</p>
 
-            {/* §9 Strategic Positioning Implications */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Strategic Conclusions" title="Four strategic positioning implications" desc="How the above analysis translates into defensible competitive advantages for Involve Space" />
-                <ImplBand />
-                <Callout variant="green"><strong className="text-involve-text font-medium not-italic">Investor-grade conclusion:</strong> Involve's structural positioning — controlling sensors, data, and AI — aligns with the deep market forces at play. This is not merely a business plan; it is a solution emerging naturally from the industry's evolution. The company is poised to benefit from ongoing shifts towards integrated geospatial infrastructure, and its positioning is both <strong className="text-involve-text font-medium not-italic">timely</strong> (the category formation window is open now) and <strong className="text-involve-text font-medium not-italic">defensible</strong> (vertical integration creates compounding switching costs at every layer of the stack).</Callout>
-                <RefNote>Sources: GEO / AI for Good Summit · WEF (2024) · SIPRI (2025) · EU Space Conference / Copernicus · McKinsey Technology M&amp;A · IRIS-France (2026) · TRENDS Research &amp; Advisory · Grand View Research · Mordor Intelligence · IndustryARC · Satelligence · Esri GeoAI Documentation · GeoBuiz 2026. Full source list with footnote references [1–37] available in the source document.</RefNote>
-            </ContentBlock>
 
-            <NextSectionCard
-                title="Competitive Landscape Analysis"
-                description="Deep-dive competitive analysis across satellite operators, analytics vendors, defence integrators, and AI platforms."
-                path="/dataroom/01_Strategy_and_Market/03_Competitive_Landscape_Analysis"
-            />
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Multi-Domain Sensing Architectures</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We believe the future of Earth Intelligence is inherently <strong>multi-domain</strong>. No single type of sensor can meet all persistent monitoring needs. Satellites alone – even massive constellations – face fundamental limits: fixed orbits mean limited revisit windows, tasking must often be scheduled days in advance, and optical coverage can be blocked by clouds. To achieve truly continuous and responsive coverage, we need a layered sensing network that spans altitudes and domains.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In this architecture, <strong>satellites</strong> provide broad, global coverage. They are excellent for systematic mapping and collecting baseline data across oceans and continents. However, they typically revisit locations infrequently (minutes to hours for large constellations, often days for legacy assets)[8]. Their role is to deliver synoptic context and wide-area awareness, but they may miss rapid changes on the ground between passes.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Bridging that gap are <strong>High-Altitude Platforms (HAPS)</strong>. These are long-endurance systems (balloons, airships, solar-powered aircraft) flying in the stratosphere (roughly 16–24 km altitude). From that vantage, HAPS loiter over specific areas for extended periods (weeks to months)[9]. They carry high-resolution cameras, radars or communication payloads. In effect, HAPS “bridge the gap” between satellites and drones[10]. Because they fly much closer to Earth than LEO satellites, they can capture much finer detail (often centimeter-scale) while still covering tens to hundreds of kilometers at a time. Crucially, HAPS can be rapidly redeployed: in our experience, a stratospheric asset can reposition to a new task area within a couple of days, providing <strong>persistent, on-demand coverage</strong>[11]. This means HAPS can fill in where satellite revisit is too slow – for example, persistently watching a tense border zone, an oil pipeline, or an unfolding environmental event.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Closer to the surface, <strong>UAVs and aircraft</strong> offer ultra-high-resolution but very local views. Drones can fly 1–2 km above ground, capturing sub-meter imagery of specific targets. They are invaluable for tactical or site-level inspections, but their range and endurance are limited. For truly large-scale or long-duration needs, fixed sensors on the ground (cameras, IoT monitors, maritime AIS receivers, etc.) provide continuous streams, but only at a point. Each layer – satellites, stratospheric, aerial, and ground – has strengths and limitations. Modern Earth Intelligence systems weave them together as complementary threads.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">To illustrate, consider how these layers work together. Satellites might detect an emerging anomaly (e.g. unusual thermal signature over a forest). We then deploy a HAPS or task an existing stratospheric platform to that area for continuous scanning. If the situation escalates, drones or ground units could be dispatched for close inspection. Data flows between these domains in a mesh: for instance, a HAPS might relay real-time satellite imagery to the ground, or a drone might feed data back to the cloud for immediate analysis. In this way, <strong>stratospheric platforms act as persistent sensors and communication relays</strong>, ensuring that critical areas are never out of view. As one industry analysis notes, HAPS “provide a stable vantage point to monitor vast areas continuously” and remain “out of range of most surface-to-air threats,” ensuring uninterrupted surveillance[12]. By integrating data across these domains, we achieve a surveillance picture that no single platform could deliver alone.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In summary, the <strong>multi-domain network</strong> is the sensing infrastructure of Earth Intelligence. Satellites offer continuity, HAPS offer persistence and resolution, UAVs offer detail, and ground sensors offer granularity. As Geoawesome puts it, “when more detailed or persistent coverage is needed, HAPS can be quickly deployed … to provide long-duration, extremely high-resolution real-time observation”[11]. We are building our sensing layer on this principle, combining satellite tasking with next-generation stratospheric platforms and sensor meshes to achieve comprehensive coverage.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">The Earth Intelligence Operating System</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We conceptualize the emerging Earth Intelligence ecosystem as a kind of <strong>Operating System (OS)</strong> for the planet – a unified stack that turns raw Earth data into continuous insight. In this OS, there are three interacting layers:</p>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Layer 1 – Sensing Infrastructure:</strong> This is the physical layer of sensors, from LEO satellites and high-altitude platforms to UAVs and ground-based detectors. In practice, it includes all the hardware that acquires raw geospatial data. Our own stratospheric platforms and next-gen satellites reside here. They function as the “drivers” of the system: collecting images, signals, and environmental measurements.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Layer 2 – Data Integration:</strong> Sitting above the raw sensors is the integration and compute layer. This is the cloud or edge platform that ingests heterogeneous data streams, time-stamps and geolocates them, and makes them available for processing. Think of it as the “file system” and middleware of the Earth OS: it harmonizes formats, stores historical archives, and provides APIs and data services. Crucially, it enables <i>any</i> data (satellite image, weather reading, AIS track, social media feed) to be accessed by analytic tools. In our platform, Layer 2 includes petabyte-scale geodatabases, real-time data buses, and federated compute clusters. It also incorporates the command-and-control interfaces: tasking requests (e.g. asking a satellite or HAPS to collect data) and telemetry from platforms.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Layer 3 – AI Intelligence:</strong> At the top is the intelligence and user interface layer – the “applications” of the Earth OS. Here reside our GeoAI models (deep learning, geostatistics, digital twins) and the interactive UI (maps, dashboards, conversational assistants). This is where algorithms consume the fused data to produce outputs: natural-language answers, predictive alerts, anomaly maps, or mission recommendations. Layer 3 also includes the feedback mechanisms: how user interactions and outcomes are logged back into the system.</li>
+</ul>
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The magic happens in how these layers interact. Sensors continuously feed data into Layer 2; Layer 2 makes it usable and feeds it to Layer 3; Layer 3 generates intelligence and triggers new sensor tasks (closing the loop). In effect, the Earth is treated as one continuously monitored system. This OS analogy underscores our approach: by integrating infrastructure with software, we ensure that insights are not an afterthought but built into the system. For example, our CLEAR platform (Layer 3) can directly task our HAPS (Layer 1) based on analytic needs, or pull archival imagery from our cloud archive (Layer 2) on demand. In a functioning Earth Intelligence OS, “spacecraft [become] intelligent edge nodes” that respond to software-defined commands[13]. Involve is building exactly this: the hardware, the data fabric, and the AI “brain” as a single cohesive environment.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">The Earth Intelligence Data Flywheel</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">An essential feature of this OS is what we call the <strong>Earth Intelligence Data Flywheel</strong> – a self-reinforcing cycle that compounds the system’s value over time. The flywheel works as follows:</p>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Data Acquisition:</strong> Our sensing network (satellites, stratosphere, etc.) captures raw geospatial data over areas of interest.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Aggregation:</strong> These data join with other streams (legacy satellite feeds, sensor networks, open data) in our integration layer. The result is a heterogeneous, multi-temporal dataset.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>AI Training:</strong> We use this aggregated data to train and refine our GeoAI models. More diverse and labeled data leads to more accurate detection and prediction capabilities.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>User Interaction:</strong> End users – analysts, commanders, planners – query the system through maps, dashboards, or our CLEAR conversational interface. They derive intelligence to make decisions.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Tasking:</strong> If a user’s question cannot be answered with existing data, the system generates a new sensor task. For example, CLEAR might suggest retasking a HAPS or satellite to gather fresh imagery of a hotspot.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>New Data:</strong> The newly tasked mission collects more data, which is fed back into the database.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Loop:</strong> This new data improves the AI models and enriches the archive, making future answers more accurate.</li>
+</ul>
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Each turn of this loop strengthens the system. Critically, it creates a <strong>proprietary data moat</strong>. Every unique dataset we collect – especially high-cadence imagery or specific target signatures – makes our models better and more specialized. Over time, this accelerates: the more queries we answer, the more custom data we gather, the better we become at predicting and preempting events. This is the classic data network effect. As Space Capital observes in its discussion of integrated space systems, what makes a full-stack approach powerful is “the feedback loop” – data from operations flows into design and analytics, enabling continuous improvement[4]. Involve leverages this same principle.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In practical terms, the flywheel means our customers get smarter intelligence and faster. For example, if a defense customer asks “Where is the nearest safe landing zone in this region now?” and the answer requires recent imaging, the system can task the HAPS, collect the image, and then immediately deliver the information – all within one interactive workflow. The result is a virtuous cycle: user engagement drives new data collection, which in turn refines the AI. This compounding effect is a core strategic advantage. It ensures that Involve’s Earth Intelligence system not only keeps improving its models but also accrues a unique dataset that is hard for newcomers to replicate.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Involve’s Positioning in the Emerging Earth Intelligence Stack</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Within this evolving Earth Intelligence stack, <strong>Involve occupies a unique integrator role</strong>. We straddle the line between physical infrastructure and AI platform. On one side, there are satellite operators (e.g. Planet, Maxar) who focus on deploying orbital cameras. On another side, there are analytics firms (e.g. Orbital Insights, Palantir, ESRI) who process third-party imagery and data. Involve does <i>both</i> – we build next-generation sensors <i>and</i> develop the GeoAI that ingests their data.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our core architecture reflects this duality. Involve’s stratospheric platforms provide a persistent sensing layer – a class of infrastructure that is more flexible than satellites and more capable than drones. Simultaneously, our CLEAR platform provides the AI-native intelligence layer. CLEAR unifies data from satellites, our HAPS, ground sensors, maritime signals, and external databases. It then applies machine learning and spatial analytics to deliver operational answers. In effect, we have created an “Earth Intelligence OS” that marries hardware and software.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">This integration gives us strategic differentiation. We can synchronize sensing and analysis in ways that siloed players cannot. For example, when CLEAR identifies an emerging pattern (say, a buildup of vehicles near a critical infrastructure site), it can trigger a tasking of our HAPS or satellite to focus on that location – closing the loop automatically. By owning both the sensor and the software, Involve can deploy iterative improvements rapidly. As Space Capital notes about full-stack providers, owning the entire mission chain “runs on a modular technology stack” that “supports rapid deployment, seamless integration, and ongoing mission optimization”[14]. Involve’s platform is designed with this agile mindset: we treat each mission as part of a continuous product cycle, not a one-off program.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In summary, while satellite companies compete on resolution and coverage and analytics vendors compete on algorithms, Involve’s strength is <strong>combining the two</strong>. We offer an end-to-end Earth Intelligence solution: the physical stratospheric sensors to capture data we need, and the AI-driven software to turn that data into value. This integrated approach means we are not just another satellite operator or software vendor – we are building the new class of Earth Intelligence Systems that the market is beginning to demand.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Strategic Implications</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The rise of Earth Intelligence has profound implications across strategic domains. In <strong>defence and national security</strong>, it means far better situational awareness. Persistent, all-weather monitoring enables continuous ISR (intelligence, surveillance, reconnaissance) and early warning. For instance, HAPS deploying distributed sensors can “create a layered defense strategy” when integrated with satellites and ground data[15]. In contested environments, stratospheric assets provide a low-risk, enduring watchtower that forces potential adversaries to remain visible or hidden in shadows. Our ability to deliver real-time analytics on this multi-layer data means commanders can shift from reacting to threats, to anticipating and pre-empting them.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">For <strong>critical infrastructure monitoring</strong>, continuous geospatial intelligence translates into resilience. Power grids, pipelines, railways and supply chains can be watched for anomalies (e.g. vegetation encroachment on powerlines, unauthorized excavation near a pipeline, a bridge deterioration) in near-real time. The TAM analysis showed that infrastructure sectors increasingly require proactive surveillance. Our approach – combining persistent HAPS coverage with predictive GeoAI – enables early warning of failures. This not only improves safety but can save billions by avoiding unplanned outages and optimizing maintenance.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In <strong>climate and environmental intelligence</strong>, our system provides the temporal depth and detail needed for complex problems. Rapid-onset disasters like wildfires and floods demand minute-by-minute intelligence. Traditional satellite-based response is often too slow. As recent wildfires have tragically shown, responders without “real-time, coordinated Earth intelligence” can be delayed by hours or days[16]. Involve’s persistent sensing can track a fire’s spread every few minutes, enabling dynamic fire management and evacuation. Beyond disasters, continuous monitoring of deforestation, ice melt, or emissions supports climate adaptation and mitigation strategies. In fact, McKinsey highlights that real-time EO and AI can help “monitor climate change” at unprecedented scales[3]. By embedding Earth Intelligence into environmental planning, policymakers and scientists can move from episodic snapshots to a living digital twin of our planet.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Finally, in the <strong>economic and commercial sphere</strong>, Earth Intelligence is a strategic enabler. Agriculture, for example, benefits from constant crop health monitoring and weather modeling. Insurance firms use timely imagery to expedite claims and assess risk. Investors and logisticians rely on up-to-date supply chain tracking. Our data and analytics will serve as foundational inputs for smart agriculture, precision logistics, and sustainable resource management. As Deloitte notes, industries from reforestation to actuarial science are already harnessing EO data and AI[17]. Involve’s platform accelerates these applications by shortening the loop from event to insight.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In summary, the <strong>structural shift to Earth Intelligence matters because it changes the scale and speed of what is possible</strong>. Persistent, AI-enhanced sensing becomes a strategic capability, akin to having X-ray vision into global systems. For governments, it means more autonomous situational awareness and decision support. For businesses, it enables new services and efficiencies. Across defence, climate, infrastructure, and commerce, the ability to “know what’s happening on Earth when it happens” will be a defining advantage. Involve’s combined focus on continuous sensing and GeoAI intelligence places us at the heart of this transformation, ready to deliver the next generation of Earth Intelligence solutions for our stakeholders.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">References</h2>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed">World Economic Forum &amp; Deloitte (2024), <i>The Catalytic Potential of Artificial Intelligence for Earth Observation</i>[1][6].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">Space Capital (2025), “Muon Space: Rewriting the Playbook for Earth Intelligence”[18][4].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">McKinsey &amp; Company (2025), <i>Technology Trends Outlook 2025: Real-Time Earth Intelligence</i> (via NeoForm blog)[3].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">ESRI (2023), <i>GeoAI – Accelerated Data Generation &amp; Spatial Problem-Solving</i>[5][7].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">Gartner Peer Insights (2026), <i>Earth Intelligence Reviews – “What is Earth Intelligence?”</i>[2][19].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">HAPS Alliance (2020), “3 Ways HAPS Are Transforming Defense Operations”[15][12].</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed">Zareba et al. (2026), “Seeing the Earth from the Stratosphere” (Geoawesome)[11][20].</li>
+</ul>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[1] [6] [17] AI for Earth observation | Climate | Deloitte</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.deloitte.com/global/en/issues/climate/the-catalytic-potential-of-artificial-intelligence-for-earth-observation.html</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[2] [19] Best Earth Intelligence Reviews 2026 | Gartner Peer Insights</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.gartner.com/reviews/market/earth-intelligence</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[3] McKinsey Technology Trends 2025: What Is Crucial to Align Your Business - NeoForm Business Partners</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://neoform.partners/mckinsey-technology-trends-2025-what-is-crucial-to-align-your-business/</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[4] [13] [14] [16] [18] Space Capital | Insights | Muon Space: Rewriting the Playbook for Earth Intelligence</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.spacecapital.com/blogs/muon-space-rewriting-playbook-for-earth-intelligence</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[5] [7] What Is GeoAI? | Accelerated Data Generation &amp; Spatial Problem-Solving</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.esri.com/en-us/capabilities/geoai/overview</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[8] [11] [20] Seeing the Earth from the Stratosphere - Geoawesome</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://geoawesome.com/seeing-the-earth-from-the-stratosphere/</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[9] [10] [12] [15] 3 Ways HAPS Are Transforming Defense Operations - HAPS Alliance</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://hapsalliance.org/blog/3-ways-haps-are-transforming-defense-operations/</p>
+
+
+            </div>
         </div>
     );
 }

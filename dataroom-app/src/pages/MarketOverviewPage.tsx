@@ -1,515 +1,317 @@
-import { DocHeader, SectionHeader, BodyText, ContentBlock, SectionDivider } from '../components/ui/core';
-import { NextSectionCard } from '../components/shared/NavigationHelpers';
-
-// ── Shared primitives ───────────────────────────────────────────────────────
-
-function Badge({ color, children }: { color: 'blue' | 'green' | 'amber' | 'cyan' | 'purple'; children: React.ReactNode }) {
-    const styles = {
-        blue: 'bg-involve-blue/14 text-involve-blue',
-        green: 'bg-involve-green/12 text-involve-green',
-        amber: 'bg-involve-amber/12 text-involve-amber',
-        cyan: 'bg-involve-cyan/12 text-involve-cyan',
-        purple: 'bg-[rgba(167,139,250,0.12)] text-[#a78bfa]',
-    };
-    return (
-        <span className={`inline-flex items-center gap-1 font-mono text-[10px] font-medium tracking-[0.1em] px-2 py-0.5 rounded-sm whitespace-nowrap before:content-[''] before:block before:w-1.5 before:h-1.5 before:rounded-full before:bg-current ${styles[color]}`}>
-            {children}
-        </span>
-    );
-}
-
-function Callout({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="my-7 px-5 py-4 bg-involve-blue/6 border-l-2 border-involve-blue/30 text-sm font-light text-involve-muted italic leading-relaxed">
-            {children}
-        </div>
-    );
-}
-
-function RefNote({ children }: { children: React.ReactNode }) {
-    return (
-        <div className="my-6 px-4 py-3 bg-involve-panel border border-involve-border border-l-2 border-l-involve-blue font-mono text-[11px] text-involve-blue/65 leading-relaxed">
-            {children}
-        </div>
-    );
-}
-
-function StatsBar({ stats }: { stats: { val: string; valSuffix?: string; label: string; sub: string }[] }) {
-    return (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-involve-border border border-involve-border my-8">
-            {stats.map((s, i) => (
-                <div key={i} className="bg-involve-panel p-6 hover:bg-involve-bg transition-colors">
-                    <div className="text-[1.9rem] font-semibold tracking-[-0.04em] text-involve-text leading-none mb-1">
-                        {s.val}<span className="text-involve-blue">{s.valSuffix}</span>
-                    </div>
-                    <div className="font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim leading-snug">{s.label}</div>
-                    <div className="text-[11px] text-involve-dim mt-1 italic">{s.sub}</div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-function DataTable({ headers, rows, highlightCol }: {
-    headers: string[];
-    rows: (string | React.ReactNode)[][];
-    highlightCol?: number;
-}) {
-    return (
-        <div className="my-8 overflow-x-auto border border-involve-border">
-            <table className="w-full text-[12px] border-collapse">
-                <thead>
-                    <tr className="bg-involve-panel border-b border-involve-border">
-                        {headers.map((h, i) => (
-                            <th key={i} className="px-4 py-3 text-left font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim font-medium whitespace-nowrap">{h}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows.map((row, ri) => (
-                        <tr key={ri} className="border-b border-involve-border hover:bg-involve-blue/5 transition-colors last:border-b-0">
-                            {row.map((cell, ci) => (
-                                <td key={ci} className={`px-4 py-3 font-light leading-snug align-top ${ci === 0 ? 'font-medium text-involve-text' : 'text-involve-muted'} ${highlightCol !== undefined && ci === highlightCol ? 'text-involve-green font-medium' : ''}`}>
-                                    {cell}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
-}
-
-function Split2({ left, right }: { left: React.ReactNode; right: React.ReactNode }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border my-8">
-            <div className="bg-involve-panel p-6">{left}</div>
-            <div className="bg-involve-bg p-6">{right}</div>
-        </div>
-    );
-}
-
-function SplitCell({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
-    return (
-        <div>
-            <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-2">{label}</div>
-            <div className="text-[14px] font-semibold text-involve-text mb-2">{title}</div>
-            <div className="text-[12.5px] font-light text-involve-muted leading-relaxed">{children}</div>
-        </div>
-    );
-}
-
-// ── Driver Cards ─────────────────────────────────────────────────────────────
-
-function DriverGrid({ cards }: { cards: { num: string; title: string; body: string; statVal: string; statLabel: string; accentColor?: string }[] }) {
-    const colors = ['rgba(61,155,255,0.4)', 'rgba(240,160,32,0.4)', 'rgba(52,208,122,0.4)'];
-    const textColors = ['text-involve-blue', 'text-involve-amber', 'text-involve-green'];
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-involve-border border border-involve-border my-8">
-            {cards.map((c, i) => (
-                <div key={i} className="bg-involve-panel p-6 hover:bg-involve-bg transition-colors" style={{ borderTop: `2px solid ${c.accentColor ?? colors[i]}` }}>
-                    <span className={`font-mono text-[10px] tracking-[0.15em] text-involve-blue mb-2 block ${i > 0 ? textColors[i] : ''}`}>{c.num}</span>
-                    <div className="text-[14px] font-semibold text-involve-text mb-2 leading-tight">{c.title}</div>
-                    <div className="text-[12px] font-light text-involve-muted leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: c.body }} />
-                    <div className="border-t border-involve-border pt-3 mt-2">
-                        <div className={`text-[1.1rem] font-semibold tracking-tight ${textColors[i]}`}>{c.statVal}</div>
-                        <div className="font-mono text-[10px] text-involve-dim mt-1">{c.statLabel}</div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// ── Funnel Visual ─────────────────────────────────────────────────────────────
-
-function FunnelRow({ layer, layerLabel, barWidth, barLabel, mainVal, subVal, accent }: {
-    layer: string; layerLabel: string; barWidth: string; barLabel: string; mainVal: string; subVal: string; accent?: boolean;
-}) {
-    return (
-        <div className={`grid border-b border-involve-border transition-colors hover:bg-involve-bg ${accent ? 'border-t-2 border-t-involve-blue bg-involve-blue/4' : ''}`} style={{ gridTemplateColumns: '120px 1fr 180px' }}>
-            <div className="p-4 border-r border-involve-border font-mono text-[10px] tracking-[0.1em] uppercase flex flex-col gap-1">
-                <span className="text-involve-dim text-[9px]">{layer}</span>
-                <span className={`text-[12px] font-semibold ${accent ? 'text-involve-blue' : 'text-involve-muted'}`}>{layerLabel}</span>
-            </div>
-            <div className="p-3 border-r border-involve-border flex items-center">
-                <div className={`h-7 flex items-center px-3 font-mono text-[11px] font-medium rounded-sm ${accent ? 'bg-involve-blue/22 border-l-2 border-involve-blue text-involve-blue' : 'bg-involve-blue/10 border-l-2 border-involve-blue/40 text-involve-blue/60'} text-[10px]`} style={{ width: barWidth }}>
-                    {barLabel}
-                </div>
-            </div>
-            <div className="p-4 flex flex-col gap-1">
-                <div className={`text-[15px] font-semibold tracking-tight ${accent ? 'text-involve-blue' : 'text-involve-text'}`}>{mainVal}</div>
-                <div className="font-mono text-[10px] text-involve-dim">{subVal}</div>
-            </div>
-        </div>
-    );
-}
-
-// ── SOM Scenario Cards ────────────────────────────────────────────────────────
-
-function ScenarioGrid() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-involve-border border border-involve-border my-8">
-            {/* Conservative */}
-            <div className="bg-involve-panel p-6 flex flex-col gap-2">
-                <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim">Conservative Scenario</div>
-                <div className="text-[14px] font-semibold text-involve-text">Limited sell-through, early friction</div>
-                <div className="text-[2rem] font-semibold tracking-tight text-involve-muted leading-none">€7.2M</div>
-                <div className="font-mono text-[10px] text-involve-dim">Stable across 2026–28</div>
-                <div className="grid grid-cols-3 gap-1 mt-2">
-                    {['2026', '2027', '2028'].map(y => (
-                        <div key={y} className="bg-involve-bg p-2 rounded-sm">
-                            <div className="font-mono text-[10px] text-involve-dim">{y}</div>
-                            <div className="text-[13px] font-semibold text-involve-muted mt-0.5">€7.2M</div>
-                        </div>
-                    ))}
-                </div>
-                <div className="text-[12px] font-light text-involve-muted border-t border-involve-border pt-3 mt-1 leading-relaxed">Fleet: 6/6/6 platforms. Contracted theatres per platform: 0.6. Blended ACV: €2.0M. Reflects early procurement friction, export controls, and slow integration timelines.</div>
-            </div>
-            {/* Base */}
-            <div className="bg-involve-panel p-6 flex flex-col gap-2 border-t-2 border-involve-blue">
-                <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-blue">Base Scenario — Primary forecast</div>
-                <div className="text-[14px] font-semibold text-involve-text">Improving utilisation + early multi-tenancy</div>
-                <div className="text-[2rem] font-semibold tracking-tight text-involve-blue leading-none">€36M</div>
-                <div className="font-mono text-[10px] text-involve-blue/50">by 2028</div>
-                <div className="grid grid-cols-3 gap-1 mt-2">
-                    {[['2026', '€14.4M'], ['2027', '€24.0M'], ['2028', '€36.0M']].map(([y, v]) => (
-                        <div key={y} className="bg-involve-bg p-2 rounded-sm border border-involve-blue/15">
-                            <div className="font-mono text-[10px] text-involve-dim">{y}</div>
-                            <div className="text-[13px] font-semibold text-involve-blue mt-0.5">{v}</div>
-                        </div>
-                    ))}
-                </div>
-                <div className="text-[12px] font-light text-involve-muted border-t border-involve-border pt-3 mt-1 leading-relaxed">Fleet: 6/10/15 platforms. Contracted theatres per platform: 0.8. Blended ACV: €3.0M. CLEAR begins contributing revenue per platform. Primary scenario for Series A modelling.</div>
-            </div>
-            {/* Aggressive */}
-            <div className="bg-involve-panel p-6 flex flex-col gap-2 border-t-2 border-involve-green">
-                <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-green">Aggressive Scenario</div>
-                <div className="text-[14px] font-semibold text-involve-text">Multi-tenant analytics — CLEAR monetisation</div>
-                <div className="text-[2rem] font-semibold tracking-tight text-involve-green leading-none">€90M</div>
-                <div className="font-mono text-[10px] text-involve-green/50">by 2028</div>
-                <div className="grid grid-cols-3 gap-1 mt-2">
-                    {[['2026', '€36.0M'], ['2027', '€63.0M'], ['2028', '€90.0M']].map(([y, v]) => (
-                        <div key={y} className="bg-involve-bg p-2 rounded-sm border border-involve-green/10">
-                            <div className="font-mono text-[10px] text-involve-dim">{y}</div>
-                            <div className="text-[13px] font-semibold text-involve-green mt-0.5">{v}</div>
-                        </div>
-                    ))}
-                </div>
-                <div className="text-[12px] font-light text-involve-muted border-t border-involve-border pt-3 mt-1 leading-relaxed">Fleet: 8/14/20 platforms. Contracted theatres per platform: 1.0 (repeatable + multi-tenant analytics). Blended ACV: €4.5M. Multi-tenancy and CLEAR monetisation meaningfully improves revenue per platform.</div>
-            </div>
-        </div>
-    );
-}
-
-// ── Positioning Pillars ───────────────────────────────────────────────────────
-
-const pillars = [
-    {
-        name: 'Persistence & tasking flexibility',
-        logic: 'HAPS-class systems maintain quasi-fixed presence at 20–50 km, enabling persistence over a target region rather than periodic revisits. For infrastructure corridors and maritime approaches, persistence is more valuable than global coverage.',
-        evidence: [['blue', 'ITU HAPS definition'], ['green', 'Airbus Zephyr comparator'], ['green', 'NASA SPB 100-day missions']] as const,
-    },
-    {
-        name: 'Cost per monitored km²',
-        logic: 'A persistent stratospheric platform concentrates sensing into the specific theatre where the buyer has risk exposure. Multi-tenancy on the same data stream — structurally impossible with tasked satellite capacity — allows unit economics to improve with scale without proportional capex.',
-        evidence: [['blue', 'DOE remote sensing guidance'], ['blue', 'Bottom-up TAM model']] as const,
-    },
-    {
-        name: 'Data ownership & sovereignty',
-        logic: 'EU policy explicitly centres autonomy and security for observation and monitoring capabilities. "Who controls tasking, raw data custody, and model pipelines" is increasingly a procurement criterion, not just a technical feature. Involve controls all three.',
-        evidence: [['amber', 'EU Space Strategy for Security'], ['amber', 'USSF Commercial Space Strategy']] as const,
-    },
-    {
-        name: 'Infrastructure monitoring pull',
-        logic: '~79–80M km of power lines globally, 1M+ km gas pipelines, 0.5M km oil pipelines, 1.17M km rail. As monitoring systems become digital, fusing persistent sensing with AI-based prioritisation becomes an operating necessity. US DOE explicitly calls out satellite imagery + AI/ML for vegetation management.',
-        evidence: [['green', 'IEA · GEM · UIC data'], ['green', 'DOE vegetation management guide']] as const,
-    },
-    {
-        name: 'Margin compounding mechanism',
-        logic: 'Each incremental platform expands the labelled dataset, improves models, and increases the number of CLEAR workflows sold on top of the same underlying collection. Vendors who package repeatable, domain-specific solutions capture a greater share of value over time.',
-        evidence: [['blue', 'Gartner Earth intelligence'], ['blue', 'Data flywheel model']] as const,
-    },
-];
-
-// ── Main Page ─────────────────────────────────────────────────────────────────
+import { DocHeader } from '../components/ui/core';
 
 export default function MarketOverviewPage() {
     return (
         <div className="animate-in fade-in duration-500 w-full max-w-5xl mx-auto pb-20">
             <DocHeader
-                breadcrumb={<>01. Strategy &amp; Market <span className="opacity-30 mx-1">›</span> <span className="text-involve-blue">Market Overview &amp; TAM/SAM/SOM</span></>}
-                title="Market Overview &"
-                titleStrong="TAM / SAM / SOM Analysis"
-                subtitle="Quantified market opportunity for Involve Space's integrated Earth intelligence platform. Covers the macro demand thesis, top-down and bottom-up TAM sizing, SAM definition by geography and vertical, fleet-bounded SOM scenarios, and competitive positioning."
-                meta={[
-                    { label: 'Document', value: 'IS-DR-08' },
-                    { label: 'Market definition', value: 'GeoAI / Geospatial Intelligence' },
-                    { label: 'Primary sources', value: 'Gartner · MnM · GVR · EUSPA · SIPRI · IEA' },
-                    { label: 'Revision', value: 'A — Feb 2026' },
-                ]}
+                breadcrumb={<>01. Strategy & Market <span className="opacity-30 mx-1">›</span> <span className="text-involve-blue">Market Overview – TAM / SAM / SOM</span></>}
+                title="Market Overview – TAM / SAM / SOM"
+                subtitle="Source document converted to data room format."
             />
+            
+            <div className="mt-8 text-involve-text">
+                
 
-            {/* §1 Executive Thesis */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Executive Thesis" title="Earth intelligence is structurally expanding" desc="Three macro forces reinforcing each other — AI cost reduction, geopolitical demand pull, and infrastructure monitoring pressure" />
-                <BodyText>The Earth intelligence market is not in a cyclical expansion — it is undergoing a structural shift in how geospatial signals are consumed. Three independent forces are accelerating simultaneously: <strong className="text-involve-text font-medium">AI is collapsing the cost and latency of converting raw geospatial data into decisions</strong>, geopolitics is raising the value of persistent sensing and sovereign supply chains, and the physical infrastructure transition is multiplying the monitoring workload on assets not built for today's operational environment.</BodyText>
-                <BodyText>Gartner forecasts that <strong className="text-involve-text font-medium">80% of enterprise software will be multimodal by 2030</strong> (up from &lt;10% in 2024) — a direct enabler for operationalising imagery, SAR, and spatial signals at scale. In parallel, Gartner defines "Earth intelligence" as AI applied to EO data and forecasts direct vendor revenues rising to over <strong className="text-involve-text font-medium">$4.2bn by 2030</strong>, with enterprises becoming the majority buyer.</BodyText>
 
-                <StatsBar stats={[
-                    { val: '$37', valSuffix: 'bn', label: 'GeoAI market TAM 2025', sub: '→ $62.9bn by 2030 (11.1% CAGR)' },
-                    { val: '$2.7', valSuffix: 'T', label: 'World military expenditure 2024', sub: 'Steepest YoY rise since 1988 — SIPRI' },
-                    { val: '80', valSuffix: 'M km', label: 'Power grid lines globally', sub: 'Must be built/refurbished by 2040 — IEA' },
-                    { val: '55', valSuffix: '%', label: 'NATO share of global military spend', sub: '= $1.5T — highest-priority buyer base' },
-                ]} />
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">1. Global Market Context</h2>
 
-                <DriverGrid cards={[
-                    {
-                        num: 'DRIVER 01 — AI COST COLLAPSE',
-                        title: 'AI making geospatial actionable at enterprise scale',
-                        body: 'Geospatial data is moving from "specialist GIS output" to a standard input modality in mainstream decision workflows. Gartner\'s multimodal enterprise forecast signals that the integration layer is being built now — and platforms that already have the data pipeline and domain models in place are positioned to capture disproportionate early share.',
-                        statVal: '80%',
-                        statLabel: 'Enterprise software multimodal by 2030 — Gartner',
-                    },
-                    {
-                        num: 'DRIVER 02 — GEOPOLITICS',
-                        title: 'Persistent ISR and sovereign sensing becoming policy priority',
-                        body: 'High-intensity conflict has validated commercial sensing and analytics — pulling demand forward for hybrid architectures combining sovereign and commercial capacity. EU Space Strategy explicitly frames observation as strategic autonomy infrastructure. Willingness-to-pay for persistence, redundancy, and data sovereignty is rising structurally.',
-                        statVal: '$2.718T',
-                        statLabel: 'World military spend 2024 — steepest rise since 1988',
-                        accentColor: 'rgba(240,160,32,0.4)',
-                    },
-                    {
-                        num: 'DRIVER 03 — INFRASTRUCTURE SCALE',
-                        title: 'Critical infrastructure monitoring demand structurally expanding',
-                        body: 'National energy, transport, and pipeline infrastructure is growing faster than labour-intensive inspection can scale. IEA: $140bn invested in power transmission in 2023 (+10% YoY). DOE explicitly endorses satellite imagery + AI/ML analytics for enhanced vegetation management.',
-                        statVal: '$140bn',
-                        statLabel: 'Global power grid investment 2023 — IEA',
-                        accentColor: 'rgba(52,208,122,0.4)',
-                    },
-                ]} />
 
-                <Callout><strong className="text-involve-text font-medium not-italic">Investment thesis implication:</strong> Against this backdrop, Involve Space's integrated architecture (stratospheric platforms + autonomous control + GeoAI platform) maps to an emerging procurement logic — governments and critical-infrastructure operators increasingly prefer "persistent coverage + analytics + tasking/control" as a single managed capability, especially when sovereignty, data ownership, and dual-use constraints apply.</Callout>
-            </ContentBlock>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We operate in a rapidly expanding space and Earth intelligence economy. Industry analysts estimate that the global space economy – encompassing satellites, launch, manufacturing, and downstream services – will grow from roughly <strong>$630 billion in 2023 to about $1.8 trillion by 2035</strong>[1]. This surge is driven by converging macro-trends: <strong>connectivity and navigation demand</strong> (e.g. broadband and GNSS), <strong>environmental awareness</strong>, and <strong>security needs</strong>. In particular, climate change is a major growth driver: satellites now provide critical data on emissions, land use, and natural disasters, and investors are keen to use this information for ESG and sustainability objectives[2][3]. Similarly, <strong>national security and geopolitical tensions</strong> (e.g. post-2022 Eastern Europe) have spurred governments to invest in space-based ISR. NATO defense spending exceeded <strong>$1.6 trillion in 2025</strong>[4], with new alliance commitments to raise contributions (e.g. 5% of GDP by 2035[5]). These record budgets translate into expanded demand for persistent surveillance and geospatial intelligence.</p>
 
-            <SectionDivider />
 
-            {/* §2 TAM — Top Down */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Total Addressable Market — Layer A" title="Global geospatial intelligence market baselines" desc="Multiple market definitions presented transparently — conservative core GI baseline chosen for investor diligence" />
-                <BodyText>The market is reported with materially different scopes depending on whether consumer location-based services, mapping, and broad GIS software are included. The correct approach for investor diligence is to present multiple baselines, then choose a conservative "core GI" baseline aligned with Involve Space's revenue model — enterprise and government infrastructure, national security, and regulated sectors rather than consumer LBS.</BodyText>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">At the same time, the volume of geospatial data is exploding. There are now over <strong>12,900 active satellites</strong> on orbit (mid-2025)[6], and private constellations are delivering daily global Earth imagery. Research shows the broader geospatial sector – including mapping, analytics, and AI – is growing in the double digits. For example, one survey values the global geospatial solutions market at <strong>$626 billion in 2024</strong>, projected to reach <strong>$2.1 trillion by 2034</strong>[7]. In practice this means nearly every industry is integrating location intelligence: utilities monitor grids for failures, logistics providers track assets, and governments fuse spatial data into decision systems. Artificial intelligence is accelerating this trend, enabling real-time analytics on massive data streams.</p>
 
-                <DataTable
-                    headers={['Market Segment', 'Scope', 'Size (latest year)', 'CAGR', '2030 Forecast', 'Source']}
-                    rows={[
-                        [<span className="text-involve-blue font-medium">Geospatial Intelligence (GeoAI) ← <em className="font-light text-[11px]">Selected baseline</em></span>, 'GeoAI platforms, analytics and services — gov + enterprise', <span className="text-involve-green font-medium">$37.13bn (2025)</span>, <span className="text-involve-green font-medium">11.1%</span>, <span className="text-involve-green font-medium">$62.88bn</span>, 'MarketsandMarkets'],
-                        ['Geospatial Analytics (broad)', 'Includes location analytics, GIS, mapping — may include consumer LBS', '$114.32bn (2024)', '11.3%', '$226.53bn', 'Grand View Research'],
-                        ['Earth Observation (data/services)', 'EO data and remote sensing technologies', '$5.10bn (2024)', '6.2%', '$7.24bn', 'Grand View Research'],
-                        ['Satellite Data Services', 'Satellite-derived data products across verticals', '$12.12bn (2024)', '16.3%', '$29.59bn', 'Grand View Research'],
-                        ['"Earth intelligence" vendor revenue', 'EO data + analysis services + EO-specific applications (AI-on-EO — Gartner narrow)', '~$3.8bn (2025)', 'n/a', '>$4.2bn', 'Gartner'],
-                        ['EO demand-side revenues (EU model)', 'EO data and services purchase — demand-side, forecast to 2033', '€3.4bn (2023)', '~5.8%', '~€5.1bn (2030)', 'EUSPA'],
-                    ]}
-                />
-                <BodyText><strong className="text-involve-text font-medium">Selected baseline interpretation:</strong> For an Earth Intelligence infrastructure company selling managed sensing + analytics to enterprises and governments, the most decision-useful top-down TAM is the <strong className="text-involve-text font-medium">Geospatial Intelligence (GeoAI) market at $37.1bn (2025), growing to $62.9bn (2030)</strong> at 11.1% CAGR.</BodyText>
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">These macro-drivers – <strong>expanded budgets, climate imperatives, and data/AI adoption</strong> – create a large and fast-growing total market for Earth observation and geospatial intelligence. We will now examine key components of that market.</p>
 
-            {/* §3 TAM — Layer B */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Total Addressable Market — Layer B" title="Adjacent spend pools — the budget substrate expanding GI" desc="These markets should not be added to Layer A; they explain why GI budgets are expanding structurally" />
-                <BodyText>Layer B presents adjacent spend pools in which geospatial intelligence is increasingly embedded. These are used to (i) explain why GI budgets expand structurally, and (ii) identify vertical-focused demand for SAM/SOM modelling. They should not be naively added to Layer A as much of the supplier revenue in Layer A flows from these end-market budgets — the relationship is attachment, not addition.</BodyText>
 
-                <DataTable
-                    headers={['Adjacent Market', '2024–25 Size', 'CAGR', '2030 Forecast', 'Why it overlaps with GI', 'Overlap assumption']}
-                    rows={[
-                        ['Decision Intelligence', '$13.3–15.2bn (2024)', '15.4–24.7%', '$36–50bn', 'Location and EO-derived signals become standard input into decision workflows as multimodal/AI tooling matures', <Badge color="blue">5–15%</Badge>],
-                        ['Risk Analytics', '$32.25bn (2025)', '9.7%', '$51.34bn', 'Climate risk, supply-chain risk, asset risk increasingly use geospatial and EO features', <Badge color="blue">5–10%</Badge>],
-                        ['Digital Twin', '$21.14bn (2025)', '47.9%', '$149.81bn', 'Infrastructure and territory digital twins require persistent updating, change detection, and alignment across sensors', <Badge color="amber">3–8%</Badge>],
-                        ['Asset Integrity Management', '$23.85bn (2024)', 'Growing through 2030', 'Forecast positive', 'Pipelines, energy assets and industrial infrastructure increasingly use remote sensing for screening and prioritisation', <Badge color="blue">5–12%</Badge>],
-                        ['Structural Health Monitoring', '$1.394bn (2024)', '~19.8%', '$4.085bn', 'Monitoring shifting from periodic inspections to analytics-driven condition assessment; EO can complement ground sensors', <Badge color="blue">10–25%</Badge>],
-                        ['ISR Market (defence, broad)', '$52.1bn (2024)', '4.5%', '$67.8bn', 'EO and geospatial analytics are core ISR subcomponents; commercial imagery procurement is rising', <Badge color="green">5–12%</Badge>],
-                    ]}
-                />
-                <Callout><strong className="text-involve-text font-medium not-italic">Implication:</strong> Layer B markets demonstrate that the budget substrates into which GI is embedding are large and, in many cases, growing faster than the EO-only marketplace. Gartner's forecast that enterprises become the majority spender on Earth intelligence by 2030 supports this direction.</Callout>
-            </ContentBlock>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">2. Earth Observation Market</h2>
 
-            <SectionDivider />
 
-            {/* §4 Bottom-Up TAM */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Bottom-Up Market Logic" title="Infrastructure monitoring wallet — asset-based TAM" desc="An independent TAM constructed from global asset base × monitoring spend economics — not a duplicate of Layer A" />
-                <BodyText>This constructs an alternative TAM from the "physics and economics" of monitoring: how many critical assets exist globally and what it costs to monitor them at operational cadence. This is a <strong className="text-involve-text font-medium">wallet-based view</strong> anchored to infrastructure scale — not a supplier revenue estimate. It explains one of the core "why now" demand engines for the category.</BodyText>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The <strong>Earth Observation (EO) market</strong> – comprising satellite and aerial imagery plus derived analytics – is sizable and expanding steadily. Recent industry reports place the current global EO services market at roughly <strong>$5 billion (2023)</strong>, growing to over <strong>$8 billion by 2033</strong>[8]. This ~6–7% CAGR is fueled by three main forces: (1) the proliferation of high-resolution satellite constellations (commercial and government) supplying ever-finer imagery; (2) rapidly improving analytics (e.g. 3D, AI) that extract value from imagery; and (3) increased government demand (especially defense) for space-based sensing. Notably, Novaspace (Euroconsult/Spacetec) credits much of the growth to a <i>“surge in large-scale defense contracts”</i> and wider availability of sub-meter and 3D imaging[9].</p>
 
-                <DataTable
-                    headers={['Asset Class', 'Asset Base', 'Monitoring spend / unit (annual)', 'Implied annual TAM', 'Calibration basis']}
-                    rows={[
-                        ['Electricity transmission corridors', '~7,000,000 km', '$150–$450 / km', <span className="text-involve-green font-medium">$1.05–$3.15bn</span>, 'Satellite + AI for vegetation and corridor risk explicitly referenced as "enhanced" approach in US DOE guidance'],
-                        ['Oil + gas transmission pipelines', '~1,504,000 km', '$500–$2,000 / km', <span className="text-involve-green font-medium">$0.75–$3.01bn</span>, 'Below expensive in-line inspection campaign economics; EO/HAPS positioned as screening + anomaly detection'],
-                        ['Rail networks', '~1,170,000 km', '$400–$1,200 / km', <span className="text-involve-green font-medium">$0.47–$1.40bn</span>, 'EU maintenance benchmark: €39,600/km total; allocating 1–3% to monitoring/analytics is economically plausible'],
-                        ['Ports and terminals', '~3,600 ports', '$75k–$250k / port', <span className="text-involve-green font-medium">$0.27–$0.90bn</span>, 'Coastal surveillance, congestion/throughput proxies, security monitoring, climate impact screening'],
-                        ['Defence ISR (EO-relevant)', 'Buyer budgets', '$1.0–$3.0bn (total addressable slice)', <span className="text-involve-green font-medium">$1.0–$3.0bn</span>, 'Calibrated by scale of NRO commercial imagery contracts and NATO\'s disproportionate defence spend concentration'],
-                        [<strong className="text-involve-blue font-medium">Bottom-up TAM total (monitoring / analytics slice — conservative)</strong>, '', '', <span className="text-involve-green font-semibold text-[15px]">$3.5 – $11.5bn<div className="font-mono text-[10px] text-involve-dim font-normal mt-0.5">annual · global</div></span>, 'Monetisable monitoring layer only. Does not include full O&M or distribution grid monitoring across all 80M km.'],
-                    ]}
-                />
-                <Callout><strong className="text-involve-text font-medium not-italic">Reconciliation with Layer A:</strong> A $3.5–$11.5bn infrastructure + defence monitoring layer sits <em>inside</em> the broader $37–$63bn GeoAI/geospatial intelligence market. This means the bottom-up model does not require inflating Layer A — it explains one major "why now" demand engine for the category.</Callout>
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">The downstream split of the EO market underscores this. One analysis (ESA/Euroconsult) finds that in 2023 <strong>only ~38%</strong> of downstream EO revenue came from raw data sales (satellite tasking/archives), while <strong>62%</strong> came from value-added services and analytics[10]. In other words, buyers increasingly pay for insights, not just pixels. Moreover, governments are the dominant customers. In 2023 North America accounted for ~45% of EO revenues, Europe ~22%[11]. Public agencies (military, civilian) underwrite much of the development of satellites and platforms, then increasingly procure services for defense, border surveillance, environmental monitoring, and agriculture.</p>
 
-            {/* §5 SAM */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Serviceble Available Market" title="SAM — Europe + NATO + US, infrastructure and defence verticals" desc="Geography and vertical filters applied to TAM to reach the addressable market for Involve Space's current positioning" />
-                <BodyText>SAM is defined as <strong className="text-involve-text font-medium">Europe + NATO-aligned markets + United States</strong>, constrained to verticals where (i) sovereignty/dual-use procurement matters and (ii) persistent monitoring creates quantifiable ROI: critical infrastructure monitoring, defence/national security, and P&amp;C insurance applications.</BodyText>
 
-                <Split2
-                    left={<SplitCell label="Geographic filter — 60–70% regional share" title="North America + Europe = 66% of EO revenue">
-                        Two independent data points support a 60–70% "sovereign-aligned demand share" assumption:<br /><br />
-                        <strong className="text-involve-text font-medium">EO revenue concentration (Novaspace/Reuters):</strong> North America = 44%, Europe = 22% → combined 66% of global EO revenue in 2023.<br /><br />
-                        <strong className="text-involve-text font-medium">Defence spend (SIPRI):</strong> NATO members represent 55% of global military expenditure in 2024 ($1.506T of $2.718T).<br /><br />
-                        SAM applies a <strong className="text-involve-text font-medium">0.60–0.70 regional accessibility multiplier</strong> to the relevant vertical slice of TAM.
-                    </SplitCell>}
-                    right={<SplitCell label="Vertical filter — 30–45% of GeoAI market" title="Infrastructure, defence, and regulated sectors only">
-                        Involve Space excludes GI demand driven by consumer and advertising use cases. There is no single universally accepted published split of the GeoAI market by vertical — this memo therefore uses an explicit conservative assumption:<br /><br />
-                        <strong className="text-involve-text font-medium">Vertical relevance factor (assumption): 30–45%</strong> of the global GeoAI/geospatial intelligence market corresponds to infrastructure/energy, defence/national security, and insurance/financial risk use cases where sovereign or regulated procurement is a meaningful factor.
-                    </SplitCell>}
-                />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Persistent monitoring and rapid tasking</strong> are emerging imperatives. Unlike traditional satellites with fixed revisit cycles, decision-makers now want “always-on” awareness of critical zones. As one industry expert notes, market growth is not just about replacing aerial reconnaissance, but <i>“scaling up EO monitoring capabilities to provide actionable insights over time”</i>[12]. Countries are investing accordingly – for example, India and Canada are injecting hundreds of millions into EO technology for wildfire, climate and border monitoring[3]. In this context, our high-altitude platforms provide a complementary solution: they can loiter over a target area with high-frequency sensors, enabling near-continuous coverage and fast tasking, which addresses a key gap in today’s space-based EO architecture.</p>
 
-                {/* SAM Funnel */}
-                <div className="border border-involve-border overflow-hidden my-8">
-                    <FunnelRow layer="LAYER" layerLabel="TAM" barWidth="100%" barLabel="Global GeoAI / Geospatial Intelligence Market — all geographies, all verticals" mainVal="$37.1bn → $62.9bn" subVal="2025 → 2030 · 11.1% CAGR" />
-                    <FunnelRow layer="FILTER" layerLabel="Vertical" barWidth="45%" barLabel="Infra + defence + insurance verticals (30–45% of TAM)" mainVal="×0.30 to ×0.45" subVal="Infrastructure · Defence · Insurance only" />
-                    <FunnelRow layer="FILTER" layerLabel="Geography" barWidth="28%" barLabel="Europe + NATO + US (60–70% regional share)" mainVal="×0.60 to ×0.70" subVal="North America + Europe = 66% EO revenue" />
-                    <FunnelRow layer="RESULT" layerLabel="SAM" barWidth="20%" barLabel="Involve Space SAM" mainVal="$6.7bn → $19.8bn" subVal="2025 range: $6.7–$11.7bn · 2030: $11.3–$19.8bn" accent />
-                </div>
 
-                <DataTable
-                    headers={['Year', 'Global GeoAI TAM', 'Vertical relevance (assumption)', 'Region accessibility', 'SAM (range)']}
-                    rows={[
-                        ['2025', '$37.13bn', '30–45%', '60–70% (Europe + NATO + US)', <strong className="text-involve-green font-medium">$6.7bn – $11.7bn</strong>],
-                        ['2030', '$62.88bn', '30–45%', '60–70%', <strong className="text-involve-green font-medium">$11.3bn – $19.8bn</strong>],
-                    ]}
-                />
-                <BodyText>This SAM definition is deliberately narrower than the broader "geospatial analytics" market sizing ($114bn in 2024) because that broader market embeds consumer LBS and cross-industry GIS tooling that is not aligned with sovereign / dual-use positioning.</BodyText>
-            </ContentBlock>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">3. Geospatial Analytics and GeoAI</h2>
 
-            <SectionDivider />
 
-            {/* §6 SOM */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Serviceble Obtainable Market" title="SOM — fleet-bounded revenue scenarios" desc="SOM is modelled from capacity constraints (fleet scale and deployments) rather than market share assumptions" />
-                <BodyText>SOM is bounded by (i) platform count, (ii) operational uptime, (iii) sensor mix and re-tasking, and (iv) geographic/regulatory constraints. This approach is appropriate for persistent stratospheric infrastructure: even with strong demand, revenue is limited by fleet capacity — not by market share dynamics.</BodyText>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We are witnessing an <strong>explosion in demand for geospatial analytics and GeoAI</strong> (AI applied to spatial data). Enterprises and governments alike are moving from raw data toward intelligent, automated decision-support. Market studies reflect this shift: the global GeoAI/geospatial-intelligence market is projected to expand from roughly <strong>$37 billion in 2025 to $63 billion by 2030</strong> (about 11% CAGR)[13]. In broader terms, the geospatial analytics market (mapping, location analytics, GIS platforms) is already on the order of <strong>$100–110 billion (mid-2020s)</strong>, forecast to nearly triple by the mid-2030s[14]. These double-digit growth rates are driven by two factors: (1) <strong>AI and cloud analytics</strong>, which make it feasible to process huge volumes of satellite, aerial, and IoT data in real time; and (2) <strong>demanding business use cases</strong> – from supply chain optimization to asset management – that require integrated location intelligence.</p>
 
-                {/* Operating assumptions */}
-                <div className="bg-involve-panel border border-involve-border border-l-2 border-l-involve-blue p-6 my-6">
-                    <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-dim mb-4">Operating assumptions (explicit — not proprietary)</div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <div className="font-mono text-[10px] text-involve-dim mb-1">Average contract duration</div>
-                            <div className="text-[14px] font-medium text-involve-text">12–36 months</div>
-                            <div className="text-[11px] text-involve-dim mt-1">Subscription + mission/tasking fee structure</div>
-                        </div>
-                        <div>
-                            <div className="font-mono text-[10px] text-involve-dim mb-1">Platform utilisation</div>
-                            <div className="text-[14px] font-medium text-involve-text">70–85% revenue uptime</div>
-                            <div className="text-[11px] text-involve-dim mt-1">After maintenance, regulatory stand-down, repositioning</div>
-                        </div>
-                        <div>
-                            <div className="font-mono text-[10px] text-involve-dim mb-1">ACV by customer type</div>
-                            <div className="text-[13px] font-light text-involve-text leading-relaxed">Infrastructure: €1.5–4.0M<br />Defence: €3.0–8.0M<br />Insurance P&amp;C: €1.0–3.0M</div>
-                        </div>
-                    </div>
-                </div>
 
-                <ScenarioGrid />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In practice, this translates into a radical change in how geospatial data is consumed. We are moving from <i>“Data-as-a-Service”</i> to <i>“Intelligence-as-a-Service,”</i> and even to <i>“Answers-as-a-Service.”</i> Industry leaders capture this shift well. As one Esri executive notes, “five to ten years ago GIS was mostly about layering data onto maps… Today, customers want fresh, real-time data that’s tightly integrated into their decision-making workflows”[15]. Moreover, as Maxar’s CTO observes, <i>“Not every customer wants to analyze pixels… they want to know what changed, where, and why – and… across a wide range of sensors.”</i>[16]. In other words, end-users increasingly expect platforms that take in diverse imagery and sensor feeds and output actionable insights or even plain-language answers, rather than raw imagery.</p>
 
-                <Callout><strong className="text-involve-text font-medium not-italic">How to interpret these numbers:</strong> These trajectories are not predicated on winning a large fraction of SAM — they are bounded by fleet capacity and a conservative number of "contracted theatres." The conservative case assumes early go-to-market friction. The aggressive case assumes that multi-tenancy and software-layer monetisation (CLEAR) meaningfully improves revenue per platform by 2027–28 without requiring proportional growth in operating headcount.</Callout>
-            </ContentBlock>
 
-            <SectionDivider />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">This is precisely the trend driving our <strong>CLEAR Answers-as-a-Service</strong> platform. CLEAR ingests multiple data streams (satellite, our high-altitude sensor, ground databases, etc.) and applies AI to answer queries in natural language. In doing so, it sits squarely at the vanguard of the geospatial analytics revolution: markets are moving from bits (data) to bytes (intelligence) to words (answers). We align our product roadmap to this evolution: by packaging AI-driven analytics into conversational, decision-ready outputs, we join major players who are embedding GeoAI into enterprise software[17][16].</p>
 
-            {/* §7 Competitive Landscape */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Competitive Landscape" title="Where Involve Space sits structurally" desc="Integrated sensing + autonomous control + GeoAI platform — distinct from pure satellite operators, pure analytics vendors, and defence integrators" />
-                <BodyText>Involve Space sits in a hybrid category that does not map cleanly onto existing market participants. Pure satellite operators provide data but cannot offer persistence or sovereign data custody. Pure analytics vendors can produce insights but depend on third-party data streams they cannot control. Involve is the only active European company attempting to own the full stack from stratospheric collection to sovereign intelligence delivery.</BodyText>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-involve-border border border-involve-border my-8">
-                    <div className="bg-involve-panel p-6">
-                        <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-blue border-b border-involve-border pb-3 mb-4">Satellite Operators — Data supply and tasking economics</div>
-                        {[
-                            { name: 'Planet', desc: 'High-revisit optical constellations. High volume, lower resolution. Cannot offer persistent tasking over a specific theatre.' },
-                            { name: 'Maxar', desc: 'High-resolution imagery and government contracts. NRO commercial imagery partner (EOCL — "valued at billions"). Strong gov channel but orbital revisit constraints.' },
-                            { name: 'ICEYE', desc: 'SAR constellations with ISR positioning. Growing defence user base but no persistent targeting capability for specific corridors.' },
-                            { name: 'BlackSky', desc: 'Time-dominant imagery + analytics. Rapid revisit framing but not true persistence — key differentiator for infrastructure use cases.' },
-                        ].map((c, i) => (
-                            <div key={i} className="flex gap-3 mb-4 last:mb-0">
-                                <div className="w-1.5 h-1.5 rounded-full bg-involve-dim/30 mt-1.5 flex-shrink-0" />
-                                <div>
-                                    <div className="text-[13px] font-medium text-involve-text mb-0.5">{c.name}</div>
-                                    <div className="text-[12px] font-light text-involve-muted leading-relaxed">{c.desc}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="bg-involve-panel p-6">
-                        <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-involve-amber border-b border-involve-border pb-3 mb-4">Analytics Vendors &amp; Defence Integrators</div>
-                        {[
-                            { name: 'Orbital Insight / Kayrros / RS Metrics', desc: 'Software-first, data-agnostic analytics. Strong insight products but dependent on third-party data streams they cannot guarantee.' },
-                            { name: 'Palantir', desc: 'Defence distribution and integration depth. "Integration over heterogeneous sensors" architecture — not owning a new stratospheric sensing layer.' },
-                            { name: 'Anduril', desc: 'Defence-native sensing and AI company. US-centric, focused on autonomous systems rather than persistent stratospheric sensing.' },
-                        ].map((c, i) => (
-                            <div key={i} className="flex gap-3 mb-4 last:mb-0">
-                                <div className="w-1.5 h-1.5 rounded-full bg-involve-amber/50 mt-1.5 flex-shrink-0" />
-                                <div>
-                                    <div className="text-[13px] font-medium text-involve-text mb-0.5">{c.name}</div>
-                                    <div className="text-[12px] font-light text-involve-muted leading-relaxed">{c.desc}</div>
-                                </div>
-                            </div>
-                        ))}
-                        <div className="flex gap-3 mt-4 pt-4 border-t border-involve-border">
-                            <div className="w-1.5 h-1.5 rounded-full bg-involve-blue mt-1.5 flex-shrink-0" />
-                            <div>
-                                <div className="text-[13px] font-medium text-involve-blue mb-0.5">Involve Space — structural position</div>
-                                <div className="text-[12px] font-light text-involve-muted leading-relaxed">Not "a satellite company" and not "just analytics." Controls the full stack from persistent stratospheric collection to sovereign-grade intelligence delivery. Only active European commercial operator in this category.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ContentBlock>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">4. Defence and Security Intelligence Market</h2>
 
-            <SectionDivider />
 
-            {/* §8 Strategic Positioning */}
-            <ContentBlock>
-                <SectionHeader eyebrow="Strategic Positioning" title="Five investor-relevant structural advantages" desc="Persistent stratospheric sensing + AI orchestration creates advantage across five dimensions that compound over time" />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Demand for intelligence, surveillance and reconnaissance (ISR) – and particularly persistent monitoring – is surging in defence and security applications. Modern warfare and security operations depend on real-time situational awareness across land, sea, air, and border domains. NATO defense spending has climbed sharply: by 2025, all 32 member countries are expected to meet or exceed 2% of GDP in defense, pushing total NATO spending to about <strong>$1.6 trillion</strong>[4]. Many members are even committing to 3–5% GDP by 2035[5]. Europe’s core defense budget alone is roughly <strong>$500 billion</strong> (2024)[18], on top of the US budget (~$935–980 billion in 2024–25[19]). A significant slice of these budgets is devoted to ISR: for example, NATO reports roughly <strong>20% growth</strong> in allied ISR expenditures between 2014 and 2021[20].</p>
 
-                <div className="flex flex-col gap-px bg-involve-border border border-involve-border my-8">
-                    {/* Header */}
-                    <div className="grid bg-involve-bg border-b border-involve-border" style={{ gridTemplateColumns: '200px 1fr 140px' }}>
-                        {['Dimension', 'Strategic logic', 'Evidence basis'].map((h, i) => (
-                            <div key={i} className="px-4 py-3 font-mono text-[10px] tracking-[0.12em] uppercase text-involve-dim border-r border-involve-border last:border-r-0">{h}</div>
-                        ))}
-                    </div>
-                    {pillars.map((p, i) => (
-                        <div key={i} className="grid bg-involve-panel hover:bg-involve-bg transition-colors" style={{ gridTemplateColumns: '200px 1fr 140px' }}>
-                            <div className="px-4 py-3 text-[13px] font-medium text-involve-text border-r border-involve-border leading-snug">{p.name}</div>
-                            <div className="px-4 py-3 text-[12px] font-light text-involve-muted border-r border-involve-border leading-relaxed">{p.logic}</div>
-                            <div className="px-4 py-3 flex flex-col gap-1">{p.evidence.map(([color, label]) => <Badge key={label} color={color as any}>{label}</Badge>)}</div>
-                        </div>
-                    ))}
-                </div>
 
-                <Callout><strong className="text-involve-text font-medium not-italic">Investor-grade conclusion:</strong> The market is large enough on a conservative basis ($37bn → $63bn by 2030 for GeoAI GI) and the vertical demand substrates are strong. The primary diligence question is therefore not "does demand exist?" but "<strong className="text-involve-text font-medium not-italic">can Involve Space scale the fleet, secure sovereign-aligned contracts, and convert persistent sensing into repeatable workflows faster than pure-play data providers and integrators can commoditise the analytics layer?</strong>" The SOM model shows that, if fleet scale is achieved, revenue can become material by 2028 without requiring implausible market share assumptions.</Callout>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Key ISR applications include <strong>border and maritime security</strong> (monitoring coasts, Exclusive Economic Zones, migration routes), <strong>critical infrastructure protection</strong> (pipelines, ports, power grids), and <strong>battlefield intelligence</strong> (target detection, force movement). Geospatial intelligence underpins all of these: for instance, during the Ukraine conflict both satellite imagery and commercial drone data have been used continuously to track forces and detect equipment changes. Indeed, commercial geospatial firms reported a ~40% jump in demand for their intelligence products in 2022, largely due to the Ukraine crisis[20]. At the same time, allied defense policy documents (e.g. NATO Summit communiqués) emphasize growing investments in space- and air-based surveillance to deter aggression.</p>
 
-                <RefNote>Sources: Gartner (Earth intelligence / multimodal enterprise) · MarketsandMarkets (GeoAI, Decision Intelligence, Risk Analytics, Digital Twin) · Grand View Research (Geospatial Analytics, EO, Satellite Data) · EUSPA Market Report 2024 · SIPRI Military Expenditure 2024 · IEA Grid Investment 2023 · Global Energy Monitor (Gas + Oil Infrastructure Trackers) · UIC World Rail Statistics · US DOE Vegetation Management Guide · ITU HAPS backgrounder · Airbus Zephyr · NASA SPB programme · NRO EOCL contract announcement · EU Space Strategy for Security and Defence · USSF Commercial Space Strategy · Novaspace/Reuters EO market sizing 2024.</RefNote>
-            </ContentBlock>
 
-            <NextSectionCard
-                title="GeoAI & Earth Intelligence Positioning"
-                description="Strategic category analysis: how the Earth Intelligence category is forming and where Involve Space sits within it."
-                path="/dataroom/01_Strategy_and_Market/02_GeoAI_and_Earth_Intelligence_Positioning"
-            />
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In short, a multi-hundred-billion-dollar defense market is reorienting toward on-demand geospatial intelligence. Our mission-focused line (“Custom Missions”) directly addresses this need. By providing near-persistent aerial sensing plus integrated analytics, we offer defence and security customers a complementary solution to traditional satellites and drones. This resonates with industry insight that defense ISR is moving to hybrid sensor architectures (sea/air/space convergence), and that commercial EO data is now a core enabler of strategic intelligence[20][16].</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">5. Infrastructure and Energy Monitoring Market</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Beyond defense, civil infrastructure and energy sectors are becoming major consumers of Earth intelligence. Utilities and asset owners need continuous monitoring of pipelines, transmission lines, transportation networks, offshore platforms, mining sites and other critical facilities. Remote sensing and AI are key enablers of <strong>predictive maintenance</strong> and <strong>risk management</strong>. For example, satellite imagery and aerial LiDAR can detect pipeline leaks, subsidence under railways, or solar farm damage; power utilities use hotspot detection to prevent blackouts; and smart cities use integrated sensors for traffic and flood monitoring.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Market forecasts reflect this growth. The global <strong>predictive maintenance</strong> market (across industries) is projected to rise from about <strong>$10.6 billion in 2024 to $47.8 billion by 2029</strong>[21], a ~35% CAGR, driven by IoT sensors and AI analytics in energy, manufacturing, and transportation. Environmental monitoring (air/water/soil quality, critical pollutant tracking) is also a growing multi-billion market; one report values it at <strong>$14.7 billion in 2024, reaching $18.6 billion by 2029</strong>[22] (5% CAGR) thanks to stricter regulations and ESG mandates. Even narrowly-defined <strong>infrastructure monitoring</strong> is estimated at several billion today; for example, analysts project it will roughly double from ~$6 billion in 2025 to ~$12 billion by 2035 (mid-single-digit CAGR).</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In these sectors, the trend is similar to defense: organizations want actionable intelligence from spatial data. For instance, an oil&amp;gas operator might deploy AI to interpret satellite and drone imagery for pipeline strain, rather than manually inspect thousands of kilometers. Likewise, insurers and governments rely on automated EO analysis for climate-related risk. Our offerings (both custom and via CLEAR) address this demand by fusing air and space data with domain models. We expect infrastructure and energy customers to represent a steadily growing revenue stream, as sensor-as-a-service and analytics-as-a-service models become standard for maintenance and compliance.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">6. Total Addressable Market (TAM)</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We define <strong>TAM</strong> as the total global market for Earth intelligence services – essentially the sum of relevant EO data, analytics, and intelligence markets. Table 1 summarizes our estimates for key segments. These are drawn from recent industry studies and market reports.</p>
+
+<div className="overflow-x-auto my-8 border border-involve-border bg-involve-panel"><table className="w-full text-left border-collapse">
+  <tbody>
+    <tr>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Market Segment</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Estimated Size (2023/2024)</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Forecast CAGR</strong></p>
+
+      </td>
+    </tr>
+    <tr>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Earth Observation (Data &amp; Services)</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~$5 B[8] (2023)</h2>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~6–8% (to 2033)</h2>
+
+      </td>
+    </tr>
+    <tr>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Geospatial Analytics &amp; GeoAI</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~$100–110 B[14] (2025)</h2>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~12–13% (to 2034)</h2>
+
+      </td>
+    </tr>
+    <tr>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Defence ISR Intelligence</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~$42 B[23] (2024)</h2>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">~5.6% (to 2034)</p>
+
+      </td>
+    </tr>
+    <tr>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Infrastructure &amp; Energy Monitoring</strong></p>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~$25 B (combined)[21][22]</h2>
+
+      </td>
+      <td className="border border-involve-border px-4 py-3 text-[13px] font-light text-involve-text align-top">
+        
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">~20% (next 5 yrs)</h2>
+
+      </td>
+    </tr>
+  </tbody>
+</table></div>
+
+      <p className="text-[12px] font-mono text-involve-dim mt-2 mb-8 text-center"><i>Table 1: Global Market Segments – size and growth (sources cited).</i></p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Notes on assumptions:</strong><br />
+- <i>Earth Observation</i> TAM (~$5 B) is based on current commercial EO data and service revenues[8]. The CAGR reflects growth in satellite constellations and service demand[8].<br />
+- <i>Geospatial Analytics &amp; GeoAI</i> TAM (~$100 B) draws on market research that values the global geospatial analytics market at ~$102 B in 2025[14]. The CAGR (~13%) is from published forecasts[14].<br />
+- <i>Defence ISR Intelligence</i> TAM (~$42 B) uses a recent industry report that pegs the global ISR market at $42 B in 2024[23]. This covers all military and security ISR platforms and services.<br />
+- <i>Infrastructure &amp; Energy Monitoring</i> TAM (~$25 B) aggregates markets like predictive maintenance and environmental monitoring. For example, predictive maintenance is ~$10.6 B (2024)[21] and growing ~35% CAGR, environmental monitoring ~$14.7 B (2024)[22]. We combine these to reflect a broad class of critical infrastructure sensing needs, with an implied ~20% growth as more industries adopt IoT and satellite sensing.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Summing these segments implies a <strong>total Earth intelligence TAM on the order of $150–200 billion</strong> (current base, expanding rapidly). While we have segmented the market for analysis, in practice these categories overlap – e.g. defense budgets include both EO and analytics spending – so the combined figure is indicative. The key point is that Involve addresses multiple large, converging markets (satellite data, AI analytics, defence ISR, and infrastructure monitoring) that each are measured in many billions of dollars.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">7. Serviceable Addressable Market (SAM)</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our <strong>SAM</strong> is the portion of the TAM that Involve can realistically target with our technology and go-to-market approach. We focus on applications requiring <strong>persistent, high-revisit geospatial sensing</strong> plus AI-driven intelligence. In particular, our SAM spans:<br />
+- <strong>Defence and Security Monitoring:</strong> This includes military ISR, border security, maritime patrol, and homeland security. For perspective, if we assume global defense intelligence allocations are on the order of tens of billions annually, even capturing a few percent of that (via government contracts and coalition programs) yields a substantial SAM.<br />
+- <strong>Infrastructure &amp; Energy Surveillance:</strong> Encompassing oil &amp; gas, power grid, transportation, mining and utilities. Operators in these industries spend billions on maintenance and risk management; a fraction of that (those needing real-time geospatial analytics) is addressable by our platforms.<br />
+- <strong>Environmental &amp; Climate Intelligence:</strong> Covering government and corporate demand for climate monitoring, emissions tracking, and compliance. As ESG requirements grow, so does the budget for Earth observation (e.g. monitoring carbon sinks, deforestation, pollution).<br />
+- <strong>Enterprise Geospatial Analytics:</strong> High-value business use cases (e.g. commodity trading, agriculture, logistics) where customers seek integrated location insights.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Putting numbers to SAM is inherently speculative, but we can bracket it with assumptions. If TAM is ~$150–200 B, and we assume Involve can pursue perhaps ~10–20% of that through our niche services, we arrive at a SAM in the order of <strong>$15–30 B</strong>. For example, defence forces worldwide may spend ~$70–100 B on geospatial ISR equipment and services annually; even a 5% share of that is $3–5 B. Critical infrastructure companies similarly represent multi‑billion demands; addressing 10–20% of that market is several more billions. As another anchor, Europe’s core defense equipment budget was ~$155 B in 2024[24] – if even 5% of that equates to $7–8 B in opportunity. In our detailed financial model we conservatively assume SAM of roughly <strong>$20 B</strong> based on these components.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Crucially, our technology creates a <strong>unique service layer</strong> that sits between satellites and ground sensors. The stratosphere offers wider coverage and longer dwell times than drones, with lower latency than satellites. Coupled with our AI-native analytics (CLEAR), we can address use cases that traditional satellite-only or ground-only architectures cannot. This hybrid advantage allows us to claim parts of the above markets that are otherwise underserved – for instance, continuous monitoring of slow-moving threats (border intrusion, oil spills) or rapid re-tasking for emergency response. This supports our SAM estimate and differentiates our offering in an overcrowded sensor market.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">8. Serviceable Obtainable Market (SOM)</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our <strong>SOM</strong> is the realistic share of SAM we can capture in the medium term (5–10 years), given our resources and business plan. Conservatively, early-stage companies often achieve low single-digit percentages of SAM. However, we are aiming for a <strong>venture-scale opportunity</strong>, so we project higher capture in fast-adopting segments.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Based on current traction (e.g. a €2 M contract with Italy’s MoD and €1.5 M with ESA) and a growing pipeline across Europe, we estimate that we can reach <strong>several hundred million euros</strong> in annual revenue within ~5 years, corresponding to a <strong>low single-digit percent</strong> of the above market slices. For example, if our SAM is ~$20 B, securing ~1–2% of that over time implies a SOM of <strong>$200–400 million</strong> (revenues). If conditions (market momentum, funding, partnerships) are particularly favorable, a SOM up to ~$1 billion (i.e. ~5% of SAM) is a plausible upper bound.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We illustrate this in financial terms: winning comparable contracts in multiple allied countries, scaling the CLEAR platform in industry verticals, and offering recurring subscriptions could yield (for instance) ~€50–100 M in ARR by year 5. This fits a SOM in the mid-hundreds of millions. Although this is a small fraction of TAM, it is in line with early-stage growth expectations and already represents a sizable market for an emerging company. In summary, we consider SOM to be <strong>$0.2–1.0 B</strong> in the 5–10 year horizon, reflecting a realistic yet ambitious capture of defense and industrial intelligence spending.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">9. Strategic Market Positioning</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Involve is <strong>strategically positioned at the convergence</strong> of three major trends: (1) the digitization of Earth observation infrastructure, (2) the rise of GeoAI analytics, and (3) the militarization of space/air domains. We are building the next-generation Earth intelligence infrastructure by combining persistent high-altitude sensing with AI-native software. This embodies the industry shift from siloed sensing to <strong>hybrid multi-domain networks</strong>. For example, defense thought leaders envision fully integrated sensor webs, where <i>“hybrid sensor networks deliver packaged intelligence across sectors like insurance, defense, energy, and agriculture”</i>[25]. Likewise, experts predict that EO will become as ubiquitous as GPS once was: <i>“Just like GPS started as a military system and became a daily utility, EO is crossing the chasm”</i>[26]. We aim to be one of the companies defining that next wave of EO innovation.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In practical terms, our stratospheric platforms act as an <strong>“airborne satellite constellation”</strong>: they can station-keep over areas of interest for days or weeks, providing persistent coverage that even LEO constellations cannot match. At the same time, our CLEAR AI glues together data from space (satellites), air (our balloons/airships), land (ground sensors) and sea (maritime AIS, etc.) into a unified intelligence view. This multi-domain approach is increasingly recognized as the future of Earth intelligence. As one industry analysis notes, customers are moving from static maps to <i>“dynamic, task-specific EO insights”</i>[15], and from raw data to concrete answers[16]. By delivering real-time analytics and conversational intelligence, we squarely meet that demand.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In summary, Involve is not just a satellite services company or a software startup – we are an <strong>Earth Intelligence infrastructure company</strong>. We provide the sensing layer (persistent high-altitude platforms) and the intelligence layer (GeoAI) that enable 24/7 situational awareness. This positions us as a strategic enabler for modern defense and commercial operations. As space and defense strategies pivot toward resilience and responsiveness, Involve will serve as a crucial bridge between domains, making continuous, AI-powered Earth observation a reality.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">References</h2>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[1] McKinsey &amp; Company, <i>“Space: The $1.8 trillion opportunity for global economic growth”</i> (April 2024) – global space economy growth forecasts[1].<br />
+[2] Reuters, <i>“Global earth observation market to cross $8 billion by 2033, says Novaspace”</i> (Nov 2024) – EO market size projections[8][3].<br />
+[3] ESA Space Economy Report (2024) – breakdown of EO downstream market and regional shares[10][11].<br />
+[4] ResearchandMarkets, <i>“Geospatial Intelligence Market… Forecast to 2030”</i> (Jan 2026) – GeoAI market growth ($37.1B→$62.9B by 2030)[13].<br />
+[5] Fortune Business Insights, <i>“Geospatial Analytics Market Size &amp; Forecast”</i> (2023) – Geoanalytics ~$102.5B (2025)→$309.8B (2034)[14].<br />
+[6] Gabelli (research note), <i>“NATO Spending Overview”</i> (2024) – NATO defense spending ($1.6T by 2025) and targets[4][5].<br />
+[7] Atlas Institute, <i>“The Strategic Value of GEOINT in Monitoring Dual-Use Infrastructure”</i> (Sept 2025) – geospatial industry growth data (e.g. geospatial solutions $626B→$2.1T) and ISR trends[7][20].<br />
+[8] Global Market Insights, <i>“Intelligence Surveillance Reconnaissance Market Size, 2025–2034”</i> (Dec 2024) – ISR market $42B (2024)→$71.2B (2034)[23].<br />
+[9] MarketsandMarkets, <i>“Environmental Monitoring Market – Regional Insight”</i> (2024) – environmental monitoring $14.7B (2024)→$18.6B (2029)[22].<br />
+[10] MarketsandMarkets, <i>“Predictive Maintenance Market – Global Forecast”</i> (Mar 2024) – predictive maintenance $10.6B (2024)→$47.8B (2029)[21].<br />
+[11] Space Capital, <i>“Better Together: EO &amp; GIS”</i> (Aug 2025) – industry perspectives on GIS evolution and intelligence (e.g. need for real-time, AI-driven insights)[15][16].<br />
+[12] Morgan Stanley Research, <i>“5 Key Themes in the New Space Economy”</i> (2023) – satellites for climate and security monitoring[2].</p>
+
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[1] Space: The $1.8 trillion opportunity for global economic growth | McKinsey</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.mckinsey.com/industries/aerospace-and-defense/our-insights/space-the-1-point-8-trillion-dollar-opportunity-for-global-economic-growth</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[2] Space Economy: Investment Themes | Morgan Stanley</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.morganstanley.com/ideas/space-economy-investment-themes</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[3] [8] [9] [12] Global earth observation market to cross $8 billion by 2033, says Novaspace | Reuters</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[4] [5] [18] [19] [24] NATO Spending Overview: A Structural Change to the Defense Industry</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://gabelli.com/research/nato-spending-overview-a-structural-change-to-the-defense-industry/</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[6] [7] [20] From Intelligence Collection to International Security: The Strategic Value of GEOINT in Monitoring Dual-Use Infrastructure | Atlas Institute for International Affairs</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://atlasinstitute.org/from-intelligence-collection-to-international-security-the-strategic-value-of-geoint-in-monitoring-dual-use-infrastructure/</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[10] [11] space-economy.esa.int</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://space-economy.esa.int/documents/b61btvmeaf6Tz2osXPu712bL0dwO3uqdOrFAwNTQ.pdf</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[13] Geospatial Intelligence Market Size &amp; Forecast to 2030</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.researchandmarkets.com/report/geospatial-analytics?srsltid=AfmBOoqwyShKjZp9o1oLV9I9XysmwNU8Vj63VVgAXgTeqjdzzOqSWibz</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[14] Geospatial Analytics Market Size, Share | Global Report [2034]</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.fortunebusinessinsights.com/geospatial-analytics-market-102219</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[15] [16] [17] [25] [26] Space Capital | Insights | Better Together: EO &amp; GIS</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.spacecapital.com/blogs/better-together-eo-gis</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[21] Predictive Maintenance Market Share, Global Industry Size Forecast</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.marketsandmarkets.com/Market-Reports/operational-predictive-maintenance-market-8656856.html</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[22] Why the Global Environmental Monitoring Market Is Growing at 4.9% CAGR - Key Drivers and Future Outlook</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.marketsandmarkets.com/ResearchInsight/environmental-monitoring-regional-insight.asp</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[23] Intelligence Surveillance Reconnaissance Market Size Report - 2034</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.gminsights.com/industry-analysis/intelligence-surveillance-reconnaissance-market</p>
+
+
+            </div>
         </div>
     );
 }

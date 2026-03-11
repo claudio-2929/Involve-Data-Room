@@ -1,434 +1,194 @@
-import React from 'react';
-import {
-    DocHeader,
-    SectionHeader,
-    BodyText,
-    ContentBlock,
-} from '../components/ui/core';
+import { DocHeader } from '../components/ui/core';
 
-function Callout({ children, variant = 'default' }: { children: React.ReactNode; variant?: 'default' | 'green' | 'amber' }) {
-    const color = variant === 'green' ? 'border-green-400/40 bg-green-400/5 text-green-400/80'
-        : variant === 'amber' ? 'border-amber-400/40 bg-amber-400/5 text-amber-400/80'
-            : 'border-blue-400/30 bg-blue-400/5 text-involve-muted';
-    return <div className={`my-6 border-l-2 p-4 text-[0.8rem] font-light leading-relaxed ${color}`}>{children}</div>;
-}
-
-function RefNote({ children }: { children: React.ReactNode }) {
-    return <p className="mt-8 text-[0.68rem] font-mono text-involve-dim leading-relaxed border-t border-involve-border pt-4">{children}</p>;
-}
-
-/* ── Local layout primitives ────────────────────────────────────── */
-const Split2: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="grid grid-cols-2 gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const SplitCell: React.FC<{ label: string; title: string; accent?: string; children: React.ReactNode }> = ({ label, title, accent, children }) => (
-    <div className={`bg-involve-panel p-6 ${accent ? `border-t-2 ${accent}` : ''}`}>
-        <div className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim mb-2">{label}</div>
-        <div className="text-[0.88rem] font-semibold text-involve-text mb-3 tracking-tight">{title}</div>
-        <div className="text-[0.79rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const RevStack: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex flex-col gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-interface RevTierProps { label: string; sub: string; desc: React.ReactNode; marginVal: string; marginLabel: string; accentColor: string; }
-const RevTier: React.FC<RevTierProps> = ({ label, sub, desc, marginVal, marginLabel, accentColor }) => (
-    <div className={`grid grid-cols-[220px_1fr_120px] bg-involve-panel hover:bg-involve-bg2 transition-colors border-l-[3px] ${accentColor}`}>
-        <div className="p-4 border-r border-involve-border">
-            <span className="font-mono text-[0.58rem] text-involve-dim tracking-widest uppercase block mb-1">{sub}</span>
-            <span className="font-semibold text-[0.84rem] text-involve-text">{label}</span>
-        </div>
-        <div className="p-4 text-[0.8rem] font-light text-involve-muted leading-relaxed border-r border-involve-border">{desc}</div>
-        <div className="p-4 flex flex-col gap-1">
-            <span className={`text-[0.9rem] font-semibold tracking-tight ${accentColor.replace('border-l-[3px]', '').trim()}`}>{marginVal}</span>
-            <span className="font-mono text-[0.57rem] text-involve-dim">{marginLabel}</span>
-        </div>
-    </div>
-);
-
-const SegGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="grid grid-cols-3 gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-interface SegCardProps { label: string; title: string; dotColor: string; borderColor: string; entry: string; children: React.ReactNode; }
-const SegCard: React.FC<SegCardProps> = ({ label, title, dotColor, borderColor, entry, children }) => (
-    <div className={`bg-involve-panel hover:bg-involve-bg2 transition-colors p-6 ${borderColor}`}>
-        <div className="flex items-center gap-2 mb-2">
-            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${dotColor}`} />
-            <span className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim">{label}</span>
-        </div>
-        <div className="text-[0.88rem] font-semibold text-involve-text mb-2 tracking-tight">{title}</div>
-        <div className="text-[0.76rem] font-light text-involve-muted leading-relaxed">{children}</div>
-        <div className="mt-3 pt-3 border-t border-involve-border font-mono text-[0.6rem] text-involve-dim leading-relaxed">{entry}</div>
-    </div>
-);
-
-const FunnelTrack: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="grid grid-cols-3 gap-px bg-white/[0.12] border border-involve-border-med my-8">{children}</div>
-);
-interface FunnelStepProps { num: string; title: string; kpi: React.ReactNode; accentBorder: string; children: React.ReactNode; }
-const FunnelStep: React.FC<FunnelStepProps> = ({ num, title, kpi, accentBorder, children }) => (
-    <div className={`bg-involve-panel hover:bg-involve-bg2 transition-colors p-6 flex flex-col gap-2 border-t-2 ${accentBorder} relative`}>
-        <div className="font-mono text-[0.6rem] text-blue-400 tracking-widest">{num}</div>
-        <div className="text-[0.9rem] font-semibold text-involve-text tracking-tight">{title}</div>
-        <div className="text-[0.77rem] font-light text-involve-muted leading-relaxed flex-1">{children}</div>
-        <div className="mt-3 pt-3 border-t border-involve-border font-mono text-[0.62rem] text-involve-dim leading-relaxed">{kpi}</div>
-    </div>
-);
-
-const DefTrack: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex flex-col gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const DefRow: React.FC<{ name: string; sub: string; children: React.ReactNode }> = ({ name, sub, children }) => (
-    <div className="grid grid-cols-[220px_1fr] bg-involve-panel hover:bg-involve-bg2 transition-colors">
-        <div className="p-4 border-r border-involve-border flex flex-col gap-1 justify-center">
-            <span className="font-semibold text-[0.84rem] text-involve-text leading-snug">{name}</span>
-            <span className="font-mono text-[0.58rem] text-involve-dim tracking-widest">{sub}</span>
-        </div>
-        <div className="p-4 text-[0.79rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const PhaseList: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex flex-col gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const PhaseRow: React.FC<{ label: string; sub: string; labelColor: string; children: React.ReactNode }> = ({ label, sub, labelColor, children }) => (
-    <div className="grid grid-cols-[160px_1fr] bg-involve-panel hover:bg-involve-bg2 transition-colors">
-        <div className={`p-4 border-r border-involve-border flex flex-col gap-1 justify-center font-mono text-[0.62rem] tracking-widest uppercase ${labelColor}`}>
-            <span className="font-semibold text-[0.85rem] font-sans">{label}</span>
-            <span className="text-involve-dim">{sub}</span>
-        </div>
-        <div className="p-4 text-[0.81rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const ClearGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="grid grid-cols-2 gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const ClearCard: React.FC<{ label: string; title: string; accent: string; children: React.ReactNode }> = ({ label, title, accent, children }) => (
-    <div className={`bg-involve-panel hover:bg-involve-bg2 transition-colors p-6 border-t-2 ${accent}`}>
-        <div className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim mb-2">{label}</div>
-        <div className="text-[0.88rem] font-semibold text-involve-text mb-2 tracking-tight">{title}</div>
-        <div className="text-[0.77rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const OrgGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="grid grid-cols-3 gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const OrgCard: React.FC<{ tag: string; title: string; accent: string; children: React.ReactNode }> = ({ tag, title, accent, children }) => (
-    <div className={`bg-involve-panel hover:bg-involve-bg2 transition-colors p-5 border-t-2 ${accent}`}>
-        <span className="font-mono text-[0.58rem] tracking-widest uppercase text-involve-dim block mb-2">{tag}</span>
-        <div className="text-[0.84rem] font-semibold text-involve-text mb-2 tracking-tight">{title}</div>
-        <div className="text-[0.75rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const ImplBand: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="flex flex-col gap-px bg-white/[0.07] border border-involve-border-med my-8">{children}</div>
-);
-const ImplRow: React.FC<{ title: string; topAccent?: string; children: React.ReactNode }> = ({ title, topAccent, children }) => (
-    <div className={`grid grid-cols-[240px_1fr] bg-involve-panel hover:bg-involve-bg2 transition-colors ${topAccent || ''}`}>
-        <div className="p-5 border-r border-involve-border font-semibold text-[0.84rem] text-involve-text leading-snug flex items-start">{title}</div>
-        <div className="p-5 text-[0.8rem] font-light text-involve-muted leading-relaxed">{children}</div>
-    </div>
-);
-
-const Diag: React.FC<{ caption: string; children: React.ReactNode }> = ({ caption, children }) => (
-    <div className="my-8 bg-involve-default border border-involve-border-med p-8 overflow-x-auto">
-        {children}
-        <div className="font-mono text-[0.6rem] text-involve-dim text-center mt-5 tracking-tight leading-relaxed">{caption}</div>
-    </div>
-);
-
-/* ── Main component ─────────────────────────────────────────────── */
 export default function GTMStrategyPage() {
     return (
-        <div>
+        <div className="animate-in fade-in duration-500 w-full max-w-5xl mx-auto pb-20">
             <DocHeader
-                breadcrumb="01. Strategy & Market › GTM Strategy"
-                title="Civil & Defence"
-                titleStrong="Go-To-Market Strategy"
-                subtitle="Involve Space's commercial architecture from bespoke missions to infrastructure-grade recurring intelligence. Covers the dual-track civil and defence approach, the revenue stack, CLEAR's role as a strategic upsell layer, data scaling phases, the revenue flywheel, and organisational requirements."
-                meta={[
-                    { label: 'Document', value: 'IS-DR-COM-01' },
-                    { label: 'Model type', value: 'Hybrid · Mission → Contract → SaaS' },
-                    { label: 'Markets', value: 'Civil B2B/B2G · Defence/Institutional' },
-                    { label: 'Revision', value: 'A — Feb 2026' },
-                ]}
+                breadcrumb={<>01. Strategy & Market <span className="opacity-30 mx-1">›</span> <span className="text-involve-blue">Go-To-Market Strategy: Civil and Defence</span></>}
+                title="Go-To-Market Strategy: Civil and Defence"
+                subtitle="Source document converted to data room format."
             />
+            
+            <div className="mt-8 text-involve-text">
+                
 
-            <div className="max-w-[860px] mx-auto px-14">
 
-                {/* §1 Commercial Thesis */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Commercial Thesis" title="From bespoke missions to infrastructure-grade intelligence" desc="A hybrid revenue model evolving through three stages — custom flights, recurring monitoring, and SaaS analytics" />
-                    <BodyText>Involve employs a hybrid revenue model that evolves from bespoke missions to scalable recurring contracts. It serves both civilian and defence ("dual-use") markets with stratospheric sensing platforms and data services. The business is transitioning from one-off flights toward <strong>continuous monitoring contracts and SaaS analytics</strong> through the CLEAR platform — mirroring the industry-wide shift from "price-per-kilometre" to "insights-as-a-service."</BodyText>
-                    <BodyText>Involve's ambition is to become an <strong>infrastructure-grade intelligence platform</strong> — structurally analogous to Palantir's data-fusion model but with direct control over sensors. Its vertically-integrated stack (hardware → data → AI workflows) creates high switching costs and a compounding competitive moat.</BodyText>
-                    <Split2>
-                        <SplitCell label="Civil Track" title="Asset-intensive industries — operational efficiency" accent="border-t-2 border-green-400">
-                            Targets energy, utilities, infrastructure, insurance, and municipalities where geospatial intelligence drives measurable operational efficiency: lower inspection costs, faster incident response, better underwriting models, and proactive maintenance.
-                            <ul className="mt-2 pl-4 flex flex-col gap-1 text-[0.77rem]">
-                                <li>Entry: pilot projects and use-case demonstrations</li>
-                                <li>Expand: multi-year monitoring contracts per site</li>
-                                <li>Scale: CLEAR SaaS subscriptions per vertical workflow</li>
-                            </ul>
-                        </SplitCell>
-                        <SplitCell label="Defence & Institutional Track" title="Sovereign European sensing partner — mission-critical ISR" accent="border-t-2 border-blue-400">
-                            Positions Involve as a European sovereign sensing partner providing persistent, mission-critical intelligence. Defence and government clients follow formal RFP/tender processes with 12–36+ month cycles — but commit to multi-year framework agreements.
-                            <ul className="mt-2 pl-4 flex flex-col gap-1 text-[0.77rem]">
-                                <li>Entry: co-funded R&amp;D and technology demonstrators</li>
-                                <li>Expand: competitive tenders and EU/NATO frameworks</li>
-                                <li>Scale: strategic supplier status and CLEAR integration</li>
-                            </ul>
-                        </SplitCell>
-                    </Split2>
-                </ContentBlock>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Introduction: Commercialising Earth Intelligence</h2>
 
-                {/* §2 Revenue Architecture */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Revenue Architecture" title="Layered revenue stack — increasing margin up the value chain" desc="Each layer builds on the one below — moving from hardware operations toward high-margin recurring software revenue" />
-                    <BodyText>Involve's revenue flows through four layered offerings that increase in scale and margin as customers deepen their engagement. The strategic goal is to shift revenue mix progressively toward the upper layers — particularly CLEAR SaaS, which carries industry-benchmark gross margins of <strong>70–90%</strong> with minimal incremental cost per additional customer.</BodyText>
-                    <RevStack>
-                        <div className="grid grid-cols-[220px_1fr_120px] bg-involve-bg2 border-b border-involve-border-med">
-                            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim p-3">Offering</div>
-                            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim p-3 border-l border-involve-border">Description &amp; commercial logic</div>
-                            <div className="font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim p-3 border-l border-involve-border">Gross margin</div>
-                        </div>
-                        <RevTier label="Custom Missions" sub="Tier 1 — Entry · B2G / B2B · One-off" accentColor="border-white/20 text-involve-dim" marginVal="Low" marginLabel="Cost-recovery + modest"
-                            desc={<>Tailored stratospheric flights for one-off tasks: surveys, R&D projects, urgent event response. Full-cost-recovery pricing with modest margins. These missions <strong>bootstrap growth and establish credibility</strong> — especially when customers require unique corridors, specific sensors, or strict data sovereignty.</>} />
-                        <RevTier label="Monitoring Contracts" sub="Tier 2 — Recurring · 3–5+ year terms" accentColor="border-amber-400 text-amber-400" marginVal="Medium" marginLabel="Scale & predictability"
-                            desc={<>Recurring service agreements providing periodic or continuous stratospheric monitoring over customer sites or regions. Shifts the model from "tasking per image" to <strong>scheduled coverage with a fixed annual fee</strong> — smoothing revenues and improving planning visibility.</>} />
-                        <RevTier label="CLEAR Intelligence" sub="Tier 3 — SaaS · Subscription software" accentColor="border-blue-400 text-blue-400" marginVal="High" marginLabel="70–90% industry benchmark"
-                            desc={<>On top of raw data, CLEAR packages AI-driven alerts, analytics, and decision-support tools into a subscription layer. Each monitoring contract becomes an upsell opportunity. Incremental cost per additional customer is minimal — classic SaaS unit economics. This layer significantly raises average revenue per customer and is the primary long-term margin driver.</>} />
-                        <RevTier label="Data Services & Bundles" sub="Tier 4 — Platform · Licensing + integrations" accentColor="border-green-400 text-green-400" marginVal="Very High" marginLabel="~90% target on data layer"
-                            desc={<>As Involve's data archive matures, it can license time-series imagery, offer integrated bundles combining stratospheric, satellite, and terrestrial sensor feeds, and expose data APIs to third-party developers. These offerings <strong>diversify revenue and deepen customer relationships</strong> without proportional growth in operational cost.</>} />
-                    </RevStack>
-                    <Diag caption="FIG 1 — Revenue margin progression by tier. Strategic goal: shift revenue mix toward CLEAR SaaS and Data Platform layers over the Series A execution window.">
-                        <svg viewBox="0 0 820 100" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', maxWidth: 820, display: 'block', margin: '0 auto' }}>
-                            <defs>
-                                <linearGradient id="mg" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stopColor="rgba(238,241,246,0.15)" />
-                                    <stop offset="33%" stopColor="rgba(240,160,32,0.4)" />
-                                    <stop offset="66%" stopColor="rgba(61,155,255,0.6)" />
-                                    <stop offset="100%" stopColor="rgba(52,208,122,0.8)" />
-                                </linearGradient>
-                            </defs>
-                            <text x="8" y="18" fontFamily="DM Mono,monospace" fontSize="8" fill="rgba(238,241,246,0.3)" letterSpacing="0.8">GROSS MARGIN PROGRESSION</text>
-                            <rect x="8" y="26" width="804" height="14" rx="2" fill="url(#mg)" />
-                            <text x="8" y="58" fontFamily="DM Mono,monospace" fontSize="7.5" fill="rgba(238,241,246,0.3)">Custom Missions</text>
-                            <text x="8" y="68" fontFamily="DM Mono,monospace" fontSize="7" fill="rgba(238,241,246,0.18)">Low margin</text>
-                            <text x="210" y="58" fontFamily="DM Mono,monospace" fontSize="7.5" fill="rgba(240,160,32,0.6)">Monitoring Contracts</text>
-                            <text x="210" y="68" fontFamily="DM Mono,monospace" fontSize="7" fill="rgba(240,160,32,0.35)">Medium · predictable</text>
-                            <text x="450" y="58" fontFamily="DM Mono,monospace" fontSize="7.5" fill="rgba(61,155,255,0.8)">CLEAR SaaS</text>
-                            <text x="450" y="68" fontFamily="DM Mono,monospace" fontSize="7" fill="rgba(61,155,255,0.45)">70–90% benchmark</text>
-                            <text x="640" y="58" fontFamily="DM Mono,monospace" fontSize="7.5" fill="rgba(52,208,122,0.85)">Data Platform</text>
-                            <text x="640" y="68" fontFamily="DM Mono,monospace" fontSize="7" fill="rgba(52,208,122,0.45)">~90% target</text>
-                            <text x="400" y="95" fontFamily="DM Mono,monospace" fontSize="8" fill="rgba(238,241,246,0.22)" textAnchor="middle" letterSpacing="1.5">MARGIN IMPROVES AS REVENUE MIX SHIFTS UP THE STACK →</text>
-                        </svg>
-                    </Diag>
-                </ContentBlock>
 
-                {/* §3 Civil GTM */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Civil GTM" title="Civil strategy — five target segments and the land-and-expand funnel" desc="Entry through specific operational pain points, expansion through monitoring contracts, lock-in through CLEAR workflows" />
-                    <SegGrid>
-                        <SegCard label="Segment 01" title="Energy & Utilities" dotColor="bg-amber-400" borderColor="border-t-2 border-amber-400" entry="Entry use case: Stratorelay® corridor pass → pipeline leak screening or vegetation encroachment mapping">
-                            Oil &amp; gas pipelines, electrical grids, water and gas networks. Large, fixed assets with <strong>safety, environmental, and regulatory risk</strong>. Annual monitoring spend per km is economically justified by the cost of a single outage or leak incident.
-                        </SegCard>
-                        <SegCard label="Segment 02" title="Infrastructure & Construction" dotColor="bg-blue-400" borderColor="border-t-2 border-blue-400" entry="Entry use case: Rail corridor inspection flight → structural deformation or embankment change detection">
-                            Transport networks (roads, bridges, rail), telecom towers, mining operations. Assets needing monitoring for <strong>structural condition, compliance, and change detection</strong>.
-                        </SegCard>
-                        <SegCard label="Segment 03" title="Environmental & Climate" dotColor="bg-green-400" borderColor="border-t-2 border-green-400" entry="Entry use case: Multi-spectral survey → NDVI baseline for regulatory compliance reporting">
-                            Agencies and NGOs tracking deforestation, crop health, wildfire risk, and urban expansion. Regulatory and ESG mandates (CSRD, TNFD) are creating <strong>mandatory reporting obligations</strong> that require verified geospatial evidence.
-                        </SegCard>
-                        <SegCard label="Segment 04" title="Insurance & Finance" dotColor="bg-purple-400" borderColor="border-t-2 border-purple-400" entry="Entry use case: Post-event flood imagery purchase → subscribe to CLEAR flood/fire alert services">
-                            Property/casualty insurers, reinsurers, and banks seeking risk assessment. <strong>Persistent coverage provides the near-real-time imagery</strong> needed to convert manual claims validation into automated alert-triggered workflows.
-                        </SegCard>
-                        <SegCard label="Segment 05" title="Municipalities & Smart Cities" dotColor="bg-cyan-400" borderColor="border-t-2 border-cyan-400" entry="Entry use case: Urban land-use change detection → continuous smart city monitoring dashboard via CLEAR">
-                            Urban planners and civil protection departments managing land use, disaster response, waste monitoring, and urban heat. <strong>Digital twin infrastructure</strong> requires persistent updating with high-cadence aerial data.
-                        </SegCard>
-                        <div className="bg-involve-bg2 border border-dashed border-white/20 flex items-center justify-center p-6 text-involve-text/20 font-mono text-[0.6rem] tracking-widest uppercase text-center">Civil segment imagery placeholder</div>
-                    </SegGrid>
-                    <div className="font-mono text-[0.62rem] text-involve-dim tracking-widest uppercase mt-6 mb-2">Civil GTM Funnel — Pilot → Monitor → SaaS</div>
-                    <FunnelTrack>
-                        <FunnelStep num="STAGE 01 — PILOT" title="Use-case driven flight" accentBorder="border-white/20" kpi={<><em className="text-blue-400 not-italic">Success metric:</em> demonstrated cost saving or decision improvement vs existing method</>}>
-                            Customer funds a tailored flight to solve a specific operational problem. <strong>Low commitment, high-impact demonstration</strong>. Involve delivers a result directly comparable to existing inspection costs, making ROI immediately visible.
-                        </FunnelStep>
-                        <FunnelStep num="STAGE 02 — CONTRACT" title="Multi-year monitoring agreement" accentBorder="border-amber-400" kpi={<><em className="text-blue-400 not-italic">Key insight:</em> clients prefer predictable subscription pricing over ad-hoc buys — EO industry-wide trend</>}>
-                            Pilot success converts to a <strong>3–5 year monitoring contract</strong> with scheduled coverage and a fixed annual fee. Involve becomes an operational supplier — not a project vendor.
-                        </FunnelStep>
-                        <FunnelStep num="STAGE 03 — SAAS" title="CLEAR platform integration" accentBorder="border-blue-400" kpi={<><em className="text-blue-400 not-italic">Margin impact:</em> CLEAR layer raises overall contract value significantly with minimal incremental delivery cost</>}>
-                            Monitoring contract customer adopts CLEAR dashboards, API feeds, and automated alerts — co-developed around their specific workflows. <strong>CLEAR becomes embedded in operations</strong>: integrated with SCADA, GIS, or ERP systems. High switching costs.
-                        </FunnelStep>
-                    </FunnelTrack>
-                </ContentBlock>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We have built unique capabilities in persistent sensing and AI-native geospatial intelligence. To realise our vision of Europe’s sovereign Earth Intelligence platform, we are now commercialising these capabilities through a dual-market strategy. In short, we are first deploying and scaling our systems in national security and critical infrastructure, then expanding outward. Both markets reinforce each other: defence customers validate our technology under the most demanding conditions, while civilian enterprises provide broader scale and recurring software revenue. In this document we explain how we move from our initial pilots to a repeatable, high-growth commercial model across defence and civil segments.</p>
 
-                {/* §4 Defence GTM */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Defence & Institutional GTM" title="Defence strategy — procurement paths and sovereign positioning" desc="Multi-year formal procurement cycles with high ACV and strategic supplier evolution — patience required, stickiness exceptional" />
-                    <BodyText>Defence and government clients follow formal RFP/tender processes. Sales cycles are typically <strong>12–36+ months</strong> with extensive evaluation, security certification requirements, and budget cycles measured in parliamentary terms. Defence contracts, once awarded, are highly sticky — agencies prefer committing to long-term programmes rather than re-running tenders.</BodyText>
-                    <DefTrack>
-                        <div className="grid grid-cols-[220px_1fr] bg-involve-bg2 border-b border-involve-border-med">
-                            <div className="p-3 font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim">Procurement path</div>
-                            <div className="p-3 font-mono text-[0.6rem] tracking-widest uppercase text-involve-dim border-l border-involve-border">Description, timing and Involve's positioning</div>
-                        </div>
-                        <DefRow name="Co-funded R&D / Demonstrators" sub="Entry point — shared risk">
-                            Involve enters through collaborative research projects — EU/NATO tech programmes, PESCO initiatives, ESA co-funding — or small technology demonstrators. These allow government to <strong>share development risk</strong> and evaluate capability before committing to operational procurement.
-                        </DefRow>
-                        <DefRow name="Competitive Tenders & EU Frameworks" sub="Multi-year contracts · structured process">
-                            Involve bids on EU-level or national procurement tenders for multi-year monitoring systems. The EU's emerging defence simplification directive <strong>permits 10-year framework agreements</strong> — enabling extended contracts that provide genuine revenue stability.
-                        </DefRow>
-                        <DefRow name="Sovereign Positioning" sub="European data autonomy narrative">
-                            Involve's status as a European company with in-country platforms and full data custody is a <strong>structural selling point</strong> — offering unencumbered data with no foreign IP or control issues.
-                        </DefRow>
-                        <DefRow name="Civil Government / Institutional" sub="Environmental agencies · DGs · UN bodies">
-                            Civil government customers often use annual budgets, grants, or inter-agency agreements. Multilateral agencies (EU Directorates-General, UN bodies) may procure sustained EO services through framework contracts.
-                        </DefRow>
-                        <DefRow name="Strategic Supplier Evolution" sub="Long-term programme partnership">
-                            Successfully fulfilling initial contracts raises Involve to <strong>"preferred supplier" status</strong>. A national defence force might first buy occasional flights, then sign a long-term coverage contract, and eventually integrate CLEAR into their intelligence systems.
-                        </DefRow>
-                    </DefTrack>
-                    <Callout variant="amber"><strong>Civil vs Defence sales — key differences:</strong> Defence deals emphasise capability and sovereignty — governments pay for the <em>ability to task or collect anywhere, anytime</em>. Contracts include stringent IP/data terms, security standards compliance (ISO 27001, export controls), and require navigation of ministers, procurement officers, and military end-users simultaneously.</Callout>
-                </ContentBlock>
 
-                {/* §5 Data Scaling */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Data Strategy" title="Data scaling — four phases toward a proprietary data moat" desc="Each phase adds proprietary data that competitors cannot replicate — compounding the value of the CLEAR intelligence layer" />
-                    <BodyText>Involve's data assets evolve in phases. The strategic goal is to build a proprietary, continuously-growing data moat that makes CLEAR progressively more accurate, makes customers increasingly dependent on historical continuity, and makes competitive displacement progressively harder over time.</BodyText>
-                    <PhaseList>
-                        <PhaseRow label="Phase 1" sub="Now" labelColor="text-involve-dim">
-                            <strong>Public &amp; In-House Data.</strong> Initially, Involve utilises open-source satellite data (Copernicus Sentinel, Landsat) and meteorological feeds to bootstrap CLEAR analytics. Combined with data from early stratospheric flights, this provides basic insights. The differentiation at this stage is in the <strong>analytics layer and the sensor platform</strong>, not the data itself.
-                        </PhaseRow>
-                        <PhaseRow label="Phase 2" sub="Series A window" labelColor="text-amber-400">
-                            <strong>Expanding Proprietary Fleet.</strong> As Involve scales Stratostats®, Stratorelay®, and eventually LoonHive®, it accumulates unique high-altitude imagery, radar, and atmospheric sensing with no open-access equivalent. This proprietary data — <strong>continuous, high-cadence coverage over specific targets</strong> — adds exclusive value.
-                        </PhaseRow>
-                        <PhaseRow label="Phase 3" sub="2027–2028" labelColor="text-blue-400">
-                            <strong>Strategic Data Acquisitions.</strong> Once the core sensor base is established, Involve may selectively acquire or license complementary data — mid-resolution imagery from CubeSat constellations, licensed AIS vessel tracking data, or industrial IoT feeds. These acquisitions are <strong>tactical gap-filling</strong>, not broad mercenary acquisitions.
-                        </PhaseRow>
-                        <PhaseRow label="Phase 4" sub="2028–2029+" labelColor="text-purple-400">
-                            <strong>Multidomain Integration.</strong> Interlinks spaceborne, aerial (HAPS + UAV), and ground-based (IoT sensors, radar) data streams into a unified intelligence fabric. CLEAR then ingests multi-domain inputs and enables <strong>holistic situational awareness</strong> that no single-domain provider can match.
-                        </PhaseRow>
-                    </PhaseList>
-                    <Callout variant="green"><strong>Defensibility mechanics:</strong> High switching costs emerge when customers embed Involve's unique data products and analytics into daily operations. Moving to a competitor would require retraining models on different data, rebuilding pipelines, and losing historical archive context.</Callout>
-                </ContentBlock>
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Initial Market Traction and Early Validation</h2>
 
-                {/* §6 CLEAR */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="CLEAR Platform" title="CLEAR — from raw data to repeatable intelligence revenue" desc="CLEAR is not 'magic AI' — it is a disciplined analytics layer that converts more data into more insight and higher contract value" />
-                    <BodyText>The CLEAR platform is Involve's intelligence core and the primary long-term margin driver. It transforms raw sensor feeds into actionable insights, drives upsell on existing monitoring contracts, and enables cross-vertical expansion without linear cost increases.</BodyText>
-                    <ClearGrid>
-                        <ClearCard label="Revenue driver 01" title="Increasing ARPU through analytics upsell" accent="border-blue-400">
-                            Customers who paid for imagery can pay extra for <strong>AI-driven alerts, trend dashboards, and reporting</strong>. This raises average revenue per user/contract without requiring additional platform flights.
-                        </ClearCard>
-                        <ClearCard label="Revenue driver 02" title="Converting monitoring to intelligence subscriptions" accent="border-green-400">
-                            CLEAR layers on continuous data flows to deliver intelligence products: anomaly alerts, trend analyses, predictive models. Instead of delivering raw pipeline images, CLEAR flags <strong>potential leak signatures or encroachment events automatically</strong>.
-                        </ClearCard>
-                        <ClearCard label="Revenue driver 03" title="Cross-vertical R&D reuse — expand without linear cost" accent="border-amber-400">
-                            CLEAR's modular design means algorithms developed for one vertical reuse across others. <strong>Urban change-detection code serves oil rig monitoring</strong>; vegetation stress analysis applies to both power utilities and precision agriculture.
-                        </ClearCard>
-                        <ClearCard label="Revenue driver 04" title="Multi-source fusion — single-pane intelligence view" accent="border-purple-400">
-                            CLEAR fuses Involve's multi-domain data and external feeds into a unified system. Clients gain a <strong>single intelligence view across their entire operational landscape</strong>. This mirrors how Palantir's platforms unify disparate data sources — but here Involve controls the primary data source.
-                        </ClearCard>
-                        <ClearCard label="Revenue driver 05" title="Structured workflows — mission templates" accent="border-cyan-400">
-                            CLEAR codifies customers' decision processes into "mission templates" — a <strong>compliance monitoring workflow</strong>, a disaster response workflow, a border surveillance workflow. Template libraries are reusable across customers in the same vertical, reducing delivery cost per new client.
-                        </ClearCard>
-                        <div className="bg-involve-bg2 border border-dashed border-white/20 flex items-center justify-center p-6 text-involve-text/20 font-mono text-[0.6rem] tracking-widest uppercase text-center">CLEAR dashboard screenshot placeholder</div>
-                    </ClearGrid>
-                </ContentBlock>
 
-                {/* §7 Revenue Flywheel */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Business Model Mechanics" title="The revenue-scaling flywheel" desc="Five self-reinforcing loops — each cycle amplifies Involve's value proposition and competitive position" />
-                    <BodyText>Involve's business model forms a classic scaling flywheel. The five loops are mutually reinforcing: each one generates an input to the next, and the cycle accelerates as each component matures.</BodyText>
-                    <Diag caption="FIG 2 — Revenue-scaling flywheel. Each loop amplifies the next. The cycle does not require an external trigger — every successful mission and contract renewal adds momentum to all five loops simultaneously.">
-                        <svg viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', maxWidth: 820, display: 'block', margin: '0 auto' }}>
-                            <defs>
-                                <marker id="fw-a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0,8 4,0 8" fill="rgba(61,155,255,0.5)" /></marker>
-                                <filter id="glow"><feGaussianBlur stdDeviation="3" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
-                            </defs>
-                            <circle cx="410" cy="220" r="62" fill="rgba(61,155,255,0.07)" stroke="rgba(61,155,255,0.4)" strokeWidth="1.8" filter="url(#glow)" />
-                            <text x="410" y="212" fontFamily="DM Mono,monospace" fontSize="9" fill="#3d9bff" textAnchor="middle" letterSpacing="0.8">REVENUE</text>
-                            <text x="410" y="226" fontFamily="DM Mono,monospace" fontSize="9" fill="#3d9bff" textAnchor="middle" letterSpacing="0.8">FLYWHEEL</text>
-                            <text x="410" y="242" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(61,155,255,0.5)" textAnchor="middle">self-reinforcing</text>
-                            <rect x="330" y="18" width="160" height="60" rx="3" fill="#0f1218" stroke="rgba(52,208,122,0.5)" strokeWidth="1.3" />
-                            <text x="410" y="43" fontFamily="DM Mono,monospace" fontSize="9" fill="rgba(52,208,122,0.85)" textAnchor="middle">FLEET GROWTH</text>
-                            <text x="410" y="58" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.35)" textAnchor="middle">More platforms · more coverage days</text>
-                            <text x="410" y="70" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.3)" textAnchor="middle">→ incremental proprietary data</text>
-                            <rect x="586" y="96" width="180" height="60" rx="3" fill="#0f1218" stroke="rgba(61,155,255,0.5)" strokeWidth="1.3" />
-                            <text x="676" y="121" fontFamily="DM Mono,monospace" fontSize="9" fill="rgba(61,155,255,0.85)" textAnchor="middle">BETTER INTELLIGENCE</text>
-                            <text x="676" y="137" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.35)" textAnchor="middle">More training data → CLEAR improves</text>
-                            <text x="676" y="149" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.3)" textAnchor="middle">→ more accurate, actionable insights</text>
-                            <rect x="590" y="316" width="180" height="60" rx="3" fill="#0f1218" stroke="rgba(240,160,32,0.5)" strokeWidth="1.3" />
-                            <text x="680" y="341" fontFamily="DM Mono,monospace" fontSize="9" fill="rgba(240,160,32,0.85)" textAnchor="middle">STRONGER CONTRACTS</text>
-                            <text x="680" y="357" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.35)" textAnchor="middle">Superior insights → more clients</text>
-                            <text x="680" y="369" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.3)" textAnchor="middle">→ larger deals · new verticals</text>
-                            <rect x="48" y="316" width="180" height="60" rx="3" fill="#0f1218" stroke="rgba(167,139,250,0.5)" strokeWidth="1.3" />
-                            <text x="138" y="341" fontFamily="DM Mono,monospace" fontSize="9" fill="rgba(167,139,250,0.85)" textAnchor="middle">HIGHER ARR</text>
-                            <text x="138" y="357" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.35)" textAnchor="middle">Monitoring + CLEAR subscriptions</text>
-                            <text x="138" y="369" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.3)" textAnchor="middle">→ Annual Recurring Revenue grows</text>
-                            <rect x="50" y="96" width="180" height="60" rx="3" fill="#0f1218" stroke="rgba(0,200,224,0.5)" strokeWidth="1.3" />
-                            <text x="140" y="121" fontFamily="DM Mono,monospace" fontSize="9" fill="rgba(0,200,224,0.85)" textAnchor="middle">REINVESTMENT</text>
-                            <text x="140" y="137" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.35)" textAnchor="middle">ARR funds fleet expansion</text>
-                            <text x="140" y="149" fontFamily="Inter,sans-serif" fontSize="8" fill="rgba(238,241,246,0.3)" textAnchor="middle">→ R&amp;D · sensors · platform build</text>
-                            <path d="M490,48 Q580,60 590,110" fill="none" stroke="rgba(61,155,255,0.4)" strokeWidth="1.5" markerEnd="url(#fw-a)" />
-                            <path d="M676,158 Q720,220 678,314" fill="none" stroke="rgba(61,155,255,0.35)" strokeWidth="1.5" markerEnd="url(#fw-a)" />
-                            <path d="M590,346 Q410,410 230,346" fill="none" stroke="rgba(61,155,255,0.3)" strokeWidth="1.5" markerEnd="url(#fw-a)" />
-                            <path d="M140,314 Q100,220 142,158" fill="none" stroke="rgba(61,155,255,0.3)" strokeWidth="1.5" markerEnd="url(#fw-a)" />
-                            <path d="M230,110 Q290,55 330,52" fill="none" stroke="rgba(61,155,255,0.35)" strokeWidth="1.5" markerEnd="url(#fw-a)" />
-                        </svg>
-                    </Diag>
-                    <PhaseList>
-                        {[
-                            { label: 'Loop 1', sub: 'Fleet → Data', color: 'text-green-400', content: 'Each new balloon/sensor adds coverage days and area monitored, generating incremental proprietary data. The data accumulates as a time-series archive with compounding historical depth.' },
-                            { label: 'Loop 2', sub: 'Data → Intelligence', color: 'text-blue-400', content: "The expanded dataset improves CLEAR's analytics — deeper time series, more training examples, better anomaly baselines. Intelligence outputs become more accurate and comprehensive with every new data point." },
-                            { label: 'Loop 3', sub: 'Intelligence → Contracts', color: 'text-amber-400', content: 'Superior insights win more clients and larger deals. Existing customers expand scope — more sites, higher-tier CLEAR services — as trust grows. New verticals open with proven analytics that require no per-vertical R&D from scratch.' },
-                            { label: 'Loop 4', sub: 'Contracts → ARR', color: 'text-purple-400', content: 'Larger, recurring monitoring contracts and CLEAR subscriptions increase Annual Recurring Revenue. A portion of ARR is reinvested into R&D and fleet expansion, closing the loop.' },
-                            { label: 'Loop 5', sub: 'ARR → Fleet', color: 'text-cyan-400', content: 'Reinvestment funds additional balloon platforms, sensor upgrades, and CLEAR platform development. This directly feeds Loop 1 — circling back to fleet growth and the next cycle of data accumulation.' },
-                        ].map(({ label, sub, color, content }) => (
-                            <PhaseRow key={label} label={label} sub={sub} labelColor={color}>{content}</PhaseRow>
-                        ))}
-                    </PhaseList>
-                </ContentBlock>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We have already demonstrated strong early demand with a pipeline of contracts and pilots. Key examples include:</p>
 
-                {/* §8 Multidomain Expansion */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Long-Range Commercial Vision" title="Multidomain commercial expansion" desc="From stratospheric-only sensing today to a full multi-domain intelligence platform — a structural vision framed without overcommitment" />
-                    <BodyText>Involve's long-term commercial plan envisions an evolution from stratospheric-only sensing to a truly multi-domain platform. This is not an immediate roadmap but a structural vision: each domain integration widens the intelligence offering and deepens customer lock-in.</BodyText>
-                    <div className="grid grid-cols-2 gap-px bg-white/[0.07] border border-involve-border-med my-8">
-                        <SplitCell label="Current — Core" title="Stratospheric sensing" accent="border-t-2 border-green-400">Using Stratostats® and Stratorelay® for broad-area monitoring. Persistence and low cost per km² — far cheaper than satellites for continuous coverage. The active revenue-generating foundation.</SplitCell>
-                        <SplitCell label="Near-term — Layer 2" title="Satellite augmentation" accent="border-t-2 border-blue-400">Integrating satellite imagery (optical, SAR) for worldwide reach — denied areas, open ocean, polar regions. Together, the combination covers both the "always-on" theatre-level watch and the "everywhere" global snapshot.</SplitCell>
-                        <SplitCell label="Medium-term — Layer 3" title="Aerial & ground sensor integration" accent="border-t-2 border-amber-400">UAV/drone feeds and ground IoT yield hyper-local data that stratospheric platforms cannot achieve at cost. HAPS acts as the strategic eye; UAV acts as the tactical investigator dispatched when HAPS detects an anomaly.</SplitCell>
-                        <SplitCell label="Long-term — Layer 4" title="Full intelligence orchestration" accent="border-t-2 border-purple-400">All domains feed into CLEAR, which prioritises and synthesises across them. A complete systems-of-systems view: space images detect a new structure → HAPS collects closer views → drone performs detailed inspection → CLEAR delivers the unified intelligence picture.</SplitCell>
-                    </div>
-                </ContentBlock>
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>ESA InCubed (≈€1.5 M)</strong> – developing <i>StratoSAR</i>, a stratospheric SAR platform for infrastructure monitoring under the European Space Agency’s InCubed innovation programme.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Italian Ministry of Defence (≈€2 M)</strong> – a national security monitoring project using our high-altitude platforms and analytics to surveil critical sites.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>ENEL Pilot (≈€0.2–0.3 M)</strong> – monitoring electrical infrastructure for an Italian energy utility, leveraging our platforms to detect faults and environmental risks.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>ELT Group Pilot (≈€0.1–0.2 M)</strong> – integrating our sensing data into strategic risk analysis for a communications infrastructure provider.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>MBDA Pilot (≈€0.2–0.3 M)</strong> – applying our combined sensing-and-analytics solution for electronic surveillance in defence applications.</li>
+</ul>
 
-                {/* §9 Org Scaling */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Organisation" title="Organisational scaling requirements" desc="Six functions that must scale in parallel with the commercial strategy to sustain simultaneous civil and defence engagements" />
-                    <OrgGrid>
-                        <OrgCard tag="Function 01" title="Civil BD & Defence BD" accent="border-green-400">Dedicated business development teams for each track. <strong>Civil BD</strong> focuses on industry verticals and commercial partners. <strong>Defence BD</strong> navigates procurement rules, security requirements, ministries, and EU/NATO frameworks.</OrgCard>
-                        <OrgCard tag="Function 02" title="Enterprise Sales & Solutions Architecture" accent="border-blue-400">Senior enterprise sales force managing large accounts, upselling monitoring contracts, and closing CLEAR subscriptions. <strong>Solutions architects</strong> configure CLEAR proofs-of-concept and pilots.</OrgCard>
-                        <OrgCard tag="Function 03" title="Technical Pre-Sales & Integration" accent="border-amber-400">Strong technical pre-sales with geospatial and AI expertise. Works with customers to ensure seamless integration of CLEAR with client IT systems — <strong>SCADA, GIS, ERPs</strong>.</OrgCard>
-                        <OrgCard tag="Function 04" title="Compliance & Security" accent="border-red-400">Critical for defence and government contracts. Requires <strong>ISO 27001, GDPR, export control compliance</strong>, and potentially a "Trusted Supply Chain" certification for EU defence framework eligibility.</OrgCard>
-                        <OrgCard tag="Function 05" title="Operations & Fleet Delivery" accent="border-cyan-400">Manages the stratospheric fleet, data pipelines, and platform uptime. As monitoring contracts grow, <strong>standardised SOPs</strong> for launch scheduling, data processing, and quality control ensure consistent delivery.</OrgCard>
-                        <OrgCard tag="Function 06" title="Customer Success & Renewals" accent="border-purple-400">High-touch account management to handle ongoing support, coordinate CLEAR co-development, and drive contract renewals. Directly responsible for <strong>net revenue retention</strong>.</OrgCard>
-                    </OrgGrid>
-                </ContentBlock>
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">These projects span government, defence and energy infrastructure. Together they validate our approach as an end-to-end Earth Intelligence solution and prove that customers value our integrated sensing, data processing and analytics. The diversity of these early contracts demonstrates cross‑sector interest in our platform and gives us a solid springboard to scale.</p>
 
-                {/* §10 Strategic Implications */}
-                <ContentBlock>
-                    <SectionHeader eyebrow="Strategic Conclusions" title="Five strategic implications of the GTM architecture" desc="How the commercial model underpins Involve's infrastructure thesis and Series A investment case" />
-                    <ImplBand>
-                        <ImplRow title="Infrastructure-grade asset construction" topAccent="border-t-2 border-blue-400">By tying together hardware, data networks, and analytics into a unified platform, Involve moves beyond a project shop to a <strong>backbone provider</strong>. The focus on long-term contracts and recurring SaaS mirrors how infrastructure is monetised in telecoms and cloud.</ImplRow>
-                        <ImplRow title="Dual-use hedges revenue risk">Serving both civil and defence markets hedges against cycle risk. Investors prize this dual-stream because it <strong>broadens addressable market and smooths revenue cycles</strong> — a structural advantage over pure-commercial or pure-defence EO players.</ImplRow>
-                        <ImplRow title="Data ownership drives defensibility">Owning unique, continuous data cuts off competitors. Involve's proprietary stratospheric archive creates a <strong>high entry barrier</strong> — competitors cannot purchase historical stratospheric time-series from any other source.</ImplRow>
-                        <ImplRow title="Multi-domain leverage compounds the moat">Integrating across sensing domains gives structural leverage. Involve's long-term vision to orchestrate multi-layered sensing means CLEAR becomes the <strong>go-to geospatial decision-support platform for Europe and allied markets</strong>.</ImplRow>
-                        <ImplRow title="Series A investment has a coherent commercial home">Every element of the GTM — business model, sales approach, data roadmap, CLEAR development, organisational scaling — is internally consistent and mutually reinforcing. The Series A investment directly unlocks the monitoring contract and CLEAR SaaS revenue tiers that the model depends on.</ImplRow>
-                    </ImplBand>
-                    <Callout variant="green"><strong>Investor-grade synthesis:</strong> Involve's GTM strategy is analytical and systematic — it recognises real EO adoption dynamics (the "pilot trap," long defence cycles, the shift from price-per-km to insights-as-a-service) and structures each commercial path accordingly.</Callout>
-                    <RefNote>Sources: Geoawesome (EO business model evolution) · Finro / SaaS benchmark data · TerraWatch Space (EO adoption curve · defence paradox) · EU Defence Procurement Directive · Satellogic / Albania case study · Seat11a Palantir analysis · Cyclopspace (dual-use investor thesis). Full source list with footnote references [1–22] available in the source document.</RefNote>
-                </ContentBlock>
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Why Defence and Infrastructure Are the First Target Markets</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We have deliberately focused first on defence and critical infrastructure for several reasons. Defence customers lead in adopting advanced sensing – they operate in contested environments where persistent, high-resolution awareness is mission‑critical. For example, high-altitude platforms can monitor borders and remote areas continuously without provoking international overflight issues, providing situational awareness that complements satellites. Indeed, recent analyses note that near-space platforms offer “persistent coverage, flexibility in deployment, and lower costs” than satellites[1]. Defence agencies also feature large, multi-year budgets and high-risk projects, allowing for meaningful contracts (as seen with our MoD engagement) that validate our reliability under demanding conditions. Winning a defence customer – whether a national ministry, NATO program or EU initiative – delivers powerful credibility, endorsements, and connections to allied markets.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Critical infrastructure and other civil sectors, by contrast, offer scale, recurring revenue and large greenfield opportunities. Utilities, energy companies and insurers face massive needs for continuous monitoring and risk assessment. Early adopters in energy and utilities are already using geospatial intelligence to optimize site planning and grid management[2]. The insurance industry, for instance, is rapidly adopting satellite-based parametric insurance (growing ~11% per year[3]) to quantify risk and speed up claims for disasters. Environmental monitoring and disaster-response agencies also require the real-time data our systems can provide. By targeting infrastructure (power grids, pipelines, transport networks) and environmental use cases, we tap into large markets where customers are actively seeking new digital monitoring solutions. These civil deployments help scale our data and drive long-term SaaS adoption of the CLEAR platform.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In short, defence gives us early high-impact wins and rigorous validation, while civil infrastructure markets give us volume, repeatable business and deep data. They are not independent silos but mutually reinforcing: every defence deployment sharpens our technology and reputation, while every civil customer adds data and recurring usage to CLEAR.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Defence Market Go-To-Market Strategy</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In the defence market, our GTM focuses on government and alliance procurement with a clear pilot-to-operations progression. Initially, we engage through innovation and pilot programmes – as with our Italian MoD contract – to prove capability in a specific mission (e.g. border surveillance, maritime domain awareness, or monitoring military installations). Typical applications include persistent border and maritime monitoring, intelligence-surveillance-reconnaissance (ISR) missions, and safeguarding critical military infrastructure. We win pilots by participating in calls from national ministries, NATO/EU defence innovation schemes, and direct R&amp;D contracts.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Once a pilot is successful, we transition to operational programmes and longer-term service contracts. For example, a border-monitoring pilot may evolve into a deployed HAPS system under Ministry of Defence (MoD) direction. We work closely with defence end-users and system integrators so that, after proving performance, we are included in the next procurement phase (simply adopting our solution without extensive rebidding). NATO’s DIANA accelerator exemplifies this path: its Rapid Adoption Service was designed to let innovators trial technologies with military users and then scale them alliance‑wide[4]. Using DIANA, we can gain access to all 32 NATO member states and associated bodies once our system is fielded successfully[5].</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our defence go‑to‑market channel thus includes: (a) <strong>Government RFPs and contracts</strong> – responding to defence ministry solicitations and collaborating on multi-year projects; (b) <strong>European defence programmes</strong> – engaging with the European Defence Fund (EDF) and PESCO projects that fund innovation (the EDF alone channels on the order of €8 B to joint defence innovation through 2027[6]); (c) <strong>NATO initiatives</strong> – participating in challenge calls and adoption programs like DIANA; (d) <strong>Strategic partnerships</strong> – teaming with established defence system integrators (e.g. Airbus, Thales, Leonardo, Indra) who can embed our HAPS platforms and CLEAR analytics into larger defence solutions. These partnerships accelerate trust and market entry: integrators can recommend our technology to their military customers as part of larger contracts.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Sales in defence often follow a cadence of proposal, pilot, then scale. We leverage our early contracts as reference cases across Europe, emphasizing that major militaries (e.g. Italy) and EU agencies have already funded our systems. This builds confidence that our high-altitude systems work reliably for security use cases. In parallel, we continue R&amp;D to meet evolving defence needs (e.g. electronic warfare payloads, secure communications) so we can immediately address new requirements in follow-on procurements.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Civil Market Go-To-Market Strategy</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In the civil domain, we target large enterprise and public-sector customers facing urgent monitoring needs. Our initial focus is on <strong>energy and utilities</strong>, <strong>infrastructure operators</strong>, <strong>insurance and risk management</strong>, and <strong>environmental/disaster agencies</strong>. These sectors have clear value from continuous geospatial intelligence: for example, energy firms use satellite and aerial data for forecasting renewable generation and monitoring transmission lines[2]; insurers use EO data for parametric products and rapid claims assessments (parametric insurance adoption is growing at ~11% annually thanks to improved Earth observation data[3]). Government agencies responsible for disaster response and environmental protection are also early customers because they need up-to-date situational awareness over large areas.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our GTM in civil markets involves direct enterprise sales and pilot projects with large customers. We leverage our network from initial pilots – for instance, our ENEL collaboration lets us approach other European utilities and grid operators. We also engage national and regional infrastructure agencies through Smart City and digital transformation programs. Demonstrating one successful deployment (e.g. pipeline leak detection, wildfire hotspot monitoring) opens doors to similar use cases across different geographies.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Parallel to custom projects, we ramp up our CLEAR platform licensing. CLEAR is designed to be the cloud-native intelligence layer for any organization. In practice, as soon as we have live sensing data from a region, we can offer CLEAR dashboards and analytic services to local governments, companies and NGOs. Our civil GTM thus has two fronts: (a) <strong>Project sales</strong> of HAPS sensing-as-a-service contracts to infrastructure owners (often on a subscription or fee-for-service basis), and (b) <strong>Platform sales</strong> of CLEAR software licenses or subscriptions. Each new civil client becomes part of the CLEAR ecosystem, contributing data and creating recurring revenue.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">We plan to feature our dual capability as a unique selling point: no competitor currently offers both high-res stratospheric imagery and integrated AI analytics. For example, a power utility might adopt our HAPS for fault detection, and then continue using the CLEAR platform for ongoing asset monitoring and analytics on satellite/ground data long after the initial deployment. By contrast, purely space-based players often have no on-demand data layer, and purely software companies lack proprietary data. We position ourselves as a vertically integrated solution, which is particularly appealing to customers who want an end-to-end service (from sensor to insight).</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Customer Acquisition Channels</h2>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Our customer acquisition strategy spans several channels tailored to each segment:</h2>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Government and Defence Procurement</strong>: We actively pursue military R&amp;D contracts, national defence procurement cycles, and allied procurement programs. In Europe, this means engaging with the European Defence Fund calls, national space/defence agencies, and NATO procurement mechanisms. We also use innovation instruments like ESA’s InCubed (for infrastructure) and Copernicus-related contracts (for environment), which provide co-funding and validation for new deployments. Every significant defence pilot or sale (e.g. Italian MoD contract) boosts our credibility in other bids.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Innovation Programs and Grants</strong>: We leverage EU and NATO innovation funds to de‑risk first deployments. For example, we applied ESA InCubed funding to StratoSAR. We also target programmes like Horizon Europe, Digital Europe, and the Copernicus programme for environment and disaster-use projects. On the defence side, the new EU Defence Innovation Scheme (EUDIS) and NATO’s DIANA provide funding and access channels for disruptive technologies[7]. These programs help us build prototypes and pilots with cost-sharing, and they often involve end-users who can become future customers.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Partnerships and System Integrators</strong>: We form alliances with established players. In defence, we partner with system integrators and prime contractors to be part of larger proposals (for example, integrating our HAPS data into a national C4ISR solution). In civil markets, we work with earth observation and GIS analytics firms to bundle our data into broader services. We also partner with satellite imagery providers: our data can complement satellite EO, and joint offerings can be more compelling to customers. These partnerships multiply our reach and embed us into existing sales channels.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Direct Enterprise Sales and Industry Events</strong>: We engage directly with large infrastructure operators and insurers through targeted marketing and sales outreach. Attending industry conferences (energy, utilities, agriculture, insurance, environmental monitoring) and running workshops demonstrate our capabilities. We highlight pilot success stories (like ENEL) and run pilots to prove ROI. Word-of-mouth in these industries (especially energy and transport) is strong, so each early customer can lead to referrals.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Platform Ecosystem Adoption</strong>: Finally, we encourage adoption of CLEAR as an analytics platform by making it extensible and user-friendly. Third-party developers or customer teams can build new analytic apps on CLEAR. We may offer a basic “software-as-a-service” access tier for broader enterprise penetration. Over time, CLEAR itself becomes a sales channel – e.g. public sector users subscribing to CLEAR can add HAPS data on top of satellite feeds.</li>
+</ul>
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">By combining these channels, we balance the predictability of institutional procurement with the scalability of commercial enterprise sales. In Europe, defence and civil procurement often follow formal tender processes, while in industry we use traditional B2B sales. We adjust our approach by country: for example, in France or Italy we lean on national space agencies and local industry ties; in Nordic countries we emphasize environmental monitoring needs; and in Eastern Europe we exploit growing defense budgets and NATO programs.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Strategic Partnerships and Ecosystem Development</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Strategic partnerships are a force-multiplier for our GTM. Key partner categories include:</p>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Defence Prime Contractors and Integrators</strong>: Collaborating with major defence companies (e.g. Airbus Defence, Thales, Leonardo, Indra) embeds our technology into their solutions. For instance, a prime might use our HAPS imagery as one sensor among many in a border security offering. These integrators already have trusted relationships with governments, so they can help us access new defense customers.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Geospatial Analytics Firms</strong>: Companies that specialize in Earth observation analytics or drone data can partner with us to incorporate HAPS data and CLEAR services. Joint marketing or co-development of specific analytic modules (e.g. pipeline monitoring) can open doors in industries these firms serve.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Satellite and Data Providers</strong>: We align with satellite imagery providers and data aggregators (e.g. Airbus, Maxar, Planet). By combining our high-resolution aerial data with their satellite feeds, we offer customers a more complete monitoring solution. Some contracts may involve consortium bids with satellite companies, especially for large environmental or intelligence contracts.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>AI and Tech Platforms</strong>: We integrate with broader AI/cloud platforms (e.g. Palantir, MS Azure Government, Google Cloud) for data processing and distribution. These tech partners provide scalable infrastructure and access to enterprise customers. They may also fund joint pilots under their innovation outreach programs.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Infrastructure Operators and Consortiums</strong>: Partnering with associations (e.g. European network of transmission operators, insurance consortiums) helps us tailor solutions to sector needs. In some cases, we co-develop standards or demos for entire industry groups, accelerating market acceptance.</li>
+</ul>
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">These partnerships accelerate market adoption by embedding our technology into existing workflows and procurement pipelines. For example, if a pipeline operator works with a major engineering firm for maintenance, that firm can recommend Involve’s solution through a joint project. Or a satellite data company bundling our services on their platform exposes us to their subscriber base. All of these relationships build trust and reduce sales friction.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Geographic Expansion Strategy</h2>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">We are starting in Europe and then expanding globally in phases:</h2>
+
+<ul className="list-disc pl-6 mb-6 text-involve-muted">
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Europe (Near Term)</strong>: Our initial focus is European markets. Europe is investing heavily in space and defence for strategic autonomy[8]. Defence spending by EU governments has grown dramatically – rising from €240B in 2020 to €343B in 2024[9] – and commitments like the NATO 5% GDP target will keep budgets high[10]. Similarly, Europe’s energy and infrastructure sectors are accelerating digitalization (smart grids, environmental mandates) which favors our solutions. We are therefore concentrating sales and pilots in EU countries with strong aerospace ecosystems (e.g. Italy, France, Germany, Scandinavia) and willing innovation funding (e.g. the Netherlands, Austria). Early traction in Italy and ESA/EU programs gives us momentum to expand within Europe.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>NATO Allies and Partners (Mid Term)</strong>: After establishing proof points in Europe, we will scale to other NATO countries and allied nations. Through programs like NATO DIANA and bilateral alliances, our technology is highly relevant to US, UK, Canada and other allies that face similar border/security challenges. The Rapid Adoption Service of DIANA allows us to trial and deploy solutions across all 32 Allies once initial success is proven[5]. We will also pursue foreign military sales channels for our HAPS platforms and take part in international defence exhibitions. On the civil side, we see demand in countries with large aging infrastructure (e.g. North America, Australia, Middle East) where utilities and environmental agencies are looking for advanced monitoring. We will approach those markets via partnerships (local distributors, integrators) who can translate our European success into regional cases.</li>
+  <li className="mb-2 text-[15px] font-light leading-relaxed"><strong>Global Market (Long Term)</strong>: Ultimately, as CLEAR matures into a global Earth Intelligence platform, we envision expansion beyond the Atlantic alliance. This could include regions with high growth in space and sensing (Asia-Pacific), or with acute climate and disaster needs (Africa, South America). Early work in Europe builds a technology and business foundation. Over time, we can leverage data and platform scalability to reach any market where persistent geospatial intelligence provides value.</li>
+</ul>
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Throughout this expansion, we will remain “Europe-first” in branding and strategy, in line with EU strategic goals. But the dual-use nature of our offering means that success in one geography reinforces credibility in others.</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">Strategic Role of GTM in Building the Earth Intelligence Platform</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Our go-to-market activities are not just about selling sensors and software – they are the engine that builds our entire Earth Intelligence platform. Every customer deployment feeds our platform with real-world data and use cases. For example, data collected during a defence deployment in one country becomes part of CLEAR’s data layer, improving our analytics models (e.g. for feature detection or change analysis). Civil customers doing routine monitoring contribute high-resolution data that improve algorithms for civilian use (e.g. infrastructure degradation). In this way, each segment accelerates the other: more infrastructure data makes CLEAR more powerful for military customers, and defence‑grade reliability makes CLEAR more trusted in civilian operations.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">This virtuous cycle creates a competitive moat. Over time we will amass a uniquely rich dataset (from stratosphere, satellites and sensors) and a living library of analytic capabilities developed for real missions. That, in turn, enables us to move to a subscription SaaS model for CLEAR across industries. Investors can expect that as our customer base grows, so will recurring software revenue.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">Moreover, achieving scale in both civil and defence validates our long‑term vision of “Europe’s Earth Intelligence platform.” We will use commercial revenues and public investment to continually enhance the platform: for instance, adding new sensors (e.g. AIS for maritime, signals intelligence) and advanced AI models. Our GTM strategy is thus closely aligned with building strategic advantage. By securing key early markets in defence and infrastructure, we both drive near-term growth and lay the groundwork for a dominant position in the broader geo-intelligence ecosystem.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">In summary, we pursue a disciplined, evidence-driven go-to-market: we use our initial contracts to win more defence programs, while simultaneously engaging enterprise customers in energy, utilities, insurance and government. We leverage Europe’s strong funding environment and partnerships to enter quickly, then expand through NATO and global channels. This approach ensures that Involve grows from a project-backed innovator into a company with a large, scalable customer base and an ever‑stronger Earth Intelligence platform.</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6"><strong>Sources:</strong> Analysis of recent European defence budgets and programmes[9][6]; NATO defence innovation initiatives[11][5]; industry research on near-space and EO markets[1][3][2][8].</p>
+
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[1] TRENDS Research &amp; Advisory - Eyes in the Stratosphere: How Near-Space Surveillance Platforms Are Redefining Global Power Projection and Strategic Ambiguity</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://trendsresearch.org/insight/eyes-in-the-stratosphere-how-near-space-surveillance-platforms-are-redefining-global-power-projection-and-strategic-ambiguity/?srsltid=AfmBOoo_H9fleHp2E8Lewb9TzvyQMoDDeEPtSP-BD0UbRrWsT1kG_IhL</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[2] Earth observation will unlock huge value for these 6 sectors | World Economic Forum</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.weforum.org/stories/2024/05/earth-observation-will-unlock-huge-value-for-these-6-industries/</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[3] Earth Observation a driving force in parametric insurance’s rapid growth | EU Agency for the Space Programme</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.euspa.europa.eu/newsroom-events/news/earth-observation-driving-force-parametric-insurances-rapid-growth</p>
+
+
+      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3">[4] [5] DIANA | Bridging innovators and military end users through NATO DIANA’s Rapid Adoption Service</p>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.diana.nato.int/connect/bridging-innovators-and-military-end-users-through-nato-diana-rapid-adoption-service.html</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[6] [7] [11] EUDIS, HEDI, DIANA: What's Behind Three Defense Innovation Acronyms?</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.ifri.org/sites/default/files/2024-09/ifri_mohring_defense_innovation_2024.pdf</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[8] EU Space and Defence Industry for an Autonomous Europe</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://defence-industry-space.ec.europa.eu/autonomous-europe_en</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[9] EU defence in numbers - Consilium</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.consilium.europa.eu/en/policies/defence-numbers/</p>
+
+
+      <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">[10] Defence expenditures and NATO’s 5% commitment | NATO Topic</h2>
+
+
+      <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">https://www.nato.int/en/what-we-do/introduction-to-nato/defence-expenditures-and-natos-5-commitment</p>
+
 
             </div>
         </div>

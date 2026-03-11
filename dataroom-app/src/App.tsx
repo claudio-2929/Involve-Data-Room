@@ -20,6 +20,11 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 
+import CompetitiveLandscapeAnalysisPage from './pages/CompetitiveLandscapeAnalysisPage';
+import PricingStrategyAndRevenueModelPage from './pages/PricingStrategyAndRevenueModelPage';
+import StrategicRoadmapPage from './pages/StrategicRoadmapPage';
+import StrategicValueAndExitScenariosPage from './pages/StrategicValueAndExitScenariosPage';
+
 function App() {
   return (
     <AuthProvider>
@@ -64,9 +69,29 @@ function App() {
                 <GlobalLayout><GeoAIPositioningPage /></GlobalLayout>
               </ProtectedRoute>
             } />
+            <Route path="/dataroom/01_Strategy_and_Market/03_Competitive_Landscape_Analysis" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><CompetitiveLandscapeAnalysisPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/01_Strategy_and_Market/04_Pricing_Strategy_and_Revenue_Model" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><PricingStrategyAndRevenueModelPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
             <Route path="/dataroom/01_Strategy_and_Market/05_GTM_Strategy_Civil_and_Defence" element={
               <ProtectedRoute requiredAccess="partial">
                 <GlobalLayout><GTMStrategyPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/01_Strategy_and_Market/06_Strategic_Roadmap_2025_2030" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><StrategicRoadmapPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/01_Strategy_and_Market/07_Strategic_Value_and_Exit_Scenarios" element={
+              <ProtectedRoute requiredAccess="partial">
+                <GlobalLayout><StrategicValueAndExitScenariosPage /></GlobalLayout>
               </ProtectedRoute>
             } />
 
