@@ -224,39 +224,39 @@ export default function MarketOverviewPage() {
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">References</h2>
 
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.mckinsey.com/industries/aerospace-and-defense/our-insights/space-the-1-point-8-trillion-dollar-opportunity-for-global-economic-growth" target="_blank"><span id="ref-1"></span>[1] McKinsey &amp; Company, <i>“Space: The $1.8 trillion opportunity for global economic growth”</i> (April 2024) – global space economy growth forecasts[1].</a></p>
+      <p id="1" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.mckinsey.com/industries/aerospace-and-defense/our-insights/space-the-1-point-8-trillion-dollar-opportunity-for-global-economic-growth" target="_blank"><span id="ref-1"></span>[1] McKinsey &amp; Company, <i>“Space: The $1.8 trillion opportunity for global economic growth”</i> (April 2024) – global space economy growth forecasts[1].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.morganstanley.com/ideas/space-economy-investment-themes" target="_blank"><span id="ref-3"></span><span id="ref-8"></span>
+      <p id="2" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.morganstanley.com/ideas/space-economy-investment-themes" target="_blank"><span id="ref-3"></span><span id="ref-8"></span>
 [2] Reuters, <i>“Global earth observation market to cross $8 billion by 2033, says Novaspace”</i> (Nov 2024) – EO market size projections[8][3].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-11"></span><span id="ref-10"></span>
+      <p id="3" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-11"></span><span id="ref-10"></span>
 [3] ESA Space Economy Report (2024) – breakdown of EO downstream market and regional shares[10][11].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://gabelli.com/research/nato-spending-overview-a-structural-change-to-the-defense-industry/" target="_blank"><span id="ref-13"></span>
+      <p id="4" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://gabelli.com/research/nato-spending-overview-a-structural-change-to-the-defense-industry/" target="_blank"><span id="ref-13"></span>
 [4] ResearchandMarkets, <i>“Geospatial Intelligence Market… Forecast to 2030”</i> (Jan 2026) – GeoAI market growth ($37.1B→$62.9B by 2030)[13].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://gabelli.com/research/nato-spending-overview-a-structural-change-to-the-defense-industry/" target="_blank"><span id="ref-14"></span>
+      <p id="5" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://gabelli.com/research/nato-spending-overview-a-structural-change-to-the-defense-industry/" target="_blank"><span id="ref-14"></span>
 [5] Fortune Business Insights, <i>“Geospatial Analytics Market Size &amp; Forecast”</i> (2023) – Geoanalytics ~$102.5B (2025)→$309.8B (2034)[14].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://atlasinstitute.org/from-intelligence-collection-to-international-security-the-strategic-value-of-geoint-in-monitoring-dual-use-infrastructure/" target="_blank"><span id="ref-5"></span><span id="ref-4"></span>
+      <p id="6" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://atlasinstitute.org/from-intelligence-collection-to-international-security-the-strategic-value-of-geoint-in-monitoring-dual-use-infrastructure/" target="_blank"><span id="ref-5"></span><span id="ref-4"></span>
 [6] Gabelli (research note), <i>“NATO Spending Overview”</i> (2024) – NATO defense spending ($1.6T by 2025) and targets[4][5].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://atlasinstitute.org/from-intelligence-collection-to-international-security-the-strategic-value-of-geoint-in-monitoring-dual-use-infrastructure/" target="_blank"><span id="ref-20"></span><span id="ref-7"></span>
+      <p id="7" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://atlasinstitute.org/from-intelligence-collection-to-international-security-the-strategic-value-of-geoint-in-monitoring-dual-use-infrastructure/" target="_blank"><span id="ref-20"></span><span id="ref-7"></span>
 [7] Atlas Institute, <i>“The Strategic Value of GEOINT in Monitoring Dual-Use Infrastructure”</i> (Sept 2025) – geospatial industry growth data (e.g. geospatial solutions $626B→$2.1T) and ISR trends[7][20].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-23"></span>
+      <p id="8" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-23"></span>
 [8] Global Market Insights, <i>“Intelligence Surveillance Reconnaissance Market Size, 2025–2034”</i> (Dec 2024) – ISR market $42B (2024)→$71.2B (2034)[23].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-22"></span>
+      <p id="9" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-22"></span>
 [9] MarketsandMarkets, <i>“Environmental Monitoring Market – Regional Insight”</i> (2024) – environmental monitoring $14.7B (2024)→$18.6B (2029)[22].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://space-economy.esa.int/documents/b61btvmeaf6Tz2osXPu712bL0dwO3uqdOrFAwNTQ.pdf" target="_blank"><span id="ref-21"></span>
+      <p id="10" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://space-economy.esa.int/documents/b61btvmeaf6Tz2osXPu712bL0dwO3uqdOrFAwNTQ.pdf" target="_blank"><span id="ref-21"></span>
 [10] MarketsandMarkets, <i>“Predictive Maintenance Market – Global Forecast”</i> (Mar 2024) – predictive maintenance $10.6B (2024)→$47.8B (2029)[21].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://space-economy.esa.int/documents/b61btvmeaf6Tz2osXPu712bL0dwO3uqdOrFAwNTQ.pdf" target="_blank"><span id="ref-16"></span><span id="ref-15"></span>
+      <p id="11" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://space-economy.esa.int/documents/b61btvmeaf6Tz2osXPu712bL0dwO3uqdOrFAwNTQ.pdf" target="_blank"><span id="ref-16"></span><span id="ref-15"></span>
 [11] Space Capital, <i>“Better Together: EO &amp; GIS”</i> (Aug 2025) – industry perspectives on GIS evolution and intelligence (e.g. need for real-time, AI-driven insights)[15][16].</a></p>
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-2"></span>
+      <p id="12" className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="https://www.reuters.com/technology/space/global-earth-observation-market-cross-8-bln-by-2033-says-novaspace-2024-11-29/" target="_blank"><span id="ref-2"></span>
 [12] Morgan Stanley Research, <i>“5 Key Themes in the New Space Economy”</i> (2023) – satellites for climate and security monitoring[2].</a></p>
 
 

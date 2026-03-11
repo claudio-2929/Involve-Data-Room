@@ -773,8 +773,6 @@ export default function CompetitiveLandscapeAnalysisPage() {
       <p className="text-[15px] font-light text-involve-muted leading-relaxed mb-6">To visualize positioning, we can map competitors along two axes: <strong>Infrastructure ↔ Intelligence (horizontal)</strong> and <strong>Data ↔ Decision (vertical)</strong>. Infrastructure-heavy data providers (Planet, Maxar, Spire, etc.) sit toward “Infra/Data” (bottom-left), pure analytics companies (Orbital, Descartes) toward “Intel/Data” (bottom-right), and decision-centric platforms (Palantir, Anduril) at “Intel/Decision” (top-right). Involve occupies the <strong>top-right</strong>, uniquely covering both the infrastructure and intelligence ends of the spectrum. In effect, we span all quadrants by building the stack ourselves, whereas others are confined to one or two. <i>(See figure below.)</i></p>
 
 
-      <p className="text-[12px] font-light text-involve-muted leading-relaxed mb-3"><a href="#ref-4">[4]</a><a href="#ref-11">[11]</a> <i>Figure: Competitive positioning of select companies in Earth Intelligence. Involve integrates “infra” (sensors) with “intel” (AI/decision), whereas most others specialize in one domain.</i><i></i></p>
-
 
       <h2 className="text-xl md:text-2xl font-semibold text-involve-text tracking-tight mb-4 mt-12 border-b border-involve-border pb-2">References</h2>
 
