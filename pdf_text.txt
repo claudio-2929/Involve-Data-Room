@@ -1,0 +1,149 @@
+Involve Space — Revised Series A Data Room
+Structure
+00_Executive_Overview
+01_Investment_Thesis.pdf
+02_Investor_Deck_Latest.pdf
+04_Key_Milestones_2024_2028.pdf
+05_Use_of_Proceeds_20M.pdf
+01_Strategy_and_Market
+01_Market_Overview_TAM_SAM_SOM.pdf
+02_GeoAI_and_Earth_Intelligence_Positioning.pdf
+03_Competitive_Landscape_Analysis.pdf
+04_Pricing_Strategy_and_Revenue_Model.pdf
+05_GTM_Strategy_Civil_and_Defence.pdf
+06_Strategic_Roadmap_2025_2030.pdf
+07_Strategic_Value_and_Exit_Scenarios.pdf
+02_Product_and_Technology
+01_Technology_Master_Document.pdf
+02_Stratospheric_Platform_Architecture.pdf
+03_Neurostar_Flight_Control_System.pdf
+04_CLEAR_GeoAI_Infrastructure_Layer .pdf
+05_Data_Architecture_and_AI_Pipeline.pdf
+06_Technology_Roadmap_Stratospheric_and_Software.pdf
+03_Defence_and_Dual_Use
+01_Defence_and_Dual_Use_Strategy.pdf
+Contents of the document:
+Dual‑Use positioning and strategic rationale
+Defence use cases and ISR applications
+Regulatory and compliance framework
+Security and data sovereignty model
+B2G procurement and defence GTM strategy• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+104_Commercial_Traction
+01_Revenue_History.pdf
+02_Client_Pipeline_and_Use_Cases.pdf
+03_LoI_and_NDA_Redacted.pdf
+04_Strategic_Partnerships_and_Contracts.pdf
+05_Financials
+01_Historical_Financials_2022_2025.pdf
+02_Detailed_PnL.xlsx
+03_Cashflow_and_Burn_Analysis.xlsx
+04_Five_Year_Financial_Model.xlsx
+05_Scenario_Analysis_Base_Bull_Conservative.xlsx
+06_Unit_Economics_by_Platform.pdf
+07_Grant_Funding_and_Public_Leverage.pdf
+06_Industrialization_and_Operations
+01_Industrialization_and_Operations_Strategy.pdf
+Contents of the document:
+Manufacturing strategy
+Supply chain architecture
+Production cost breakdown
+Grottaglie expansion plan
+Fleet scaling timeline
+Operational risk and mitigation
+07_IP_and_Moat
+01_IP_and_Moat_Strategy.pdf
+Contents of the document:
+IP portfolio overview
+Patents and trademarks
+Proprietary AI algorithms and software stack
+Data ownership and compounding advantage
+Long‑term defensibility strategy• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+208_Team_and_Organization
+01_Team_and_Organization.pdf
+Contents of the document:
+Founders bios
+Leadership team
+Organizational structure
+Hiring roadmap 2025‑2027
+Advisors and board
+Compensation and ESOP structure
+09_Corporate_and_Legal
+01_Cap_Table_Fully_Diluted.xlsx
+02_Articles_of_Association.pdf
+03_Shareholders_Agreement.pdf
+Optional (only if requested during due diligence):
+Grant agreements (EIC, ESA, MoD)
+Major commercial contracts
+Other regulatory or compliance documents
+10_Risk_and_Control
+01_Risk_and_Control_Framework.pdf
+Contents of the document:
+Technology risk assessment
+Market risk assessment
+Regulatory risk assessment
+Execution risk map
+Mitigation strategy framework• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+3

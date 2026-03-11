@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neurostar - Simulation Engine | Involve Space</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+        :root {
+            --bg: #08090c;
+            --bg-1: #0d0f14;
+            --bg-2: #12151c;
+            --bg-card: #0f1218;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-med: rgba(255, 255, 255, 0.12);
+            --text-1: #eef1f6;
+            --text-2: rgba(238, 241, 246, 0.55);
+            --text-3: rgba(238, 241, 246, 0.28);
+            --blue: #3d9bff;
+            --blue-dim: rgba(61, 155, 255, 0.15);
+            --blue-glow: rgba(61, 155, 255, 0.06);
+            --cyan: #00c8e0;
+            --cyan-dim: rgba(0, 200, 224, 0.12);
+            --green: #34d07a;
+            --green-dim: rgba(52, 208, 122, 0.12);
+            --amber: #f0a020;
+            --amber-dim: rgba(240, 160, 32, 0.12);
+            --red: #ff6060;
+            --red-dim: rgba(255, 80, 80, 0.12);
+            --f-body: 'Inter', -apple-system, sans-serif;
+            --f-mono: 'DM Mono', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 15px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-1);
+            font-family: var(--f-body);
+            font-weight: 400;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            padding: 0 0 6rem;
+        }
+
+        .doc-header {
+            position: relative;
+            padding: 3.5rem 3.5rem 3rem;
+            border-bottom: 1px solid var(--border-med);
+            overflow: hidden;
+        }
+
+        .doc-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .doc-header-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+        }
+
+        .doc-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--f-mono);
+            font-size: 0.62rem;
+            color: var(--text-3);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1.6rem;
+        }
+
+        .doc-breadcrumb span {
+            color: var(--blue);
+        }
+
+        .doc-title {
+            font-size: 2.4rem;
+            font-weight: 300;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            color: var(--text-1);
+            margin-bottom: 0.6rem;
+        }
+
+        .doc-title strong {
+            font-weight: 600;
+        }
+
+        .doc-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-2);
+            font-weight: 300;
+            max-width: 620px;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .doc-meta-row {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .doc-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .doc-meta-label {
+            font-family: var(--f-mono);
+            font-size: 0.58rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-3);
+        }
+
+        .doc-meta-value {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-2);
+        }
+
+        .body {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 3.5rem;
+        }
+
+        .sec {
+            padding: 3.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sec:last-child {
+            border-bottom: none;
+        }
+
+        .sec-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: var(--f-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 1rem;
+        }
+
+        .sec-eyebrow::before {
+            content: '';
+            display: block;
+            width: 14px;
+            height: 1px;
+            background: var(--blue);
+            flex-shrink: 0;
+        }
+
+        .sec-title {
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            color: var(--text-1);
+            margin-bottom: 0.35rem;
+            line-height: 1.2;
+        }
+
+        .sec-desc {
+            font-size: 0.78rem;
+            color: var(--text-3);
+            margin-bottom: 2.2rem;
+            font-style: italic;
+        }
+
+        .prose {
+            font-size: 0.875rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text-2);
+            max-width: 780px;
+        }
+
+        .prose+.prose {
+            margin-top: 0.9rem;
+        }
+
+        .prose strong {
+            font-weight: 500;
+            color: var(--text-1);
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border-med);
+            margin: 2rem 0;
+        }
+
+        .stat-cell {
+            background: var(--bg-card);
+            padding: 1.4rem 1.6rem;
+            transition: background 0.15s;
+        }
+
+        .stat-cell:hover {
+            background: var(--bg-2);
+        }
+
+        .stat-val {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            color: var(--text-1);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-val span {
+            color: var(--blue);
+        }
+
+        .stat-label {
+            font-family: var(--f-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: var(--f-mono);
+            font-size: 0.58rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge-green {
+            background: var(--green-dim);
+            color: var(--green);
+        }
+
+        .badge-blue {
+            background: var(--blue-dim);
+            color: var(--blue);
+        }
+
+        .badge-amber {
+            background: var(--amber-dim);
+            color: var(--amber);
+        }
+
+        .badge-cyan {
+            background: var(--cyan-dim);
+            color: var(--cyan);
+        }
+
+        .badge-red {
+            background: var(--red-dim);
+            color: var(--red);
+        }
+
+        .badge::before {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .callout {
+            margin: 1.8rem 0;
+            padding: 1rem 1.3rem;
+            background: var(--blue-glow);
+            border-left: 2px solid rgba(61, 155, 255, 0.3);
+            font-size: 0.82rem;
+            color: var(--text-2);
+            line-height: 1.7;
+        }
+
+        .callout strong {
+            font-weight: 500;
+            color: var(--text-1);
+        }
+
+        .diag {
+            margin: 2.2rem 0;
+            background: var(--bg-1);
+            border: 1px solid var(--border-med);
+            padding: 2rem;
+            overflow-x: auto;
+        }
+
+        .diag pre {
+            font-family: var(--f-mono);
+            font-size: 0.72rem;
+            line-height: 1.75;
+            color: var(--text-2);
+            white-space: pre;
+        }
+
+        .diag-caption {
+            font-family: var(--f-mono);
+            font-size: 0.6rem;
+            color: var(--text-3);
+            text-align: center;
+            margin-top: 1.2rem;
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+        }
+
+        .mod-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border-med);
+            margin: 2rem 0;
+        }
+
+        .mod-item {
+            background: var(--bg-card);
+            padding: 1.4rem 1.6rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+            transition: background 0.15s;
+        }
+
+        .mod-item:hover {
+            background: var(--bg-2);
+        }
+
+        .mod-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mod-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+
+        .mod-tag {
+            font-family: var(--f-mono);
+            font-size: 0.58rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+        }
+
+        .mod-desc {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: var(--text-2);
+            line-height: 1.7;
+        }
+
+        .mod-desc strong {
+            font-weight: 500;
+            color: var(--text-1);
+        }
+
+        .principle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border-med);
+            margin: 2rem 0;
+        }
+
+        .principle-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            transition: background 0.15s;
+        }
+
+        .principle-card:hover {
+            background: var(--bg-2);
+        }
+
+        .principle-icon {
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        .principle-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+
+        .principle-body {
+            font-size: 0.78rem;
+            font-weight: 300;
+            color: var(--text-2);
+            line-height: 1.7;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sec {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .sec:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .sec:nth-child(3) {
+            animation-delay: 0.10s;
+        }
+
+        .sec:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+
+        .sec:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+
+        .sec:nth-child(6) {
+            animation-delay: 0.25s;
+        }
+
+        .sec:nth-child(7) {
+            animation-delay: 0.30s;
+        }
+
+        .sec:nth-child(8) {
+            animation-delay: 0.35s;
+        }
+
+        .sec:nth-child(9) {
+            animation-delay: 0.40s;
+        }
+
+        @media (max-width: 680px) {
+
+            .doc-header,
+            .body {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .stats-bar,
+            .principle-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .mod-item {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: #08090c;
+            }
+
+            .sec {
+                page-break-inside: avoid;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="doc-header">
+        <div class="doc-header-inner">
+            <div class="doc-breadcrumb">
+                02. Product &amp; Technology <span style="opacity:0.3">›</span>
+                <span>Neurostar</span> <span style="opacity:0.3">›</span>
+                Simulation Engine -- Part 2
+            </div>
+            <h1 class="doc-title">Neurostar Simulation Engine<br><strong>Architecture &amp; Design Philosophy</strong>
+            </h1>
+            <p class="doc-subtitle">
+                How Involve Space's proprietary simulation and AI navigation platform works -- the logic behind each
+                subsystem, how they interact, and why the integrated architecture produces a capability no external
+                toolchain can replicate.
+            </p>
+            <div class="doc-meta-row">
+                <div class="doc-meta-item">
+                    <span class="doc-meta-label">Document</span>
+                    <span class="doc-meta-value">IS-DR-02-02</span>
+                </div>
+                <div class="doc-meta-item">
+                    <span class="doc-meta-label">Section</span>
+                    <span class="doc-meta-value">Simulation Engine -- Part 2</span>
+                </div>
+                <div class="doc-meta-item">
+                    <span class="doc-meta-label">Status</span>
+                    <span class="doc-meta-value" style="color:var(--green)">Current</span>
+                </div>
+                <div class="doc-meta-item">
+                    <span class="doc-meta-label">Revision</span>
+                    <span class="doc-meta-value">A -- Mar 2026</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+
+        <!-- 1. OVERVIEW -->
+        <div class="sec">
+            <div class="sec-eyebrow">Overview</div>
+            <h2 class="sec-title">What the Neurostar engine is</h2>
+            <p class="sec-desc">A vertically integrated simulation and autonomy platform -- built entirely in-house</p>
+
+            <p class="prose">
+                <strong>Neurostar</strong> is Involve Space's proprietary software engine for simulating, designing, and
+                autonomously navigating stratospheric balloon platforms. It is not a collection of off-the-shelf tools
+                configured together -- every subsystem, from the physics model to the AI navigation agent, was built
+                from scratch by the internal team, giving the company full control over accuracy, speed, and the ability
+                to iterate rapidly.
+            </p>
+            <p class="prose">
+                The engine covers the <strong>entire mission lifecycle</strong>: it starts from a blank set of mission
+                requirements, produces a physical balloon design, simulates in detail how that balloon will behave in a
+                real stratospheric environment, and then trains an AI agent capable of controlling altitude autonomously
+                in the conditions those simulations revealed. The same data model flows uninterrupted through all four
+                stages -- design, simulation, environment, and AI -- guaranteeing physical consistency end-to-end.
+            </p>
+
+            <div class="stats-bar" style="margin-top:2.5rem">
+                <div class="stat-cell">
+                    <div class="stat-val">4<span></span></div>
+                    <div class="stat-label">Integrated layers</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-val">3<span></span></div>
+                    <div class="stat-label">Platform types simulated</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-val">122<span>+</span></div>
+                    <div class="stat-label">Validated balloon designs</div>
+                </div>
+                <div class="stat-cell">
+                    <div class="stat-val">100<span>%</span></div>
+                    <div class="stat-label">Proprietary simulation core</div>
+                </div>
+            </div>
+
+            <div class="callout">
+                <strong>Why build it in-house?</strong> Commercial flight simulation tools are not designed for
+                stratospheric balloons. They cannot model the coupled interaction between gas mechanics, film
+                thermodynamics, wind-layer navigation, and an AI control agent simultaneously. Building Neurostar as a
+                single integrated codebase means every parameter touched during design is traceable through simulation
+                all the way to the AI's decision-making logic.
+            </div>
+        </div>
+
+        <!-- 2. FOUR LAYERS -->
+        <div class="sec">
+            <div class="sec-eyebrow">System Architecture</div>
+            <h2 class="sec-title">Four vertically integrated layers</h2>
+            <p class="sec-desc">Each layer feeds the next -- the output of one becomes the input of the one below</p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 340" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="a1" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#3d9bff" />
+                        </marker>
+                    </defs>
+                    <!-- Layer 1 -->
+                    <rect x="10" y="10" width="760" height="64" rx="3" fill="#0f1218" stroke="rgba(61,155,255,0.45)"
+                        stroke-width="1.5" />
+                    <text x="26" y="30" font-family="DM Mono,monospace" font-size="8" fill="rgba(61,155,255,0.5)"
+                        letter-spacing="2">LAYER 1 — DESIGN</text>
+                    <text x="390" y="50" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff"
+                        text-anchor="middle">Balloon Designer</text>
+                    <text x="390" y="65" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)"
+                        text-anchor="middle">Mission requirements → physical specification (volumes · masses · geometry
+                        · energy budget)</text>
+                    <!-- Arrow 1→2 -->
+                    <line x1="390" y1="75" x2="390" y2="100" stroke="#3d9bff" stroke-width="1.3"
+                        marker-end="url(#a1)" />
+                    <text x="396" y="92" font-family="DM Mono,monospace" font-size="7"
+                        fill="rgba(61,155,255,0.5)">design file</text>
+                    <!-- Layer 2 -->
+                    <rect x="10" y="102" width="760" height="64" rx="3" fill="#0f1218" stroke="rgba(52,208,122,0.45)"
+                        stroke-width="1.5" />
+                    <text x="26" y="122" font-family="DM Mono,monospace" font-size="8" fill="rgba(52,208,122,0.5)"
+                        letter-spacing="2">LAYER 2 — PHYSICS SIMULATION</text>
+                    <text x="390" y="142" font-family="DM Mono,monospace" font-size="10" fill="#34d07a"
+                        text-anchor="middle">Balloon Dynamics · Thermal · Solar · Onboard Devices</text>
+                    <text x="390" y="158" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)"
+                        text-anchor="middle">forces · gas mechanics · temperatures · energy balance → simulated state +
+                        telemetry</text>
+                    <!-- Arrow 2→3 -->
+                    <line x1="390" y1="167" x2="390" y2="192" stroke="#34d07a" stroke-width="1.3"
+                        marker-end="url(#a1)" />
+                    <text x="396" y="184" font-family="DM Mono,monospace" font-size="7"
+                        fill="rgba(52,208,122,0.5)">state + telemetry</text>
+                    <!-- Layer 3 -->
+                    <rect x="10" y="194" width="760" height="64" rx="3" fill="#0f1218" stroke="rgba(0,200,224,0.4)"
+                        stroke-width="1.5" />
+                    <text x="26" y="214" font-family="DM Mono,monospace" font-size="8" fill="rgba(0,200,224,0.5)"
+                        letter-spacing="2">LAYER 3 — ENVIRONMENT ENGINE</text>
+                    <text x="390" y="234" font-family="DM Mono,monospace" font-size="10" fill="#00c8e0"
+                        text-anchor="middle">Atmospheric Model · Multi-balloon Coordinator</text>
+                    <text x="390" y="250" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.35)"
+                        text-anchor="middle">real GFS wind data — or — procedural synthetic wind fields</text>
+                    <!-- Arrow 3→4 -->
+                    <line x1="390" y1="259" x2="390" y2="284" stroke="#00c8e0" stroke-width="1.3"
+                        marker-end="url(#a1)" />
+                    <text x="396" y="276" font-family="DM Mono,monospace" font-size="7"
+                        fill="rgba(0,200,224,0.5)">observations + reward</text>
+                    <!-- Layer 4 -->
+                    <rect x="10" y="286" width="760" height="44" rx="3" fill="rgba(240,160,32,0.06)"
+                        stroke="rgba(240,160,32,0.5)" stroke-width="1.5" />
+                    <text x="26" y="306" font-family="DM Mono,monospace" font-size="8" fill="rgba(240,160,32,0.5)"
+                        letter-spacing="2">LAYER 4 — AI NAVIGATION</text>
+                    <text x="390" y="320" font-family="DM Mono,monospace" font-size="10" fill="#f0a020"
+                        text-anchor="middle">QDQN Agent · trained on thousands of simulated episodes · compressor / idle
+                        / valve</text>
+                </svg>
+                <div class="diag-caption">Figure 1 — The four vertically integrated layers of Neurostar. A single shared
+                    design file flows from Layer 1 through each subsequent stage, ensuring physical consistency across
+                    the full stack.</div>
+            </div>
+
+            <p class="prose">
+                The key architectural decision is that these four layers are <strong>not loosely coupled
+                    services</strong> -- they are tightly integrated components sharing a single data model. When a new
+                balloon design is created in Layer 1, it immediately propagates into the physics model, the environment
+                simulator, and the observation space the AI agent operates in. There is no translation layer, no format
+                mismatch, and no opportunity for inconsistency to creep in.
+            </p>
+        </div>
+
+        <!-- 3. BALLOON DESIGNER -->
+        <div class="sec">
+            <div class="sec-eyebrow">Layer 1 -- Design</div>
+            <h2 class="sec-title">The Balloon Designer</h2>
+            <p class="sec-desc">From mission parameters to a physics-ready specification in seconds</p>
+
+            <p class="prose">
+                Before any simulation can run, the balloon must be designed. The Balloon Designer takes a set of
+                <strong>mission-level requirements</strong> -- target altitude, payload mass, how long the balloon needs
+                to stay aloft -- and produces a complete physical specification: the exact volume and shape of the
+                envelope, the right amount of lifting gas, the mass of the film, the battery capacity, and whether solar
+                panels are needed. This process is fully parametric and automated.
+            </p>
+            <p class="prose">
+                Three distinct design procedures cover the three platform types Involve Space operates. Each procedure
+                includes physical constraint checking -- the designer will not produce a design that would cause the
+                film to tear, the balloon to fly too high, or the energy budget to run out before the mission ends.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="arr_d" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#eef1f6" />
+                        </marker>
+                    </defs>
+
+                    <!-- Title -->
+                    <rect x="180" y="10" width="420" height="40" fill="#3d9bff" rx="3" fill-opacity="0.1"
+                        stroke="#3d9bff" stroke-width="1.5" />
+                    <text x="390" y="36" font-family="DM Mono,monospace" font-weight="600" font-size="14" fill="#3d9bff"
+                        text-anchor="middle" letter-spacing="1">DESIGN TOOLS</text>
+
+                    <!-- Input Row -->
+                    <g transform="translate(140, 75)">
+                        <polygon points="0,25 20,0 80,0 60,25" fill="#0d0f14" stroke="rgba(238,241,246,0.2)" />
+                        <text x="40" y="15" font-family="Inter,sans-serif" font-size="6" fill="#eef1f6"
+                            text-anchor="middle">PAYLOAD MASS</text>
+                    </g>
+                    <g transform="translate(230, 75)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="#0d0f14" stroke="rgba(238,241,246,0.2)" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#eef1f6"
+                            text-anchor="middle">ALTITUDE RANGE</text>
+                    </g>
+                    <g transform="translate(330, 75)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="#0d0f14" stroke="rgba(238,241,246,0.2)" />
+                        <text x="45" y="11" font-family="Inter,sans-serif" font-size="5" fill="#eef1f6"
+                            text-anchor="middle">SYSTEM</text>
+                        <text x="45" y="19" font-family="Inter,sans-serif" font-size="5" fill="#eef1f6"
+                            text-anchor="middle">CONFIGURATION</text>
+                    </g>
+                    <g transform="translate(430, 75)">
+                        <polygon points="0,25 20,0 100,0 80,25" fill="#0d0f14" stroke="rgba(238,241,246,0.2)" />
+                        <text x="50" y="11" font-family="Inter,sans-serif" font-size="6" fill="#eef1f6"
+                            text-anchor="middle">MATERIAL</text>
+                        <text x="50" y="19" font-family="Inter,sans-serif" font-size="6" fill="#eef1f6"
+                            text-anchor="middle">PROPERTIES</text>
+                    </g>
+                    <g transform="translate(540, 75)">
+                        <polygon points="0,25 20,0 80,0 60,25" fill="#0d0f14" stroke="rgba(238,241,246,0.2)" />
+                        <text x="40" y="11" font-family="Inter,sans-serif" font-size="5" fill="#eef1f6"
+                            text-anchor="middle">DESIGN</text>
+                        <text x="40" y="19" font-family="Inter,sans-serif" font-size="5" fill="#eef1f6"
+                            text-anchor="middle">CONSTRAINTS</text>
+                    </g>
+
+                    <line x1="390" y1="110" x2="390" y2="135" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_d)" />
+
+                    <rect x="290" y="140" width="200" height="25" fill="#eef1f6" fill-opacity="0.05" stroke="#eef1f6"
+                        stroke-opacity="0.5" rx="2" />
+                    <text x="390" y="156" font-family="DM Mono,monospace" font-size="10" fill="#eef1f6"
+                        text-anchor="middle">Balloon_Design</text>
+
+                    <line x1="390" y1="170" x2="390" y2="195" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_d)" />
+
+                    <!-- Parallelograms Out -->
+                    <g transform="translate(170, 200)">
+                        <polygon points="0,25 20,0 100,0 80,25" fill="#0d0f14" stroke="rgba(33,235,165,0.4)" />
+                        <text x="50" y="15" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">GAS &amp; AIR MASSES</text>
+                    </g>
+                    <g transform="translate(280, 200)">
+                        <polygon points="0,25 20,0 100,0 80,25" fill="#0d0f14" stroke="rgba(33,235,165,0.4)" />
+                        <text x="50" y="15" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">EFFECTIVE RADII</text>
+                    </g>
+                    <g transform="translate(390, 200)">
+                        <polygon points="0,25 20,0 100,0 80,25" fill="#0d0f14" stroke="rgba(33,235,165,0.4)" />
+                        <text x="50" y="11" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">SUPERPRESSURE</text>
+                        <text x="50" y="19" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">RADII</text>
+                    </g>
+                    <g transform="translate(500, 200)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="#0d0f14" stroke="rgba(33,235,165,0.4)" />
+                        <text x="45" y="11" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">SUPERPRESSURE</text>
+                        <text x="45" y="19" font-family="Inter,sans-serif" font-size="6" fill="#34d07a"
+                            text-anchor="middle">VALUES</text>
+                    </g>
+
+                    <line x1="390" y1="235" x2="390" y2="260" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_d)" />
+
+                    <rect x="180" y="270" width="420" height="90" fill="transparent" stroke="rgba(238,241,246,0.15)"
+                        stroke-width="1.5" rx="5" />
+
+                    <rect x="190" y="280" width="400" height="35" rx="3" fill="rgba(61,155,255,0.05)" stroke="#3d9bff"
+                        stroke-width="1" />
+                    <g transform="translate(200, 285)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#3d9bff" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#3d9bff"
+                            text-anchor="middle">GORE LENGTH</text>
+                    </g>
+                    <g transform="translate(300, 285)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#3d9bff" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#3d9bff"
+                            text-anchor="middle">GORE WIDTH</text>
+                    </g>
+                    <g transform="translate(400, 285)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#3d9bff" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#3d9bff"
+                            text-anchor="middle">GORE NUMBER</text>
+                    </g>
+                    <g transform="translate(500, 285)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#3d9bff" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#3d9bff"
+                            text-anchor="middle">TENDON LENGTH</text>
+                    </g>
+
+                    <rect x="190" y="320" width="300" height="30" rx="3" fill="rgba(240,160,32,0.05)" stroke="#f0a020"
+                        stroke-width="1" />
+                    <g transform="translate(200, 323)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#f0a020" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#f0a020"
+                            text-anchor="middle">GORE LENGTH</text>
+                    </g>
+                    <g transform="translate(300, 323)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#f0a020" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#f0a020"
+                            text-anchor="middle">GORE WIDTH</text>
+                    </g>
+                    <g transform="translate(400, 323)">
+                        <polygon points="0,25 20,0 90,0 70,25" fill="none" stroke="#f0a020" stroke-width="0.8" />
+                        <text x="45" y="15" font-family="Inter,sans-serif" font-size="6" fill="#f0a020"
+                            text-anchor="middle">GORE NUMBER</text>
+                    </g>
+
+                </svg>
+                <div class="diag-caption">Figure 2 — The Balloon Designer processes inputs into a detailed design file.
+                </div>
+            </div>
+
+            <div class="principle-grid">
+                <div class="principle-card">
+                    <div class="principle-icon">&#x2696;&#xFE0F;</div>
+                    <div class="principle-title">Buoyancy equilibrium</div>
+                    <div class="principle-body">The core design constraint is simple: the lifting force of the gas must
+                        exactly balance the total weight of the system at the target altitude. The designer solves this
+                        balance simultaneously with the geometric constraint that the balloon must physically contain
+                        enough gas to reach that altitude.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F4AA;</div>
+                    <div class="principle-title">Material stress limits</div>
+                    <div class="principle-body">The polyethylene film has a maximum stress it can bear before tearing.
+                        The designer checks that the pressure differential at flight altitude never exceeds this limit,
+                        using the real non-linear mechanical behaviour of the specific film used in production.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x26A1;</div>
+                    <div class="principle-title">Energy budget closure</div>
+                    <div class="principle-body">For active platforms, the designer calculates the solar power available
+                        at stratospheric altitude and verifies that the battery can sustain compressor operations
+                        through night periods, sizing both components for the specified mission duration.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F3AF;</div>
+                    <div class="principle-title">Altitude control range</div>
+                    <div class="principle-body">The double-balloon architecture requires the designer to calculate the
+                        ballonnet volume range -- the amount of air that can be pumped in or vented out -- to guarantee
+                        the balloon can actively traverse the full desired altitude band during operations.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PHYSICS -->
+        <div class="sec">
+            <div class="sec-eyebrow">Layer 2 -- Physics</div>
+            <h2 class="sec-title">The Physics Engine</h2>
+            <p class="sec-desc">A high-fidelity digital twin of a stratospheric balloon in flight</p>
+
+            <p class="prose">
+                The physics engine is the beating heart of Neurostar. It maintains a <strong>complete digital
+                    twin</strong> of a balloon in flight -- tracking dozens of physical quantities simultaneously and
+                advancing the simulation forward in time step by step. Every decision the AI agent makes is tested
+                against this model before it is ever deployed on a real platform.
+            </p>
+            <p class="prose">
+                Four tightly coupled subsystems contribute to the physics computation at every timestep. They interact
+                continuously: the thermal behaviour of the gas affects buoyancy, which affects altitude, which changes
+                the atmospheric pressure, which changes the thermal exchange -- and so on. No subsystem can be evaluated
+                in isolation.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 380" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="a3b" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#3d9bff" />
+                        </marker>
+                        <marker id="a3g" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#34d07a" />
+                        </marker>
+                        <marker id="a3a" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#f0a020" />
+                        </marker>
+                    </defs>
+                    <!-- Input sources row -->
+                    <rect x="10" y="10" width="360" height="50" rx="3" fill="#0d0f14" stroke="rgba(0,200,224,0.35)"
+                        stroke-width="1" />
+                    <text x="190" y="28" font-family="DM Mono,monospace" font-size="8" fill="rgba(0,200,224,0.7)"
+                        text-anchor="middle" letter-spacing="1">ATMOSPHERE</text>
+                    <text x="190" y="43" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)"
+                        text-anchor="middle">wind · air temperature · pressure · density</text>
+                    <text x="190" y="55" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.25)"
+                        text-anchor="middle">at current altitude</text>
+
+                    <rect x="410" y="10" width="360" height="50" rx="3" fill="#0d0f14" stroke="rgba(240,160,32,0.35)"
+                        stroke-width="1" />
+                    <text x="590" y="28" font-family="DM Mono,monospace" font-size="8" fill="rgba(240,160,32,0.7)"
+                        text-anchor="middle" letter-spacing="1">SOLAR MODEL</text>
+                    <text x="590" y="43" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.35)"
+                        text-anchor="middle">sun elevation · solar flux on film and panels</text>
+                    <text x="590" y="55" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.25)"
+                        text-anchor="middle">stratospheric attenuation applied</text>
+
+                    <!-- Arrows into dynamics -->
+                    <line x1="190" y1="61" x2="300" y2="106" stroke="rgba(0,200,224,0.5)" stroke-width="1.2"
+                        marker-end="url(#a3b)" />
+                    <line x1="590" y1="61" x2="480" y2="106" stroke="rgba(240,160,32,0.5)" stroke-width="1.2"
+                        marker-end="url(#a3b)" />
+
+                    <!-- Balloon Dynamics box -->
+                    <rect x="100" y="108" width="580" height="108" rx="3" fill="rgba(61,155,255,0.05)"
+                        stroke="rgba(61,155,255,0.45)" stroke-width="1.5" />
+                    <text x="390" y="128" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff"
+                        text-anchor="middle" letter-spacing="1">BALLOON DYNAMICS</text>
+                    <!-- Forces mini list -->
+                    <text x="180" y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Buoyancy (up)</text>
+                    <text x="180" y="163" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">gas vol × air density</text>
+                    <text x="340" y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Weight (down)</text>
+                    <text x="340" y="163" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">total system mass</text>
+                    <text x="500" y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Drag (vertical)</text>
+                    <text x="500" y="163" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">speed · air viscosity</text>
+                    <text x="660" y="150" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Wind (lateral)</text>
+                    <text x="660" y="163" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">passive drift</text>
+                    <!-- State labels -->
+                    <text x="390" y="186" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)"
+                        text-anchor="middle">gas state: volume · pressure · temperature | film temperature | ballonnet
+                        air mass</text>
+
+                    <!-- Arrow dynamics → devices -->
+                    <line x1="390" y1="217" x2="390" y2="242" stroke="#3d9bff" stroke-width="1.3"
+                        marker-end="url(#a3b)" />
+
+                    <!-- Energy/Actuation box -->
+                    <rect x="100" y="244" width="580" height="88" rx="3" fill="rgba(52,208,122,0.04)"
+                        stroke="rgba(52,208,122,0.4)" stroke-width="1.5" />
+                    <text x="390" y="264" font-family="DM Mono,monospace" font-size="10" fill="#34d07a"
+                        text-anchor="middle" letter-spacing="1">ENERGY &amp; ACTUATION</text>
+                    <text x="200" y="284" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.4)"
+                        text-anchor="middle">Solar panels → charge battery</text>
+                    <text x="200" y="297" font-family="DM Mono,monospace" font-size="7" fill="rgba(52,208,122,0.4)"
+                        text-anchor="middle">continuous generation</text>
+                    <text x="390" y="284" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.4)"
+                        text-anchor="middle">Compressor ON → balloon sinks</text>
+                    <text x="390" y="297" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">AI command</text>
+                    <text x="580" y="284" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.4)"
+                        text-anchor="middle">Valve OPEN → balloon rises</text>
+                    <text x="580" y="297" font-family="DM Mono,monospace" font-size="7" fill="rgba(61,155,255,0.4)"
+                        text-anchor="middle">AI command</text>
+                    <text x="390" y="320" font-family="DM Mono,monospace" font-size="7" fill="rgba(238,241,246,0.2)"
+                        text-anchor="middle">Battery: tracks energy · prevents compressor if depleted</text>
+
+                    <!-- Arrow → output -->
+                    <line x1="390" y1="333" x2="390" y2="358" stroke="#34d07a" stroke-width="1.3"
+                        marker-end="url(#a3g)" />
+
+                    <!-- Output -->
+                    <rect x="160" y="360" width="460" height="14" rx="2" fill="#0d0f14" stroke="rgba(238,241,246,0.1)"
+                        stroke-width="1" />
+                    <text x="390" y="371" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.3)"
+                        text-anchor="middle">New state: altitude · position · temperatures · battery charge → logged as
+                        telemetry</text>
+                </svg>
+                <div class="diag-caption">Figure 3 — Physics engine computation loop. All subsystems interact at each
+                    step to produce a physically consistent state update, which becomes the input for the next timestep.
+                </div>
+            </div>
+
+            <div class="mod-list">
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Balloon Dynamics</div>
+                        <div class="mod-tag">Core physics module</div>
+                        <span class="badge badge-blue">Primary</span>
+                    </div>
+                    <div class="mod-desc">Integrates the equations of motion of the balloon through time: buoyancy,
+                        weight, drag, and the mechanical behaviour of the gas envelope. Models how pressure, volume, and
+                        temperature inside the gas chamber and the air ballonnet relate to each other -- and how that
+                        relationship changes as the balloon traverses layers of different air density. The altitude
+                        control logic flows directly from this model: pumping air in makes the balloon heavier and
+                        denser relative to the surrounding air, causing it to sink; venting air has the opposite effect.
+                    </div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Thermal Exchange</div>
+                        <div class="mod-tag">Heat balance</div>
+                        <span class="badge badge-amber">Critical for altitude</span>
+                    </div>
+                    <div class="mod-desc">Stratospheric balloon altitude is strongly influenced by gas temperature. This
+                        module tracks all heat flows simultaneously: sunlight absorbed through the film, infrared
+                        radiation from Earth below and the cold sky above, convective heat transfer with the surrounding
+                        air, and the internal exchange between the film and the lifting gas. When the sun heats the gas
+                        during the day, the balloon naturally rises; as it cools overnight, it sinks. Understanding and
+                        anticipating this thermal cycle is essential for maintaining station-keeping.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Solar Position</div>
+                        <div class="mod-tag">Astronomical model</div>
+                        <span class="badge badge-cyan">Day/night critical</span>
+                    </div>
+                    <div class="mod-desc">Calculates precisely where the sun sits in the sky at any given date, time,
+                        and geographic location, and therefore how much solar radiation reaches the balloon's film and
+                        panels. This directly drives both the thermal model -- determining how much the gas heats up --
+                        and the energy model -- determining how much electricity the solar array generates. The model
+                        accounts for the thinner atmosphere at stratospheric altitude, which transmits more solar
+                        radiation than at ground level.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Onboard Devices</div>
+                        <div class="mod-tag">Power and actuation</div>
+                        <span class="badge badge-green">4 components</span>
+                    </div>
+                    <div class="mod-desc">Models every energy-relevant component as a physically realistic unit rather
+                        than a simplified abstraction. The <strong>solar array</strong> accounts for each panel's
+                        orientation relative to the sun moment by moment. The <strong>battery</strong> tracks its state
+                        of charge and prevents the compressor from operating if energy runs out. The
+                        <strong>compressor</strong> replicates the real performance characteristics of the actual
+                        centrifugal compressor used on the gondola. The <strong>vent valve</strong> models how
+                        pressurised air escapes under different conditions, including two distinct flow regimes
+                        depending on the pressure differential.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ATMOSPHERE -->
+        <div class="sec">
+            <div class="sec-eyebrow">Layer 3 -- Environment</div>
+            <h2 class="sec-title">The Atmospheric Engine</h2>
+            <p class="sec-desc">Two interchangeable wind models -- one for accuracy, one for training speed</p>
+
+            <p class="prose">
+                The atmosphere is what makes stratospheric navigation uniquely complex. Wind direction and speed vary
+                dramatically with altitude -- sometimes reversing completely within a few hundred metres -- and forecast
+                accuracy degrades with time. Neurostar includes two atmospheric backends that share a common interface
+                and can be swapped without changing any other part of the system.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="a4" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#3d9bff" />
+                        </marker>
+                    </defs>
+                    <!-- Outer container -->
+                    <rect x="10" y="10" width="760" height="176" rx="3" fill="rgba(61,155,255,0.03)"
+                        stroke="rgba(61,155,255,0.3)" stroke-width="1.5" />
+                    <text x="390" y="30" font-family="DM Mono,monospace" font-size="10" fill="#3d9bff"
+                        text-anchor="middle" letter-spacing="1">ATMOSPHERIC ENGINE</text>
+
+                    <!-- Real-world mode card -->
+                    <rect x="28" y="42" width="342" height="130" rx="3" fill="#0d0f14" stroke="rgba(52,208,122,0.35)"
+                        stroke-width="1" />
+                    <text x="199" y="62" font-family="DM Mono,monospace" font-size="9" fill="#34d07a"
+                        text-anchor="middle" letter-spacing="1">REAL-WORLD MODE</text>
+                    <text x="199" y="80" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Downloads actual GFS forecast wind data</text>
+                    <text x="199" y="94" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.4)"
+                        text-anchor="middle">for any location and date on Earth</text>
+                    <text x="199" y="116" font-family="DM Mono,monospace" font-size="7" fill="rgba(52,208,122,0.5)"
+                        text-anchor="middle">Used for:</text>
+                    <text x="199" y="130" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)"
+                        text-anchor="middle">mission planning · post-flight analysis</text>
+                    <text x="199" y="143" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)"
+                        text-anchor="middle">validation against real weather</text>
+                    <rect x="114" y="162" width="170" height="4" rx="1" fill="rgba(52,208,122,0.3)" />
+
+                    <!-- Training mode card -->
+                    <rect x="410" y="42" width="342" height="130" rx="3" fill="#0d0f14" stroke="rgba(0,200,224,0.35)"
+                        stroke-width="1" />
+                    <text x="581" y="62" font-family="DM Mono,monospace" font-size="9" fill="#00c8e0"
+                        text-anchor="middle" letter-spacing="1">TRAINING MODE</text>
+                    <text x="581" y="80" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">Generates synthetic wind fields using</text>
+                    <text x="581" y="94" font-family="Inter,sans-serif" font-size="8" fill="rgba(238,241,246,0.4)"
+                        text-anchor="middle">layered procedural noise</text>
+                    <text x="581" y="116" font-family="DM Mono,monospace" font-size="7" fill="rgba(0,200,224,0.5)"
+                        text-anchor="middle">No internet needed · runs instantly</text>
+                    <text x="581" y="130" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)"
+                        text-anchor="middle">Unique scenario for every episode</text>
+                    <text x="581" y="143" font-family="Inter,sans-serif" font-size="7.5" fill="rgba(238,241,246,0.3)"
+                        text-anchor="middle">background · shear layers · turbulence</text>
+                    <rect x="496" y="162" width="170" height="4" rx="1" fill="rgba(0,200,224,0.3)" />
+
+                    <!-- Shared interface label -->
+                    <text x="390" y="200" font-family="DM Mono,monospace" font-size="7.5" fill="rgba(238,241,246,0.2)"
+                        text-anchor="middle">same interface → wind speed and direction at any altitude, position, and
+                        time step</text>
+
+                    <!-- Arrows converge and go down -->
+                    <line x1="199" y1="172" x2="360" y2="210" stroke="#34d07a" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="581" y1="172" x2="420" y2="210" stroke="#00c8e0" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="390" y1="210" x2="390" y2="248" stroke="#3d9bff" stroke-width="1.3"
+                        marker-end="url(#a4)" />
+
+                    <!-- Output -->
+                    <rect x="160" y="250" width="460" height="22" rx="2" fill="#0d0f14" stroke="rgba(61,155,255,0.3)"
+                        stroke-width="1" />
+                    <text x="390" y="265" font-family="DM Mono,monospace" font-size="8" fill="#3d9bff"
+                        text-anchor="middle">Physics Engine — consumes wind to compute balloon drift and altitude
+                        timing</text>
+                </svg>
+                <div class="diag-caption">Figure 4 — Two atmospheric backends sharing a common interface. The real-world
+                    mode uses actual forecast data; the training mode generates synthetic but physically plausible wind
+                    fields at high speed.</div>
+            </div>
+
+            <p class="prose">
+                The <strong>synthetic wind generator</strong> is particularly important for AI training. A real AI agent
+                needs to experience thousands of different wind scenarios to generalise well -- it must not overfit to a
+                small set of historical weather patterns. The generator creates wind fields that are internally
+                physically coherent but never exactly repeated between training episodes. It layers four separate
+                components: a slow-evolving background wind that drifts in direction and speed, two to four distinct
+                <strong>wind shear layers</strong> at different altitudes (replicating the real stratospheric structure
+                where adjacent layers often blow in opposite directions), spatial turbulence, and a weak vertical
+                component. Together they produce a rich, non-repetitive environment that forces the AI agent to learn
+                genuine navigation principles rather than memorise specific scenarios.
+            </p>
+        </div>
+
+        <!-- 6. STRATOSPHERIC NAVIGATION CONCEPT -->
+        <div class="sec">
+            <div class="sec-eyebrow">Strategic Concept</div>
+            <h2 class="sec-title">The Art of Stratospheric Sailing</h2>
+            <p class="sec-desc">Horizontal autonomy through vertical control</p>
+
+            <p class="prose">
+                To understand why Neurostar requires artificial intelligence, one must first understand the fundamental
+                strategic puzzle of the stratosphere. Unlike an airplane or a drone, a stratospheric balloon has no
+                propellers or jets to push it forward. It is, in the simplest terms, a <strong>sailing vessel</strong>
+                that uses the atmosphere's vertical structure as its medium.
+            </p>
+            <p class="prose">
+                The stratosphere is not a uniform mass of air. It is a complex, <strong>layered highway system</strong>.
+                At any given moment, the wind at 18 km might be blowing East at 20 knots, while at 21 km it is blowing
+                South-West, and at 24 km it might be nearly still. This vertical diversity is the key to navigation:
+                by changing its altitude, the balloon can "choose" which wind layer to catch.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 240" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <rect x="0" y="0" width="780" height="240" fill="transparent" />
+                    <!-- Layers -->
+                    <line x1="50" y1="40" x2="730" y2="40" stroke="rgba(238,241,246,0.1)" stroke-width="1"
+                        stroke-dasharray="10 10" />
+                    <line x1="50" y1="90" x2="730" y2="90" stroke="rgba(238,241,246,0.1)" stroke-width="1"
+                        stroke-dasharray="10 10" />
+                    <line x1="50" y1="140" x2="730" y2="140" stroke="rgba(238,241,246,0.1)" stroke-width="1"
+                        stroke-dasharray="10 10" />
+                    <line x1="50" y1="190" x2="730" y2="190" stroke="rgba(238,241,246,0.1)" stroke-width="1"
+                        stroke-dasharray="10 10" />
+
+                    <text x="60" y="32" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.3)">25
+                        KM</text>
+                    <text x="60" y="82" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.3)">22
+                        KM</text>
+                    <text x="60" y="132" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.3)">19
+                        KM</text>
+                    <text x="60" y="182" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.3)">16
+                        KM</text>
+
+                    <!-- Wind Vectors -->
+                    <g opacity="0.4">
+                        <path d="M 600,65 L 680,65" stroke="#3d9bff" stroke-width="2" marker-end="url(#arr)" />
+                        <text x="640" y="55" font-family="Inter,sans-serif" font-size="7" fill="#3d9bff"
+                            text-anchor="middle">EAST WIND</text>
+
+                        <path d="M 680,115 L 600,115" stroke="#34d07a" stroke-width="2" marker-end="url(#arr)" />
+                        <text x="640" y="105" font-family="Inter,sans-serif" font-size="7" fill="#34d07a"
+                            text-anchor="middle">WEST WIND</text>
+
+                        <path d="M 600,165 L 640,165" stroke="#f0a020" stroke-width="2" marker-end="url(#arr)" />
+                        <text x="620" y="155" font-family="Inter,sans-serif" font-size="7" fill="#f0a020"
+                            text-anchor="middle">SLOW DRIFT</text>
+                    </g>
+
+                    <!-- Balloon Trajectory -->
+                    <path d="M 100,165 L 250,165 C 300,165 300,115 350,115 L 550,115" fill="none" stroke="#eef1f6"
+                        stroke-width="2.5" stroke-dasharray="5 5" />
+                    <circle cx="100" cy="165" r="4" fill="#eef1f6" />
+
+                    <!-- Balloon at transition -->
+                    <path d="M 342,105 L 358,105 L 350,90 Z" fill="#eef1f6" />
+                    <rect x="345" y="105" width="10" height="6" fill="#eef1f6" rx="1" />
+
+                    <text x="100" y="150" font-family="DM Mono,monospace" font-size="9" fill="#eef1f6">LAUNCH</text>
+                    <text x="350" y="75" font-family="DM Mono,monospace" font-size="9" fill="#eef1f6"
+                        text-anchor="middle">ALTITUDE CHANGE TO CATCH WIND</text>
+                    <text x="550" y="135" font-family="DM Mono,monospace" font-size="9" fill="#eef1f6"
+                        text-anchor="middle">NAVIGATING TO TARGET</text>
+                </svg>
+                <div class="diag-caption">Vision — Vertical control is the "steering wheel" of a stratospheric platform.
+                    By moving up or down, the engine chooses the most efficient horizontal trajectory.</div>
+            </div>
+
+            <p class="prose">
+                This is <strong>Three-Dimensional Chess</strong> played at 100,000 feet. A mission to stay over a
+                specific city (station-keeping) or to reach a remote location involves calculating exactly when to rise
+                and when to sink to exploit these shifting flows. It is a problem of optimization: you must balance
+                reaching your destination with conserving energy, managing gas temperatures, and predicting how the
+                forecast will change.
+            </p>
+            <p class="prose">
+                <strong>This is why the AI exists.</strong> A human pilot cannot mentally process the non-linear physics
+                of the balloon, the battery's energy curve, and the global wind forecast simultaneously for 60 days
+                straight. The AI Navigation Agent does exactly this: it transforms the complex, chaotic reality of the
+                stratosphere into a predictable, autonomous path.
+            </p>
+        </div>
+
+        <!-- 7. AI -->
+        <div class="sec">
+            <div class="sec-eyebrow">Layer 4 -- AI Navigation</div>
+            <h2 class="sec-title">The Autonomous Navigation Agent</h2>
+            <p class="sec-desc">A deep reinforcement learning system that discovers stratospheric navigation by
+                experience</p>
+
+            <p class="prose">
+                The navigation agent is the component that transforms Neurostar from a sophisticated simulation tool
+                into a genuine <strong>autonomous control system</strong>. The fundamental idea behind it is simple
+                to state but profound in its implications: rather than being programmed with a fixed set of rules that
+                a human engineer has reasoned out in advance, the agent learns entirely through experience. It is placed
+                inside the simulated environment, it tries things, it sees what happens, and over time it develops an
+                increasingly refined understanding of how to keep the balloon where it needs to be.
+            </p>
+            <p class="prose">
+                To understand why this matters, it helps to consider what the alternative looks like. A classical
+                control system for a stratospheric balloon would consist of a set of hand-crafted rules: if the balloon
+                is too low, turn on the compressor for a certain number of seconds; if it is too high, open the valve.
+                In principle, this works. In practice, it encounters an immediate problem -- the balloon is never in a
+                static, predictable state. The lifting gas is continuously heating and cooling as day turns to night.
+                The wind at the balloon's current altitude may be pushing it toward a region where the atmosphere at
+                other altitudes behaves completely differently. The battery may be running low, limiting how aggressive
+                any correction can be. A rule that says "if too low, compress" does not know, and cannot know, that
+                compressing now will deplete the battery just before a long night period during which the gas will cool
+                and naturally cause the balloon to descend further. <strong>An agent that has internalised the dynamics
+                    of the system as a whole can make decisions that anticipate these interactions</strong>, rather than
+                reacting to each variable in isolation.
+            </p>
+            <p class="prose">
+                Training the agent works through a cycle of observation, action, and feedback that repeats continuously
+                across hundreds of simulated mission episodes. At each step, the agent receives a snapshot of the
+                balloon's current state -- its altitude relative to the target, how fast it is climbing or descending,
+                how much energy is left in the battery, how full the gas chamber and the ballonnet are, and what the
+                wind is doing at its current position. From this snapshot, it chooses one of three possible commands:
+                engage the compressor to pump air into the ballonnet and push the balloon downward, open the valve to
+                release air and allow the balloon to rise, or do nothing and let the system equilibrate naturally.
+                The physics engine then executes the command and advances the simulation forward in time. The agent
+                receives a signal indicating whether the outcome was good or bad: positive if the balloon moved
+                closer to its target altitude, negative if it drifted further away, and a large penalty if it
+                crossed a critical limit such as battery depletion or altitude loss.
+            </p>
+            <p class="prose">
+                This cycle -- observe, decide, act, receive feedback -- is the complete training loop. It contains no
+                instructions about how to fly. The agent is never told to anticipate thermal cycles, or to conserve
+                energy before nightfall, or to exploit wind shear layers for lateral positioning. These behaviours
+                emerge naturally from the accumulated experience of thousands of training episodes, each one with a
+                different wind pattern, a different time of day, a different starting condition. What appears to an
+                outside observer as intelligent navigation strategy is, at its root, a very large number of these
+                experiences compressed into the weights of a neural network.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 440" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="arr" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                            <polygon points="0 0,6 2.5,0 5" fill="#eef1f6" />
+                        </marker>
+                        <marker id="arr_g" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                            <polygon points="0 0,6 2.5,0 5" fill="rgba(238,241,246,0.3)" />
+                        </marker>
+                    </defs>
+
+                    <!-- Top rect -->
+                    <rect x="150" y="10" width="480" height="40" fill="rgba(140,158,255,0.15)" stroke="#8c9eff"
+                        stroke-width="1.5" rx="3" />
+                    <text x="390" y="36" font-family="DM Mono,monospace" font-size="14" font-weight="500" fill="#8c9eff"
+                        text-anchor="middle">AI TRAINING (REINFORCEMENT LEARNING)</text>
+
+                    <!-- Historical Data -->
+                    <path d="M 120,80 Q 140,80 140,105 L 140,115 Q 140,140 120,140 L 80,140 Q 90,110 80,80 Z"
+                        fill="#0d0f14" stroke="rgba(238,241,246,0.5)" />
+                    <text x="110" y="105" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">HISTORICAL</text>
+                    <text x="110" y="117" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">WIND DATA</text>
+                    <line x1="145" y1="110" x2="185" y2="110" stroke="rgba(238,241,246,0.5)" stroke-width="1.5"
+                        marker-end="url(#arr_g)" />
+
+                    <text x="245" y="130" font-family="DM Mono,monospace" font-size="7" fill="#eaddf7"
+                        text-anchor="middle">SEVERAL EPISODES</text>
+
+                    <!-- Column -->
+                    <rect x="320" y="70" width="200" height="25" fill="#a3a3fc" fill-opacity="0.2" stroke="#a3a3fc"
+                        rx="2" />
+                    <text x="420" y="86" font-family="Inter,sans-serif" font-size="9" fill="#a3a3fc"
+                        text-anchor="middle">For each episode execute a simulation</text>
+
+                    <rect x="320" y="100" width="200" height="20" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="420" y="113" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">For each point/step of the sim: 2 iterations</text>
+
+                    <rect x="320" y="130" width="200" height="18" fill="#a3a3fc" fill-opacity="0.2" stroke="#a3a3fc"
+                        rx="2" />
+                    <text x="420" y="143" font-family="Inter,sans-serif" font-size="10" fill="#a3a3fc"
+                        text-anchor="middle">Value Iteration</text>
+
+                    <rect x="330" y="155" width="190" height="20" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="425" y="168" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">For each altitude of the column...</text>
+
+                    <rect x="330" y="180" width="190" height="24" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="425" y="191" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">Reward based on local wind that points</text>
+                    <text x="425" y="200" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">towards NAV objectives</text>
+
+                    <rect x="330" y="210" width="190" height="30" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="425" y="221" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">Value function, based on Bellmann equation</text>
+                    <text x="425" y="230" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">using current reward and previous value</text>
+
+                    <rect x="330" y="248" width="190" height="40" fill="#34d07a" fill-opacity="0.1" stroke="#34d07a"
+                        rx="2" />
+                    <text x="425" y="260" font-family="Inter,sans-serif" font-size="7" fill="#34d07a" font-weight="bold"
+                        text-anchor="middle">Update the AI weights so that the</text>
+                    <text x="425" y="269" font-family="Inter,sans-serif" font-size="7" fill="#34d07a" font-weight="bold"
+                        text-anchor="middle">delta weights minimize the difference</text>
+                    <text x="425" y="278" font-family="Inter,sans-serif" font-size="7" fill="#34d07a" font-weight="bold"
+                        text-anchor="middle">between AI output and known value function</text>
+
+                    <rect x="330" y="295" width="190" height="30" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="425" y="307" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">Estimate the value function for all</text>
+                    <text x="425" y="316" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">the other columns / altitudes using NN</text>
+
+                    <rect x="320" y="335" width="200" height="18" fill="#a3a3fc" fill-opacity="0.2" stroke="#a3a3fc"
+                        rx="2" />
+                    <text x="420" y="347" font-family="Inter,sans-serif" font-size="10" fill="#a3a3fc"
+                        text-anchor="middle">Policy Iteration</text>
+
+                    <rect x="320" y="360" width="200" height="22" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="420" y="371" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">Select the action to go towards the</text>
+                    <text x="420" y="379" font-family="Inter,sans-serif" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">altitude that maximizes the value</text>
+
+                    <rect x="320" y="390" width="200" height="25" fill="#a3a3fc" fill-opacity="0.2" stroke="#a3a3fc"
+                        rx="2" />
+                    <text x="420" y="401" font-family="Inter,sans-serif" font-size="8" fill="#a3a3fc"
+                        text-anchor="middle">For each iteration execute the</text>
+                    <text x="420" y="411" font-family="Inter,sans-serif" font-size="8" fill="#a3a3fc"
+                        text-anchor="middle">action and continue the episode</text>
+
+                    <!-- Iteration loop back -->
+                    <path d="M 320,402 L 300,402 L 300,140 L 320,140" fill="none" stroke="#eef1f6" stroke-width="1"
+                        marker-end="url(#arr)" />
+
+                    <line x1="520" y1="402" x2="595" y2="402" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr)" />
+
+                    <rect x="600" y="390" width="160" height="25" fill="#a3a3fc" fill-opacity="0.2" stroke="#a3a3fc"
+                        rx="2" />
+                    <text x="680" y="401" font-family="Inter,sans-serif" font-size="8" fill="#a3a3fc"
+                        text-anchor="middle">Terminate episode based on</text>
+                    <text x="680" y="411" font-family="Inter,sans-serif" font-size="8" fill="#a3a3fc"
+                        text-anchor="middle">time/altitude</text>
+
+                    <rect x="210" y="165" width="80" height="30" fill="#eaddf7" fill-opacity="0.1" stroke="#eaddf7"
+                        stroke-opacity="0.3" rx="3" />
+                    <text x="250" y="177" font-family="Inter,sans-serif" font-size="7" fill="#eaddf7"
+                        text-anchor="middle">Terminate Train</text>
+                    <text x="250" y="187" font-family="Inter,sans-serif" font-size="7" fill="#eaddf7"
+                        text-anchor="middle">based on steps</text>
+
+                </svg>
+                <div class="diag-caption">Figure 5 — Detailed Reinforcement Learning training loop structure.</div>
+            </div>
+
+            <p class="prose">
+                One of the subtler challenges in this kind of training is the <strong>long-horizon nature of the
+                    decisions</strong>. Opening the valve right now might look like a sensible correction because the
+                balloon is slightly above target -- but if the sun is about to set and the gas temperature will drop
+                naturally in the next twenty minutes, the balloon would have descended on its own without any
+                intervention. The agent has wasted a portion of its ballonnet air capacity unnecessarily, and that
+                air may be needed later. Conversely, waiting too long to intervene when the balloon is rising rapidly
+                can let it drift far outside the acceptable altitude band before a correction becomes effective.
+                The AI must learn to reason about the future trajectory of the system, not just its current state.
+                This capacity for anticipatory, temporally-extended reasoning is precisely what makes deep
+                reinforcement learning a qualitatively different tool from classical controllers -- and what
+                requires so many training episodes to develop well.
+            </p>
+            <p class="prose">
+                Once the training process is complete, the learned policy is not something that needs to be adapted
+                or translated for the physical world. Every input the agent used during simulation corresponds
+                directly to a measurement available from sensors on the real gondola. The altitude error comes from
+                GPS and barometric pressure. The battery state comes from the power management system. The wind
+                reading comes from on-board air speed sensors. When the trained network is uploaded to the on-board
+                computer, it begins operating in exactly the same way it did in simulation -- because the simulation
+                was built to match the real world precisely. <strong>There is no gap between the learned behaviour
+                    and the deployed behaviour.</strong>
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="arr_w" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                            <polygon points="0 0,6 2.5,0 5" fill="#eef1f6" />
+                        </marker>
+                        <marker id="arr_p" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                            <polygon points="0 0,6 2.5,0 5" fill="#a4a4cf" />
+                        </marker>
+                    </defs>
+
+                    <rect x="50" y="10" width="680" height="40" fill="rgba(164,164,207,0.15)" stroke="#a4a4cf"
+                        stroke-width="1.5" rx="3" />
+                    <text x="390" y="36" font-family="DM Mono,monospace" font-weight="600" font-size="14" fill="#a4a4cf"
+                        text-anchor="middle" letter-spacing="1">AI AGENT MODULE</text>
+
+                    <!-- Compressor output -->
+                    <rect x="10" y="200" width="100" height="30" fill="rgba(255,180,252,0.15)" stroke="#ffb4fc"
+                        stroke-width="1" rx="2" />
+                    <text x="60" y="218" font-family="Inter,sans-serif" font-size="10" fill="#ffb4fc"
+                        text-anchor="middle">COMPRESSOR</text>
+
+                    <!-- Action Conversion Column -->
+                    <rect x="140" y="150" width="140" height="35" fill="rgba(164,164,207,0.2)" rx="2"
+                        stroke="#a4a4cf" />
+                    <text x="210" y="165" font-family="Inter,sans-serif" font-size="9" fill="#a4a4cf"
+                        text-anchor="middle">Action Conversion for</text>
+                    <text x="210" y="177" font-family="Inter,sans-serif" font-size="9" fill="#a4a4cf"
+                        text-anchor="middle">Compressor/Valve</text>
+
+                    <polygon points="150,110 230,110 230,130 150,130" fill="#0d0f14" stroke="rgba(238,241,246,0.3)" />
+                    <text x="190" y="125" font-family="DM Mono,monospace" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">LIFT GAS VALVE</text>
+                    <polygon points="240,110 300,110 300,130 240,130" fill="#0d0f14" stroke="rgba(238,241,246,0.3)" />
+                    <text x="270" y="125" font-family="DM Mono,monospace" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">COMPRESSOR</text>
+                    <line x1="190" y1="130" x2="190" y2="150" stroke="#a4a4cf" stroke-width="1.5"
+                        marker-end="url(#arr_p)" />
+                    <line x1="270" y1="130" x2="270" y2="150" stroke="#a4a4cf" stroke-width="1.5"
+                        marker-end="url(#arr_p)" />
+
+                    <rect x="140" y="195" width="140" height="25" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="210" y="210" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Calculate Compression Ratio</text>
+
+                    <rect x="140" y="230" width="140" height="25" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="210" y="245" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Calculate Mass Flow threshold</text>
+
+                    <rect x="140" y="265" width="140" height="25" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="210" y="280" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Calculate RPM Target</text>
+
+                    <rect x="140" y="300" width="140" height="30" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="210" y="312" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Action -1: Compressor ON</text>
+                    <text x="210" y="322" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Valve CLOSED</text>
+
+                    <line x1="140" y1="215" x2="110" y2="215" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_w)" />
+
+                    <!-- AI Decision Maker -->
+                    <rect x="330" y="150" width="120" height="35" fill="rgba(164,164,207,0.2)" stroke="#a4a4cf"
+                        rx="2" />
+                    <text x="390" y="171" font-family="Inter,sans-serif" font-size="9" fill="#a4a4cf"
+                        text-anchor="middle">AI DECISION MAKER</text>
+
+                    <line x1="330" y1="168" x2="280" y2="168" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_w)" />
+                    <rect x="290" y="160" width="30" height="16" fill="#0d0f14" stroke="rgba(238,241,246,0.3)" />
+                    <text x="305" y="171" font-family="DM Mono,monospace" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">{-1,0,+1}</text>
+
+                    <polygon points="340,110 440,110 450,130 350,130" fill="#0d0f14" stroke="rgba(238,241,246,0.3)" />
+                    <text x="395" y="125" font-family="DM Mono,monospace" font-size="7" fill="#eef1f6"
+                        text-anchor="middle">CURRENT PARAMETERS</text>
+                    <line x1="395" y1="130" x2="395" y2="150" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_w)" />
+
+                    <rect x="330" y="195" width="120" height="85" fill="rgba(218,221,247,0.1)" stroke="#daddf7"
+                        stroke-width="1" rx="2" />
+                    <text x="390" y="210" font-family="Inter,sans-serif" font-size="8" font-weight="bold" fill="#daddf7"
+                        text-anchor="middle">Hyperparameters</text>
+                    <text x="360" y="225" font-family="Inter,sans-serif" font-size="7" fill="#daddf7"
+                        text-anchor="middle">Discount Factor</text>
+                    <text x="360" y="245" font-family="Inter,sans-serif" font-size="7" fill="#daddf7"
+                        text-anchor="middle">N. of NN layers</text>
+                    <text x="425" y="245" font-family="Inter,sans-serif" font-size="8" font-weight="bold"
+                        fill="#eef1f6">→ 8</text>
+                    <text x="360" y="265" font-family="Inter,sans-serif" font-size="7" fill="#daddf7"
+                        text-anchor="middle">N. perceptrons</text>
+                    <text x="425" y="265" font-family="Inter,sans-serif" font-size="8" font-weight="bold"
+                        fill="#eef1f6">→ 512</text>
+
+                    <!-- Wind Estimator -->
+                    <rect x="470" y="150" width="140" height="35" fill="rgba(164,164,207,0.2)" stroke="#a4a4cf"
+                        rx="2" />
+                    <text x="540" y="171" font-family="Inter,sans-serif" font-size="9" fill="#a4a4cf"
+                        text-anchor="middle">UPDATED WIND LAYERS</text>
+                    <line x1="470" y1="168" x2="450" y2="168" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_w)" />
+
+                    <rect x="630" y="150" width="120" height="35" fill="rgba(164,164,207,0.2)" stroke="#a4a4cf"
+                        rx="2" />
+                    <text x="690" y="171" font-family="Inter,sans-serif" font-size="9" fill="#a4a4cf"
+                        text-anchor="middle">WIND ESTIMATOR</text>
+
+                    <rect x="630" y="195" width="120" height="25" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="690" y="210" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Collect Wind (GPS/INS)</text>
+                    <rect x="630" y="230" width="120" height="25" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="2" />
+                    <text x="690" y="245" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Estimate with Gaussian</text>
+
+                    <line x1="630" y1="168" x2="610" y2="168" stroke="#eef1f6" stroke-width="1.5"
+                        marker-end="url(#arr_w)" />
+
+                    <!-- Sensors -->
+                    <rect x="520" y="90" width="80" height="25" fill="rgba(255,180,252,0.15)" stroke="#ffb4fc" rx="2" />
+                    <text x="560" y="105" font-family="Inter,sans-serif" font-size="9" fill="#ffb4fc"
+                        text-anchor="middle">SENSORS</text>
+                    <line x1="560" y1="115" x2="560" y2="150" stroke="#a4a4cf" stroke-width="1.5"
+                        marker-end="url(#arr_p)" />
+
+                    <rect x="630" y="90" width="100" height="25" fill="rgba(255,180,252,0.15)" stroke="#ffb4fc"
+                        rx="2" />
+                    <text x="680" y="105" font-family="Inter,sans-serif" font-size="9" fill="#ffb4fc"
+                        text-anchor="middle">GPS/INS</text>
+                    <line x1="680" y1="115" x2="680" y2="150" stroke="#a4a4cf" stroke-width="1.5"
+                        marker-end="url(#arr_p)" />
+                </svg>
+                <div class="diag-caption">Figure 6 — Details of the AI prediction components and wind resolution inside
+                    the navigation stack.</div>
+            </div>
+
+            <div class="mod-list" style="margin-top:2rem">
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Distributional Reinforcement Learning</div>
+                        <div class="mod-tag">Core algorithm -- QDQN</div>
+                        <span class="badge badge-amber">Key differentiator</span>
+                    </div>
+                    <div class="mod-desc">
+                        Most AI control systems learn to estimate the <em>expected</em> outcome of each possible
+                        action -- essentially, an average of what tends to happen when that action is taken.
+                        This is a reasonable starting point, but it hides important information. Two actions might
+                        have the same average outcome but very different distributions around that average: one might
+                        be reliable and predictable, while the other occasionally produces excellent results but
+                        sometimes leads to a dangerous state. An agent that only knows the average cannot
+                        distinguish between them.<br><br>
+                        Neurostar's navigation agent uses a more sophisticated approach: it learns the <strong>full
+                            distribution of possible outcomes</strong> for each action, not just the average. This
+                        means it always knows not only what is likely to happen, but also how uncertain the
+                        outcome is. In a stratospheric environment -- where the same command can have meaningfully
+                        different consequences depending on subtle atmospheric conditions that no sensor fully
+                        captures -- this richer understanding translates directly into better decisions. When
+                        outcomes are uncertain, the agent can choose to be more conservative. When the situation
+                        is clear, it can act decisively. The ability to calibrate its own confidence, rather than
+                        always committing to the action with the highest average expectation, is a critical safety
+                        property for a system operating autonomously at 25 km altitude with no possibility of
+                        immediate human intervention.
+                    </div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">MarcoPolo Training Strategy</div>
+                        <div class="mod-tag">Proprietary exploration method</div>
+                        <span class="badge badge-cyan">Proprietary approach</span>
+                    </div>
+                    <div class="mod-desc">
+                        Every reinforcement learning system faces a fundamental tension: the agent tends to
+                        gravitate toward strategies it already knows work, because those strategies generate
+                        reliable positive rewards. But this means it may never discover better strategies that
+                        require passing through a period of uncertain or even negative outcomes first. It also
+                        means it may never encounter the rare but consequential situations -- the extreme wind
+                        reversals, the near-depleted battery, the borderline structural pressure -- that it would
+                        need to handle well on a real flight.<br><br>
+                        The <strong>MarcoPolo strategy</strong> -- named for the spirit of deliberate exploration
+                        into unknown territory -- addresses this at the level of entire training episodes rather
+                        than individual actions. A deliberately chosen fraction of training episodes are conducted
+                        with entirely random commands, with no learned policy involved at all. This guarantees
+                        regular exposure to edge cases the agent's current knowledge would lead it to avoid.
+                        The rest of the episodes use the evolving learned strategy, with exploration gradually
+                        giving way to exploitation as the policy matures. The two modes work in a productive
+                        cycle: pure exploration discovers new territory and new situations, and policy training
+                        maps those discoveries into lasting behavioural improvements. The result is a trained
+                        agent that has seen not just the most common scenarios but the full range of conditions
+                        a real flight might encounter -- including the ones it would be hardest to recover from
+                        if encountered for the first time in the air.
+                    </div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Safety Filter</div>
+                        <div class="mod-tag">Operational safety layer</div>
+                        <span class="badge badge-red">Always active</span>
+                    </div>
+                    <div class="mod-desc">
+                        Even the most carefully trained AI system operates within the boundaries of what it has
+                        experienced during training. A well-designed training process maximises the breadth of
+                        those experiences, but it cannot guarantee that every conceivable edge case has been
+                        covered. In some of those uncovered situations, the agent might produce a command that
+                        is physically inconsistent with the balloon's actual state -- commanding the valve to
+                        release air when the ballonnet is already empty, for instance, or attempting to run
+                        the compressor when the battery has insufficient energy for even a brief actuation.<br><br>
+                        The safety filter exists to ensure that no matter what the AI agent proposes, the actual
+                        command that reaches the balloon's actuators can never violate a physical constraint.
+                        It works by intercepting every command before execution, checking it against the real
+                        state of the system, and substituting the safest valid alternative if the proposed command
+                        would cause a problem. The agent itself is never aware that this intervention has occurred --
+                        it simply receives a state update that reflects the physical world. The architecture
+                        ensures that even in genuine edge cases, the worst the AI can produce is a suboptimal
+                        manoeuvre, not a dangerous one.<br><br>
+                        Critically, the safety filter is active <strong>during simulation training and during
+                            real-world flight</strong>. The agent learns to navigate within the same constraints
+                        that govern its deployed behaviour -- which means the safety boundaries are never
+                        experienced as a surprise in the field.
+                    </div>
+                </div>
+            </div>
+
+            <div class="callout" style="margin-top:2rem">
+                <strong>From simulation to flight.</strong> The policy the agent develops during training is not
+                specific to the simulator. Every input it uses during training -- altitude error, climb rate, battery
+                charge, chamber fill levels, wind reading -- corresponds directly to a sensor available on the physical
+                gondola. When the training is complete, the navigation policy transfers to the on-board flight computer
+                without modification, converting months of simulated experience into real-world autonomous capability.
+            </div>
+        </div>
+
+        <!-- 8. DESIGN PHILOSOPHY -->
+        <div class="sec">
+            <div class="sec-eyebrow">Design Philosophy</div>
+            <h2 class="sec-title">Engineering principles behind the platform</h2>
+            <p class="sec-desc">The architectural decisions that give Neurostar a structural advantage</p>
+
+            <div class="principle-grid" style="margin-top:1rem">
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F517;</div>
+                    <div class="principle-title">One shared data model</div>
+                    <div class="principle-body">Every layer of the system reads from a single shared design file. When a
+                        parameter changes, the change propagates automatically through all downstream layers. There is
+                        no risk of the AI being trained on a different balloon than the one being designed and tested.
+                    </div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F9EA;</div>
+                    <div class="principle-title">Physics over approximation</div>
+                    <div class="principle-body">Every subsystem uses real physical models derived from first principles
+                        or experimental measurements. Approximations are only used where they have been validated
+                        against the full physical model, and their accuracy range is explicitly documented.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x26A1;</div>
+                    <div class="principle-title">Two-speed operation</div>
+                    <div class="principle-body">For AI training, speed is critical. The atmospheric engine provides a
+                        fast synthetic mode that generates realistic wind fields without any database access. For
+                        mission planning and validation, the same engine switches to real forecast data. The physics
+                        model maintains the same fidelity in both modes.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F6E1;&#xFE0F;</div>
+                    <div class="principle-title">Safety by design</div>
+                    <div class="principle-body">Safety constraints are embedded at the lowest level of the architecture.
+                        The safety filter acts before any command reaches the physics model. Material limits are checked
+                        inside the designer before any design can be saved. The AI reward function makes dangerous
+                        states intrinsically unattractive to a well-trained agent.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F4E1;</div>
+                    <div class="principle-title">Portable to real flights</div>
+                    <div class="principle-body">The AI policy trained in simulation deploys directly on-board the
+                        gondola without modification. Every input the agent uses in simulation corresponds exactly to a
+                        sensor available on the physical platform. No input is synthetic or simulator-specific.</div>
+                </div>
+                <div class="principle-card">
+                    <div class="principle-icon">&#x1F504;</div>
+                    <div class="principle-title">Designed to generalise</div>
+                    <div class="principle-body">The MarcoPolo strategy and synthetic atmospheric generator together
+                        ensure the AI agent encounters an extremely wide range of scenarios during training, not just
+                        the most common ones. This breadth is what gives the agent robustness to unexpected atmospheric
+                        conditions or equipment states during a real mission.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. PLANNING TOOLS -->
+        <div class="sec">
+            <div class="sec-eyebrow">Planning Ecosystem</div>
+            <h2 class="sec-title">Mission Planning Tools</h2>
+            <p class="sec-desc">A comprehensive suite to plan and predict stratospheric missions before launch</p>
+            <p class="prose">
+                The planning environment takes initial configurations and environmental data, feeding them through
+                specialized tools to produce an overall reliable trajectory and landing prediction.
+            </p>
+
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem">
+                <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="arr_plan" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#eef1f6" />
+                        </marker>
+                    </defs>
+
+                    <rect x="90" y="20" width="600" height="50" fill="rgba(0,200,224,0.15)" stroke="#00c8e0"
+                        stroke-width="1.5" rx="3" />
+                    <text x="390" y="52" font-family="DM Mono,monospace" font-size="20" font-weight="600" fill="#00c8e0"
+                        text-anchor="middle" letter-spacing="1">PLANNING TOOLS</text>
+
+                    <rect x="110" y="100" width="130" height="70" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="6" />
+                    <text x="120" y="120" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Initial
+                        Position</text>
+                    <text x="120" y="132" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Date and
+                        Time</text>
+                    <text x="120" y="144" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Stratorelay
+                        Class</text>
+                    <text x="120" y="156" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Wind DB</text>
+
+                    <!-- Right Arrow from Left Box -->
+                    <polygon points="260,125 310,125 310,115 330,135 310,155 310,145 260,145" fill="#eef1f6" />
+
+                    <!-- Center Cyan Stack -->
+                    <g transform="translate(350, 100)">
+                        <rect x="0" y="0" width="200" height="30" fill="rgba(0,200,224,0.2)" stroke="#00c8e0" rx="3" />
+                        <text x="100" y="19" font-family="Inter,sans-serif" font-size="11" fill="#00c8e0"
+                            text-anchor="middle">Stratorelay Planning Tool</text>
+
+                        <rect x="0" y="45" width="200" height="30" fill="rgba(0,200,224,0.2)" stroke="#00c8e0" rx="3" />
+                        <text x="100" y="64" font-family="Inter,sans-serif" font-size="11" fill="#00c8e0"
+                            text-anchor="middle">Stratostats Planning Tool</text>
+
+                        <rect x="0" y="90" width="200" height="30" fill="rgba(0,200,224,0.2)" stroke="#00c8e0" rx="3" />
+                        <text x="100" y="109" font-family="Inter,sans-serif" font-size="11" fill="#00c8e0"
+                            text-anchor="middle">StratoEye</text>
+
+                        <rect x="0" y="135" width="200" height="30" fill="rgba(0,200,224,0.2)" stroke="#00c8e0"
+                            rx="3" />
+                        <text x="100" y="154" font-family="Inter,sans-serif" font-size="11" fill="#00c8e0"
+                            text-anchor="middle">StratoLoop</text>
+                    </g>
+
+                    <!-- Right Arrow from Center Stack -->
+                    <polygon points="570,125 620,125 620,115 640,135 620,155 620,145 570,145" fill="#eef1f6" />
+
+                    <rect x="660" y="100" width="120" height="70" fill="#0d0f14" stroke="rgba(238,241,246,0.3)"
+                        rx="6" />
+                    <text x="670" y="120" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Overall
+                        Trajectory</text>
+                    <text x="670" y="134" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Landing
+                        Position</text>
+                    <text x="670" y="148" font-family="Inter,sans-serif" font-size="9" fill="#eef1f6">Landing Date and
+                        Time</text>
+                </svg>
+                <div class="diag-caption">Figure 7 — Planning Tools overview, translating initial parameters and
+                    environmental data into final expected trajectories.</div>
+            </div>
+
+            <div class="mod-list" style="margin-top:2rem">
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">StratoRelay</div>
+                        <div class="mod-tag">Deterministic Trajectory</div>
+                        <span class="badge badge-blue">Planning core</span>
+                    </div>
+                    <div class="mod-desc">The primary tool for mission pathfinding. It combines high-fidelity
+                        physics
+                        with real GFS wind forecasts to predict the exactly trajectory of a specific balloon design
+                        from
+                        launch to landing. It accounts for diurnal thermal cycles and battery constraints to ensure
+                        mission feasibility.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">StratoEye</div>
+                        <div class="mod-tag">Reachability Analysis</div>
+                        <span class="badge badge-amber">Stochastic Intelligence</span>
+                    </div>
+                    <div class="mod-desc">
+                        A powerful diagnostic tool that computes the <strong>Reachability Heatmap</strong> (CAT Map)
+                        for
+                        any point on Earth. Using Value Iteration and dynamic programming, StratoEye solves the
+                        Markov Decision Process of navigation to determine the probability of a balloon remaining
+                        within
+                        range of a target over a multi-day horizon.<br><br>
+                        <strong>Key Innovation:</strong> Features a persistent 0.25° x 0.25° grid-based caching
+                        system
+                        that stores verified navigation states. This allows the engine to <strong>resume
+                            computations</strong> from previous runs, significantly reducing analysis time for
+                        complex
+                        scenarios and enabling a "time-scrubbable" visualization of reachability evolution over 15+
+                        day
+                        periods.
+                    </div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">StratoStats</div>
+                        <div class="mod-tag">Probabilistic Landing</div>
+                        <span class="badge badge-cyan">Risk assessment</span>
+                    </div>
+                    <div class="mod-desc">Runs Monte Carlo simulations by perturbing wind data and physics
+                        parameters to
+                        generate a "landing footprint." This statistical approach identifies the most likely
+                        recovery
+                        zones and quantifies the risk of landing in restricted or hazardous areas.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">StratoLoop</div>
+                        <div class="mod-tag">Long-duration analysis</div>
+                        <span class="badge badge-green">Station-keeping</span>
+                    </div>
+                    <div class="mod-desc">Specialized for month-long station-keeping missions. It analyzes the
+                        recurrence of wind patterns to identify "stable orbits" in the stratosphere where a balloon
+                        can
+                        remain over a geographic area of interest for extended durations with minimal actuation.
+                    </div>
+                </div>
+            </div>
+            <div class="diag" style="padding:2.5rem 2rem 1.5rem; margin-top:2.5rem">
+                <svg viewBox="0 0 780 320" xmlns="http://www.w3.org/2000/svg"
+                    style="width:100%;max-width:780px;display:block;margin:0 auto">
+                    <defs>
+                        <marker id="arr_amber" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#f0a020" />
+                        </marker>
+                        <marker id="arr_cyan" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+                            <polygon points="0 0,8 3.5,0 7" fill="#00c8e0" />
+                        </marker>
+                    </defs>
+
+                    <!-- Title -->
+                    <rect x="230" y="10" width="320" height="35" fill="rgba(240,160,32,0.1)" stroke="#f0a020"
+                        stroke-width="1.5" rx="3" />
+                    <text x="390" y="32" font-family="DM Mono,monospace" font-size="14" font-weight="600" fill="#f0a020"
+                        text-anchor="middle" letter-spacing="1">STRATOEYE ENGINE</text>
+
+                    <!-- Persistence Layer -->
+                    <rect x="30" y="65" width="280" height="120" rx="3" fill="#0d0f14" stroke="rgba(238,241,246,0.2)"
+                        stroke-width="1" />
+                    <text x="170" y="85" font-family="DM Mono,monospace" font-size="8" fill="rgba(238,241,246,0.5)"
+                        text-anchor="middle">PERSISTENCE LAYER</text>
+
+                    <rect x="50" y="95" width="240" height="25" rx="2" fill="rgba(52,208,122,0.05)" stroke="#34d07a"
+                        stroke-width="0.8" />
+                    <text x="170" y="111" font-family="Inter,sans-serif" font-size="8" fill="#34d07a"
+                        text-anchor="middle">0.25° Grid Cell Indexing</text>
+
+                    <rect x="50" y="125" width="240" height="45" rx="2" fill="rgba(240,160,32,0.05)" stroke="#f0a020"
+                        stroke-width="1" stroke-dasharray="4 2" />
+                    <text x="170" y="142" font-family="DM Mono,monospace" font-size="8" fill="#f0a020"
+                        text-anchor="middle">Local State Cache (V-Cube)</text>
+                    <text x="170" y="156" font-family="Inter,sans-serif" font-size="7" fill="rgba(240,160,32,0.6)"
+                        text-anchor="middle">Check for cached horizon (Resumption)</text>
+
+                    <!-- Core Computation -->
+                    <rect x="370" y="65" width="380" height="150" rx="3" fill="rgba(0,200,224,0.03)"
+                        stroke="rgba(0,200,224,0.3)" stroke-width="1.5" />
+                    <text x="560" y="85" font-family="DM Mono,monospace" font-size="9" fill="#00c8e0"
+                        text-anchor="middle" letter-spacing="1">VALUE ITERATION MDP SOLVER</text>
+
+                    <!-- MDP Loop -->
+                    <rect x="400" y="100" width="320" height="30" rx="2" fill="#0d0f14"
+                        stroke="rgba(238,241,246,0.2)" />
+                    <text x="560" y="119" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Stochastic Wind Kernel (GFS Forecast + Noise)</text>
+
+                    <rect x="400" y="140" width="320" height="30" rx="2" fill="#0d0f14"
+                        stroke="rgba(238,241,246,0.2)" />
+                    <text x="560" y="159" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Probability Propagation (Transition Dynamics)</text>
+
+                    <rect x="400" y="180" width="320" height="25" rx="2" fill="rgba(0,200,224,0.1)" stroke="#00c8e0" />
+                    <text x="560" y="196" font-family="DM Mono,monospace" font-size="8" fill="#00c8e0"
+                        text-anchor="middle">Bellman Equation update for Day N+1</text>
+
+                    <!-- Arrows -->
+                    <line x1="310" y1="125" x2="362" y2="125" stroke="#f0a020" stroke-width="1.2"
+                        marker-end="url(#arr_amber)" />
+                    <text x="340" y="118" font-family="DM Mono,monospace" font-size="6" fill="#f0a020"
+                        text-anchor="middle">resume state</text>
+
+                    <!-- Final Outputs -->
+                    <path d="M 560,215 L 560,245" stroke="#00c8e0" stroke-width="1.2" marker-end="url(#arr_cyan)" />
+
+                    <rect x="410" y="255" width="140" height="40" rx="3" fill="#0d0f14" stroke="#eef1f6"
+                        stroke-width="1" />
+                    <text x="480" y="273" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Intermediate</text>
+                    <text x="480" y="285" font-family="Inter,sans-serif" font-size="8" fill="#eef1f6"
+                        text-anchor="middle">Daily Heatmaps</text>
+
+                    <rect x="570" y="255" width="140" height="40" rx="3" fill="rgba(240,160,32,0.15)" stroke="#f0a020"
+                        stroke-width="1.5" />
+                    <text x="640" y="273" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#f0a020"
+                        text-anchor="middle">FINAL CAT MAP</text>
+                    <text x="640" y="285" font-family="DM Mono,monospace" font-size="7" fill="#f0a020"
+                        text-anchor="middle">Base64 Encoded</text>
+
+                    <!-- Loop Arrow -->
+                    <path d="M 720,192 Q 760,192 760,152 Q 760,112 720,112" fill="none" stroke="#00c8e0"
+                        stroke-width="1" stroke-dasharray="3 3" marker-end="url(#arr_cyan)" />
+                </svg>
+                <div class="diag-caption">Figure 8 — StratoEye Reachability Architecture. The engine leverages a
+                    persistent grid-based cache to resume computations, using stochastic Value Iteration to map the
+                    cumulative reachability probability over time.</div>
+            </div>
+        </div>
+
+        <!-- 10. SUPPORTING -->
+        <div class="sec">
+            <div class="sec-eyebrow">Supporting Modules</div>
+            <h2 class="sec-title">Three supporting subsystems</h2>
+            <p class="sec-desc">Specialised components that underpin accuracy and deployability across the core
+                layers
+            </p>
+
+            <div class="mod-list">
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Film Material Model</div>
+                        <div class="mod-tag">Structural mechanics</div>
+                        <span class="badge badge-green">Design and simulation</span>
+                    </div>
+                    <div class="mod-desc">Models the real mechanical behaviour of the polyethylene film used in
+                        balloon
+                        manufacturing. The key complexity is that this film does not deform in a simple linear way
+                        --
+                        its resistance to stretching changes significantly across different elongation levels,
+                        meaning a
+                        standard linear model would mispredict both the design safety margin and the balloon's
+                        dynamic
+                        response during flight. The material module captures this non-linear behaviour accurately,
+                        allowing the designer to guarantee structural integrity and the physics engine to predict
+                        envelope deformation correctly under changing pressure conditions.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Wind Prediction Learner</div>
+                        <div class="mod-tag">Adaptive correction</div>
+                        <span class="badge badge-cyan">Online adaptation</span>
+                    </div>
+                    <div class="mod-desc">Atmospheric forecast models are never perfectly accurate -- there is
+                        always a
+                        difference between the predicted wind and the actual wind at any given altitude and time.
+                        This
+                        module uses a statistical learning technique (Gaussian Process regression) to build a model
+                        of
+                        these forecast errors as the balloon gathers real observations, and apply corrections in
+                        real
+                        time to improve trajectory predictions for nearby altitudes and future timesteps. The
+                        correction
+                        improves progressively throughout a mission as more observations accumulate.</div>
+                </div>
+                <div class="mod-item">
+                    <div class="mod-left">
+                        <div class="mod-name">Coordinate Manager</div>
+                        <div class="mod-tag">Navigation geometry</div>
+                        <span class="badge badge-blue">Always active</span>
+                    </div>
+                    <div class="mod-desc">GPS coordinates are intuitive for humans but inconvenient for physics
+                        calculations, which work best in a flat Cartesian system where distances are measured in
+                        metres.
+                        This module transparently converts between the two representations -- allowing the physics
+                        engine to work in metres while mission planning, display, and output reporting use standard
+                        geographic coordinates. The projection is anchored to the mission launch point to keep
+                        distortion negligible across the typical mission footprint of a few hundred kilometres.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

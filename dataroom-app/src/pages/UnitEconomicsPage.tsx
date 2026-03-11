@@ -104,9 +104,9 @@ export default function UnitEconomicsPage() {
             </ContentBlock>
 
             <NextSectionCard
-                title="Industrialization & Supply Chain"
-                description="Review the roadmap for scaling platform manufacturing to 100 units/year."
-                path="/dataroom/06_Industrialization_and_Operations/manufacturing"
+                title="Industrialization & Operations Strategy"
+                description="Review the roadmap for scalable platform manufacturing and fleet operations."
+                path="/dataroom/06_Industrialization_and_Operations/01_Industrialization_and_Operations_Strategy"
             />
         </div>
     );

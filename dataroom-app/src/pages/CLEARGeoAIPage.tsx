@@ -515,7 +515,7 @@ export default function CLEARGeoAIPage() {
             <NextSectionCard
                 title="Data Architecture and AI Pipeline"
                 description="Explore the technical flows from stratosphere to customer edge."
-                path="/dataroom/02_Product_and_Technology/06_Data_Architecture_and_AI_Pipeline"
+                path="/dataroom/02_Product_and_Technology/05_Data_Architecture_and_AI_Pipeline"
             />
         </div>
     );

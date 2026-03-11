@@ -504,9 +504,9 @@ export default function StratosphericPlatformArchitecturePage() {
             </ContentBlock>
 
             <NextSectionCard
-                title="Stratorelay, Stratostats & LoonHive Roadmap"
-                description="The development and commercialization timeline for the stratospheric fleet."
-                path="/dataroom/02_Product_and_Technology/03_Stratorelay_Stratostats_LoonHive_Roadmap"
+                title="Neurostar Flight Control System"
+                description="The autonomous reinforcement learning agent enabling stratospheric control."
+                path="/dataroom/02_Product_and_Technology/03_Neurostar_Flight_Control_System"
             />
         </div>
     );

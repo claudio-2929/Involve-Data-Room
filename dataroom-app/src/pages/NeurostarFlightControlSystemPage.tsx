@@ -239,7 +239,7 @@ export default function NeurostarFlightControlSystemPage() {
             <NextSectionCard
                 title="CLEAR GeoAI Infrastructure"
                 description="Learn how the intelligence layer processes and streams insights."
-                path="/dataroom/02_Product_and_Technology/05_CLEAR_GeoAI_Infrastructure_Layer"
+                path="/dataroom/02_Product_and_Technology/04_CLEAR_GeoAI_Infrastructure_Layer"
             />
         </div>
     );

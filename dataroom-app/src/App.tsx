@@ -3,7 +3,6 @@ import GlobalLayout from './components/layout/GlobalLayout';
 import { ThemeProvider } from './components/ThemeProvider';
 import InvestmentThesisPage from './pages/InvestmentThesisPage';
 import InvestorDeckPage from './pages/InvestorDeckPage';
-import OnePagerPage from './pages/OnePagerPage';
 import CLEARGeoAIPage from './pages/CLEARGeoAIPage';
 import TechnologyMasterDocumentPage from './pages/TechnologyMasterDocumentPage';
 import StratosphericPlatformArchitecturePage from './pages/StratosphericPlatformArchitecturePage';
@@ -55,11 +54,6 @@ function App() {
                 <GlobalLayout><InvestorDeckPage /></GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/00_Executive_Overview/03_One_Pager" element={
-              <ProtectedRoute requiredAccess="partial">
-                <GlobalLayout><OnePagerPage /></GlobalLayout>
-              </ProtectedRoute>
-            } />
             <Route path="/dataroom/01_Strategy_and_Market/01_Market_Overview_TAM_SAM_SOM" element={
               <ProtectedRoute requiredAccess="partial">
                 <GlobalLayout><MarketOverviewPage /></GlobalLayout>
@@ -102,7 +96,7 @@ function App() {
                 <GlobalLayout><DefenceDualUsePage /></GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/03_Defence_and_Dual_Use/*" element={
+            <Route path="/dataroom/03_Defence_and_Dual_Use/01_Defence_and_Dual_Use_Strategy" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><DefenceDualUsePage /></GlobalLayout>
               </ProtectedRoute>
@@ -122,12 +116,12 @@ function App() {
                 <GlobalLayout><HapsRoadmapPage /></GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/02_Product_and_Technology/04_Neurostar_Flight_Control_System" element={
+            <Route path="/dataroom/02_Product_and_Technology/03_Neurostar_Flight_Control_System" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><NeurostarFlightControlSystemPage /></GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/02_Product_and_Technology/05_CLEAR_GeoAI_Infrastructure_Layer" element={
+            <Route path="/dataroom/02_Product_and_Technology/04_CLEAR_GeoAI_Infrastructure_Layer" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><CLEARGeoAIPage /></GlobalLayout>
               </ProtectedRoute>
@@ -137,20 +131,15 @@ function App() {
                 <GlobalLayout><UnitEconomicsPage /></GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/08_Organization/01_Executive_Management" element={
+            <Route path="/dataroom/08_Team_and_Organization/01_Team_and_Organization" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout>
                   {/* <ExecutiveManagementPage /> */}
-                  <div className="p-10 text-white font-mono">Executive Management (Placeholder)</div>
+                  <div className="p-10 text-white font-mono">Team & Organization (Placeholder)</div>
                 </GlobalLayout>
               </ProtectedRoute>
             } />
-            <Route path="/dataroom/07_IP_and_Moat" element={
-              <ProtectedRoute requiredAccess="full">
-                <GlobalLayout><IPAndMoatPage /></GlobalLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/dataroom/07_IP_and_Moat/*" element={
+            <Route path="/dataroom/07_IP_and_Moat/01_IP_and_Moat_Strategy" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><IPAndMoatPage /></GlobalLayout>
               </ProtectedRoute>
