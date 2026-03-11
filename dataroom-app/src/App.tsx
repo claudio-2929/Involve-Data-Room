@@ -8,6 +8,7 @@ import CLEARGeoAIPage from './pages/CLEARGeoAIPage';
 import TechnologyMasterDocumentPage from './pages/TechnologyMasterDocumentPage';
 import StratosphericPlatformArchitecturePage from './pages/StratosphericPlatformArchitecturePage';
 import HapsRoadmapPage from './pages/HapsRoadmapPage';
+import NeurostarFlightControlSystemPage from './pages/NeurostarFlightControlSystemPage';
 import UnitEconomicsPage from './pages/UnitEconomicsPage';
 import MaterialAgreementsPage from './pages/MaterialAgreementsPage';
 import MarketOverviewPage from './pages/MarketOverviewPage';
@@ -119,6 +120,11 @@ function App() {
             <Route path="/dataroom/02_Product_and_Technology/03_Stratorelay_Stratostats_LoonHive_Roadmap" element={
               <ProtectedRoute requiredAccess="full">
                 <GlobalLayout><HapsRoadmapPage /></GlobalLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/dataroom/02_Product_and_Technology/04_Neurostar_Flight_Control_System" element={
+              <ProtectedRoute requiredAccess="full">
+                <GlobalLayout><NeurostarFlightControlSystemPage /></GlobalLayout>
               </ProtectedRoute>
             } />
             <Route path="/dataroom/02_Product_and_Technology/05_CLEAR_GeoAI_Infrastructure_Layer" element={
